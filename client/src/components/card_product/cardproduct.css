@@ -1,0 +1,93 @@
+@import url('../../index.css');
+
+/* CARD PRODUCT */
+.card-product {
+	display: flex;
+	width: 220px;
+	height: 280px;
+	flex-direction: column;
+	background-color: var(--lightMainColor);
+	border-radius: 12px;
+	padding: 10px 16px;
+	margin-bottom: 26px;
+	cursor: pointer;
+}
+
+.card-product-img {
+	width: auto;
+	height: 140px;
+	border-radius: 10px;
+	margin-bottom: 8px;
+	object-fit: cover;
+}
+
+.card-product-info {
+	width: auto;
+	height: 200px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.product-price {
+	font-size: 22px;
+	font-weight: 700;
+	justify-content: space-between;
+	margin: 4px 6px;
+	color: #272727;
+}
+
+.product-name,
+.type-product-name {
+	display: flex;
+	justify-content: center;
+	color: var(--darkTitles);
+}
+
+.product-name {
+	color: #272727;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.type-product-name {
+	font-size: 14px;
+	font-weight: bold;
+	color: var(--grayFonts);
+}
+
+.div-rank {
+	display: flex;
+	justify-content: center;
+	margin-top: 6px;
+}
+
+.div-rank i, .div-rank span {
+	color: var(--btn-blue);
+	font-size: 20px;
+}
+
+.btn-product-plus {
+	width: fit-content;
+	height: 20px;
+	color: var(--btn-blue);
+	border: none;
+	border-radius: 100%;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.btn-product-plus>i {
+	border-radius: 100%;
+	font-size: 32px;
+}
+
+.btn-product-plus:hover {
+	color: var(--mainColor);
+}
+
+
+/* .card-product:hover {
+	cursor: pointer;
+	box-shadow: 2px 2px 5px 0 var(--shadowColor);
+} */
