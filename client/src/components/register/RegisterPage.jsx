@@ -28,7 +28,19 @@ function RegisterPage() {
 		setUserId(e.target.value);
 	};
 
-	const handleSubmitPass = async (values) => {
+	const handleSubmitData = handleSubmit (async (values) => {
+		try {
+			// console.log(`values: ${values}`);
+			const res = await registerRequest(values);
+			console.log(`response of registerRequest: ${res}`);
+			insertId = res;
+			console.log(`Insert Id (register form): ${insertId}`);
+		} catch (error) {
+			console.log("Error durante el registro:", error);
+		}
+	});
+
+	const handleSubmitPass = async () => {
 		// e.preventDefault();
 
 		try {
@@ -72,17 +84,7 @@ function RegisterPage() {
 				<img className="logo-register" src={logoImg} alt="" />
 				<form
 					className="form-register"
-					onSubmit={handleSubmit(async (values) => {
-						try {
-							// console.log(`values: ${values}`);
-							const res = await registerRequest(values);
-							console.log(`response of registerRequest: ${res}`);
-							insertId = res;
-							console.log(`Insert Id (register form): ${insertId}`);
-						} catch (error) {
-							console.log("Error durante el registro:", error);
-						}
-					})}
+					onSubmit={handleSubmitData}
 				>
 					<div className="input-group">
 						<label htmlFor="name">
