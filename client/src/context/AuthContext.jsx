@@ -1,19 +1,50 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { registerRequest, createPassword } from "../api/auth";
 
 export const AuthContext = createContext();
 
+export const useAuth = () => {
+	const context = useContext(AuthContext);
+	try {
+		if (context) {
+			return context;
+		}
+	} catch (error) {
+		throw new Error(error);
+	}
+	// if (!context) {
+	// 	throw new Error("useAuth debe ser usado dentro de un provider");
+	// }
+	// return context;
+};
+
 // Creacion de provider (componente que engloba otros componentes)
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
+	const [user, setUser] = useState(null);
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const [errors, setErrors] = useState([]);
 
-  const [user, setUser] = useState(null)
+	const signup = async (user) => {
+		try {
+			const res = await registerRequest(user);
+			console.log(res);
+			setUser(res);
+			setIsAuthenticated(true);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
-  const signup = (user) => {
-    
-  }
-
-  return (
-    <AuthContext.Provider value={{}}>
-      {children}
-    </AuthContext.Provider>
-  )
-} 
+	return (
+		<AuthContext.Provider
+			value={{
+				signup,
+				user,
+				isAuthenticated,
+				errors,
+			}}
+		>
+			{children}
+		</AuthContext.Provider>
+	);
+};

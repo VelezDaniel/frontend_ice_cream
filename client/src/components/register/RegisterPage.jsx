@@ -1,18 +1,28 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./register.css";
 import logoImg from "../../assets/imgs/helarticologo2.png";
 import { registerRequest, createPassword } from "../../api/auth";
-// import CreatePassword from "./CreatePassword";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
-	const { register, handleSubmit } = useForm();
-	let insertId;
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm();
+	const { signup, isAuthenticated, errors : registerErrors } = useAuth();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (isAuthenticated) navigate("/");
+	}, [isAuthenticated]);
 
 	// PASSWORD LOGIC
 	// console.log("userId: ",userId);
 	const [password, setPassword] = useState("");
-	const [userId, setUserId] = useState("");
+	const [userId, setUserId] = useState(""); // ? uso de la identificacion
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [passwordError, setPasswordError] = useState("");
 
@@ -28,16 +38,18 @@ function RegisterPage() {
 		setUserId(e.target.value);
 	};
 
-	const handleSubmitData = handleSubmit (async (values) => {
+	const handleSubmitData = handleSubmit(async (values) => {
 		try {
 			// console.log(`values: ${values}`);
 			const res = await registerRequest(values);
 			console.log(`response of registerRequest: ${res}`);
-			insertId = res;
-			console.log(`Insert Id (register form): ${insertId}`);
 		} catch (error) {
 			console.log("Error durante el registro:", error);
 		}
+	});
+
+	const onSubmit = handleSubmit(async (values) => {
+		await signup(values);
 	});
 
 	const handleSubmitPass = async () => {
@@ -76,66 +88,80 @@ function RegisterPage() {
 
 	return (
 		<div className="contenedor-padre">
+			{
+				registerErrors.map((error, i) => (
+					<div>
+						{error}
+					</div>
+				))
+			}
 			<div className="contenedor_fondo"></div>
 			<div className="contenedor-hijo">
 				<a className="btn-volver" href="/">
 					<i className="bi bi-arrow-left-short"></i>
 				</a>
 				<img className="logo-register" src={logoImg} alt="" />
-				<form
-					className="form-register"
-					onSubmit={handleSubmitData}
-				>
+				<span>Ingresa tus datos</span>
+				<form className="form-register" onSubmit={onSubmit}>
 					<div className="input-group">
-						<label htmlFor="name">
-							<i className="bi bi-person"></i>
-						</label>
-						{/* <input type="text" name="nombres" id="nombres" placeholder="Nombres" /> */}
-						<input
-							type="text"
-							{...register("name", { required: true })}
-							placeholder="Nombres"
-							id="nombres"
-						/>
+							<label htmlFor="name">
+								<i className="bi bi-person"></i>
+							</label>
+							{/* <input type="text" name="nombres" id="nombres" placeholder="Nombres" /> */}
+							<input
+								type="text"
+								{...register("name", { required: true })}
+								placeholder="Nombres"
+								id="nombres"
+							/>
 					</div>
+						{errors.name && <p className="notice">Campo nombres requerido</p>}
 					<div className="input-group">
-						<label htmlFor="lastName">
-							<i className="bi bi-person"></i>
-						</label>
-						{/* <input type="text" name="apellidos" id="apellidos" placeholder="Apellidos"/> */}
-						<input
-							type="text"
-							{...register("lastName", { required: true })}
-							placeholder="Apellidos"
-							id="apellidos"
-						/>
+
+							<label htmlFor="lastName">
+								<i className="bi bi-person"></i>
+							</label>
+							{/* <input type="text" name="apellidos" id="apellidos" placeholder="Apellidos"/> */}
+							<input
+								type="text"
+								{...register("lastName", { required: true })}
+								placeholder="Apellidos"
+								id="apellidos"
+							/>
 					</div>
+						{errors.lastName && (
+							<p className="notice">Campo apellidos requerido</p>
+						)}
 					<div className="input-group">
-						<label htmlFor="identity">
-							<i className="bi bi-person-vcard"></i>
-						</label>
-						{/* <input type="number" name="documento" id="documento" placeholder="Documento"/> */}
-						<input
-							type="text"
-							{...register("identity", { required: true })}
-							placeholder="Documento"
-							value={userId}
-							onChange={handleUserIdChange}
-							id="documento"
-						/>
+							<label htmlFor="identity">
+								<i className="bi bi-person-vcard"></i>
+							</label>
+							{/* <input type="number" name="documento" id="documento" placeholder="Documento"/> */}
+							<input
+								type="text"
+								{...register("identity", { required: true })}
+								placeholder="Documento"
+								value={userId}
+								onChange={handleUserIdChange}
+								id="documento"
+							/>
 					</div>
+						{errors.identity && (
+							<p className="notice">Campo Documento requerido</p>
+						)}
 					<div className="input-group">
-						<label htmlFor="email">
-							<i className="bi bi-envelope"></i>
-						</label>
-						{/* <input type="email" name="correo" id="correo" placeholder="Correo"/> */}
-						<input
-							type="text"
-							{...register("email", { required: true })}
-							placeholder="correo"
-							id="correo"
-						/>
+							<label htmlFor="email">
+								<i className="bi bi-envelope"></i>
+							</label>
+							{/* <input type="email" name="correo" id="correo" placeholder="Correo"/> */}
+							<input
+								type="text"
+								{...register("email", { required: true })}
+								placeholder="correo"
+								id="correo"
+							/>
 					</div>
+						{errors.email && <p className="notice">Campo correo requerido</p>}
 					<div className="input-group">
 						<label htmlFor="phone">
 							<i className="bi bi-phone"></i>
@@ -148,6 +174,7 @@ function RegisterPage() {
 							id="celular"
 						/>
 					</div>
+						{errors.phone && <p className="notice">Campo Celular requerido</p>}
 					<label htmlFor="birth">
 						<i className="bi bi-calendar3"></i> Fecha de Nacimiento
 					</label>
@@ -157,6 +184,7 @@ function RegisterPage() {
 						{...register("birth", { required: true })}
 						id="nacimiento"
 					/>
+					{errors.birth && <p className="notice">Campo nacimiento requerido</p>}
 					<input
 						className="btn-enviar"
 						type="submit"
@@ -171,6 +199,7 @@ function RegisterPage() {
 					<i className="bi bi-arrow-left-short"></i>
 				</a>
 				<img className="logo-register" src={logoImg} alt="logo helartico" />
+				<span>Crea una contraseña segura</span>
 				<form className="form-register" onSubmit={handleSubmitPass}>
 					{/* <div className="input-group">
 						<label htmlFor="userId">

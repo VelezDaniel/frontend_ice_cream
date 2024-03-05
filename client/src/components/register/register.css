@@ -70,13 +70,14 @@
 
 .input-group {
     border-bottom: 2px solid var(--font-darkgray);
-    margin-bottom: 1em;
+    margin-bottom: 6px;
     width: 200px;
     display: flex;
     justify-content: start;
     align-items: center;
     gap: 6px;
 }
+
 
 input#nacimiento {
     border-bottom: 2px solid black;

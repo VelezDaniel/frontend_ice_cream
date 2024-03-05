@@ -10,6 +10,7 @@
   --extraLight-color: #ebebeb;
   --btn-home-hover: #dfdfdf67;
 	--lightMainColor: #e3faff;
+	--danger: #ff3131;
 }
 
 * {
@@ -62,4 +63,10 @@
 	cursor: pointer;
 	background-color: var(--mainColor);
 	color: var(--lightTitles);
+}
+
+.notice {
+	color: var(--danger);
+	font-size: 12px;
+	margin-bottom: 4px;
 }
