@@ -1,0 +1,112 @@
+@import url("../../index.css");
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	text-transform: none;
+	font-family: "Montserrat", sans-serif;
+}
+
+.content {
+	display: grid;
+	place-items: center;
+	align-items: center;
+	background: white;
+	width: 100%;
+	height: 500px;
+  margin: 38px 0px;
+}
+
+.celda123 {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	border-top: 2px solid #000;
+	width: 90%;
+	padding: 2em;
+}
+
+.flex_center {
+	display: flex;
+	justify-content: start;
+	flex-direction: column;
+}
+
+.celda1 img {
+	height: 350px;
+	max-height: 400px;
+	width: auto;
+	width: 90%;
+}
+
+.celda2 {
+	display: flex;
+	gap: 1em;
+	text-align: left;
+}
+
+.celda3 {
+	display: flex;
+	align-items: center;
+	gap: 1em;
+}
+
+.celda3 button {
+	display: flex;
+	justify-content: space-between;
+	padding: 6px 0.5em;
+	width: 220px;
+	border: 2px solid var(--font-darkgray);
+	border-radius: 15px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.celda3 button p {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.celda3 button i {
+  font-size: 22px;
+}
+
+.celda3 button:hover, .celda3 button:link{
+  background-color: var(--mainColor);
+  border: 2px solid var(--lightTitles);
+  color: var(--lightTitles);
+}
+
+.celda4 {
+	display: grid;
+	place-content: center;
+	border-bottom: 2px solid #000;
+	width: 90%;
+  padding: 36px 0;
+}
+
+.celda5 {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	gap: 8em;
+  padding: 20px 0;
+}
+
+.celda5>p {
+  font-weight: 600;
+}
+
+#top {
+  cursor: pointer;
+}
+
+#top:hover {
+  color: var(--mainColor);
+  font-weight: 600;
+}
+
+.item {
+  font-weight: 600;
+  font-size: 18px;
+}
