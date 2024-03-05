@@ -12,7 +12,7 @@ function RegisterPage() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
-	const { signup, isAuthenticated, errors : registerErrors } = useAuth();
+	const { signup, isAuthenticated, errors: registerErrors } = useAuth();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -88,13 +88,6 @@ function RegisterPage() {
 
 	return (
 		<div className="contenedor-padre">
-			{
-				registerErrors.map((error, i) => (
-					<div>
-						{error}
-					</div>
-				))
-			}
 			<div className="contenedor_fondo"></div>
 			<div className="contenedor-hijo">
 				<a className="btn-volver" href="/">
@@ -104,64 +97,63 @@ function RegisterPage() {
 				<span>Ingresa tus datos</span>
 				<form className="form-register" onSubmit={onSubmit}>
 					<div className="input-group">
-							<label htmlFor="name">
-								<i className="bi bi-person"></i>
-							</label>
-							{/* <input type="text" name="nombres" id="nombres" placeholder="Nombres" /> */}
-							<input
-								type="text"
-								{...register("name", { required: true })}
-								placeholder="Nombres"
-								id="nombres"
-							/>
+						<label htmlFor="name">
+							<i className="bi bi-person"></i>
+						</label>
+						{/* <input type="text" name="nombres" id="nombres" placeholder="Nombres" /> */}
+						<input
+							type="text"
+							{...register("name", { required: true })}
+							placeholder="Nombres"
+							id="nombres"
+						/>
 					</div>
-						{errors.name && <p className="notice">Campo nombres requerido</p>}
+					{errors.name && <p className="notice">Campo nombres requerido</p>}
 					<div className="input-group">
-
-							<label htmlFor="lastName">
-								<i className="bi bi-person"></i>
-							</label>
-							{/* <input type="text" name="apellidos" id="apellidos" placeholder="Apellidos"/> */}
-							<input
-								type="text"
-								{...register("lastName", { required: true })}
-								placeholder="Apellidos"
-								id="apellidos"
-							/>
+						<label htmlFor="lastName">
+							<i className="bi bi-person"></i>
+						</label>
+						{/* <input type="text" name="apellidos" id="apellidos" placeholder="Apellidos"/> */}
+						<input
+							type="text"
+							{...register("lastName", { required: true })}
+							placeholder="Apellidos"
+							id="apellidos"
+						/>
 					</div>
-						{errors.lastName && (
-							<p className="notice">Campo apellidos requerido</p>
-						)}
+					{errors.lastName && (
+						<p className="notice">Campo apellidos requerido</p>
+					)}
 					<div className="input-group">
-							<label htmlFor="identity">
-								<i className="bi bi-person-vcard"></i>
-							</label>
-							{/* <input type="number" name="documento" id="documento" placeholder="Documento"/> */}
-							<input
-								type="text"
-								{...register("identity", { required: true })}
-								placeholder="Documento"
-								value={userId}
-								onChange={handleUserIdChange}
-								id="documento"
-							/>
+						<label htmlFor="identity">
+							<i className="bi bi-person-vcard"></i>
+						</label>
+						{/* <input type="number" name="documento" id="documento" placeholder="Documento"/> */}
+						<input
+							type="text"
+							{...register("identity", { required: true })}
+							placeholder="Documento"
+							value={userId}
+							onChange={handleUserIdChange}
+							id="documento"
+						/>
 					</div>
-						{errors.identity && (
-							<p className="notice">Campo Documento requerido</p>
-						)}
+					{errors.identity && (
+						<p className="notice">Campo Documento requerido</p>
+					)}
 					<div className="input-group">
-							<label htmlFor="email">
-								<i className="bi bi-envelope"></i>
-							</label>
-							{/* <input type="email" name="correo" id="correo" placeholder="Correo"/> */}
-							<input
-								type="text"
-								{...register("email", { required: true })}
-								placeholder="correo"
-								id="correo"
-							/>
+						<label htmlFor="email">
+							<i className="bi bi-envelope"></i>
+						</label>
+						{/* <input type="email" name="correo" id="correo" placeholder="Correo"/> */}
+						<input
+							type="text"
+							{...register("email", { required: true })}
+							placeholder="correo"
+							id="correo"
+						/>
 					</div>
-						{errors.email && <p className="notice">Campo correo requerido</p>}
+					{errors.email && <p className="notice">Campo correo requerido</p>}
 					<div className="input-group">
 						<label htmlFor="phone">
 							<i className="bi bi-phone"></i>
@@ -174,7 +166,7 @@ function RegisterPage() {
 							id="celular"
 						/>
 					</div>
-						{errors.phone && <p className="notice">Campo Celular requerido</p>}
+					{errors.phone && <p className="notice">Campo Celular requerido</p>}
 					<label htmlFor="birth">
 						<i className="bi bi-calendar3"></i> Fecha de Nacimiento
 					</label>
@@ -190,6 +182,11 @@ function RegisterPage() {
 						type="submit"
 						value="Registrarse"
 					></input>
+					{registerErrors.map((error, i) => (
+						<div className="errors" key={i}>
+							{error}
+						</div>
+					))}
 				</form>
 			</div>
 			{/* Password Form */}

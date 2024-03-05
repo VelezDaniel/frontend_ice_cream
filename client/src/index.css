@@ -70,3 +70,14 @@
 	font-size: 12px;
 	margin-bottom: 4px;
 }
+
+.errors {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	align-items: center;
+	color: var(--danger);
+	font-size: 14px;
+	margin: 4px 0;
+	font-weight: 600;
+}
