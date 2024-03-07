@@ -1,82 +1,37 @@
 @import url("../../index.css");
 
-main {
-	border-top: 4px solid var(--font-darkgray);
-	border-bottom: 4px solid var(--font-darkgray);
-	margin: 20px 60px 20px 60px;
-	/* padding: 0 80px; */
+/* .superBody{
+    position: relative;
+    height: 100%;
+} */
+.superBody{
+    background-color: #2e2e2e;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+}
+.destacado{
+    display: flex;
+    font-weight: bold;
+    font-size: 14px;
+    width: 100%;
+    height: 100px;
+    align-items: end;
+    color: white;
 }
 
-.products-section {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-	padding: 0 72px;
-	justify-content: center;
-	align-items: center;
-	gap: 12px;
+.destacado h1{
+    text-align: center;
+    width: 100%;
+
 }
 
-.title-sect {
-	display: grid;
-	grid-template-columns: 1fr;
-	grid-template-rows: 1fr 1fr;
-	justify-content: center;
-	/* grid-column: 1/-1; */
-	padding-top: 22px;
-	margin-bottom: 16px;
-	gap: 24px;
+.swiper{
+    width: 100%;
+    padding: 150px 0 50px 0;
 }
 
-.title {
-	font-size: 32px;
-	font-weight: 600;
-	letter-spacing: 0.4px;
-	justify-self: center;
-}
 
-.container-search {
-	width: 100%;
-	min-height: 38px;
-	display: flex;
-	justify-content: center;
-}
 
-.container-search form {
-	width: 40%;
-	display: flex;
-	justify-content: space-between;
-	border: 1px solid var(--font-darkgray);
-	border-radius: 18px;
-	padding: 4px 8px;
-}
 
-.container-search form input {
-	width: 60%;
-	border: none;
-	outline: none;
-	font-size: 16px;
-	color: var(--darkTitles);
-	padding: 0px 12px;
-	background-color: transparent;
-}
 
-.btn-search {
-	justify-items: end;
-	padding: 4px 6px;
-	background-color: transparent;
-	border-radius: 20px;
-	border: 2px solid var(--darkTitles);
-	border: none;
-	justify-self: end;
-	cursor: pointer;
-}
-
-.btn-search i {
-	font-size: 24px;
-	color: var(--darkTitles);
-}
-
-.btn-search:hover {
-	/* background-color: aqua; */
-	box-shadow: 1px 1px 4px 0px var(--font-darkgray);
-}
