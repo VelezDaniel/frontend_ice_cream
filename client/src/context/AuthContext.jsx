@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from "react";
-import { registerRequest, createPassword } from "../api/auth";
+import { createContext, useContext, useEffect, useState } from "react";
+import { registerRequest, loginRequest } from "../api/auth";
 
 export const AuthContext = createContext();
 
@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [errors, setErrors] = useState([]);
 
+	// Metodo para register
 	const signup = async (user) => {
 		try {
 			const res = await registerRequest(user);
@@ -37,10 +38,32 @@ export const AuthProvider = ({ children }) => {
 		}
 	};
 
+	// Metodo para login
+	const signin = async (user) => {
+		try {
+			const res = await loginRequest(user);
+			console.log("respuesta de loguinRequest: ", res);
+		} catch (error) {
+			// setErrors(error.response.data);
+			console.log("error from loginRequest in signin: ", error);
+		}
+	};
+
+	// Efecto para eliminar errores despues de 8 segundos
+	useEffect(() => {
+		if (errors.length > 0) {
+			const timer = setTimeout(() => {
+				setErrors([]);
+			}, 8000);
+			return () => clearTimeout(timer);
+		}
+	}, [errors]);
+
 	return (
 		<AuthContext.Provider
 			value={{
 				signup,
+				signin,
 				user,
 				isAuthenticated,
 				errors,

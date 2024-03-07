@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // ? Se crea la direccion para enviar el form al backend por medio de peticion axios
-const api = 'http://localhost:4000/api';
+const api = 'http://localhost:3000/api';
 
 // export const registerRequest = async (user) => {
 //   try {
@@ -24,6 +24,8 @@ const api = 'http://localhost:4000/api';
 // }
 
 export const registerRequest = async (user) => axios.post(`${api}/person`, user);
+
+export const loginRequest = async (user) => axios.post(`${api}/auth/login`, user);
 
 export const createPassword = async (pass) => {
   try {
