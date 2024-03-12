@@ -3,6 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import logoImg from "../../assets/imgs/helarticologo2.png";
 import "./login.css";
 import { togglePasswordVisibility } from "../../utils/visibility";
+import { Link } from "react-router-dom";
 
 function LoginPage() {
 	const {
@@ -10,7 +11,7 @@ function LoginPage() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
-	const {signin, errors: signinErrors} = useAuth();
+	const { signin, errors: signinErrors } = useAuth();
 
 	const onSubmit = handleSubmit((data) => {
 		signin(data);
@@ -40,7 +41,9 @@ function LoginPage() {
 								id="user"
 							/>
 						</div>
-						{errors.user && <span className="errors">Identificaicon requerida!</span>}
+						{errors.user && (
+							<span className="errors">Identificaicon requerida!</span>
+						)}
 						<div className="input-group">
 							<label htmlFor="contraseña">
 								<i className="bi bi-lock"></i>
@@ -58,23 +61,17 @@ function LoginPage() {
 								onClick={togglePasswordVisibility}
 							></i>
 						</div>
-            {errors.password && <span className="errors">Contraseña requerida</span>}
+						{errors.password && (
+							<span className="errors">Contraseña requerida</span>
+						)}
 						{signinErrors.map((error, i) => (
-						<div className="errors" key={i}>
-							{error}
-						</div>
-					))}
+							<div className="errors" key={i}>
+								{error}
+							</div>
+						))}
 						<input className="btn-Ingresar" type="submit" value="Ingresar" />
-						<input
-							className="btn-Registrarse"
-							type="submit"
-							value="Registrarse"
-						/>
-						<input
-							className="btn-Olvido"
-							type="submit"
-							value="¿Olvidaste tu contraseña?"
-						/>
+						<Link className="btn-Registrarse" to="/register">Registrarse</Link>
+						<p className="btn-Olvido">¿Olvidaste tu contraseña?</p>
 					</form>
 				</div>
 			</div>

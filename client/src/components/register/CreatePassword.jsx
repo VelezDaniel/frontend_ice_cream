@@ -1,11 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import "./register.css";
 import logoImg from "../../assets/imgs/helarticologo2.png";
 import { createPassword } from "../../api/auth";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function CreatePassword({ insertId }) {
-  const userId = insertId;
-  console.log("userId: ",userId);
+	const navigate = useNavigate();
+
+	const { updateStateAuthentication, isAuthenticated } = useAuth();
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm();
+
+	// const { isAuthenticated, setIsAuthenticated } = useAuth();
+	// const { isAuthenticated, setIsAuthenticated } = useState(false)
+
+	useEffect(() => {
+		if (isAuthenticated) navigate("/");
+	}, [isAuthenticated]);
+
+	// const user = userId;
+	console.log("userId: ", insertId);
+	// console.log("user: ", user);
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [passwordError, setPasswordError] = useState("");
@@ -18,8 +38,8 @@ function CreatePassword({ insertId }) {
 		setConfirmPassword(e.target.value);
 	};
 
-	const handleSubmitPass = async (e) => {
-		e.preventDefault();
+	const handleSubmitPass = handleSubmit( async (e) => {
+		// e.preventDefault();
 
 		try {
 			console.log("Password:", password);
@@ -31,7 +51,7 @@ function CreatePassword({ insertId }) {
 			}
 
 			const userInfo = {
-				user: userId,
+				user: insertId,
 				password: password,
 				confirmPassword: confirmPassword,
 			};
@@ -39,18 +59,18 @@ function CreatePassword({ insertId }) {
 			console.log("UserInfo:", userInfo);
 
 			const res = await createPassword(userInfo);
-
+			updateStateAuthentication(true);
 			console.log("Response of createPassword:", res);
 			console.log("Response data of createPassword:", res.data);
 			console.log("Insert Id from createPassword:", res.insertId);
 
 			console.log(
-				`Insert Id (proviene de register form): ${insertId}, / UserInfo post query = ${userInfo}`
+				`Insert Id (proviene de password form): ${insertId}, / UserInfo post query = ${userInfo}`
 			);
 		} catch (error) {
 			console.log(error);
 		}
-	};
+	});
 
 	return (
 		<div className="contenedor-hijo create-password">
@@ -65,8 +85,9 @@ function CreatePassword({ insertId }) {
 					</label>
 					<input
 						type="password"
+						{...register("password", { required: true })}
 						value={password}
-						onChange={handlePasswordChange}
+						// onChange={handlePasswordChange}
 						placeholder="Contraseña"
 						id="password"
 					/>
@@ -78,8 +99,9 @@ function CreatePassword({ insertId }) {
 					</label>
 					<input
 						type="password"
+						{...register("confirmPass", { required: true })}
 						value={confirmPassword}
-						onChange={handleConfirmPasswordChange}
+						// onChange={handleConfirmPasswordChange}
 						placeholder="Confirmar contraseña"
 						id="confirmPassword"
 					/>

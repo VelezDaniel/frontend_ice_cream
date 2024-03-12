@@ -28,9 +28,9 @@ export const AuthProvider = ({ children }) => {
 	const signup = async (user) => {
 		try {
 			const res = await registerRequest(user);
-			console.log(res.data);
+			console.log("info from authContext: ",res.data);
 			setUser(res.data);
-			setIsAuthenticated(true);
+			// setIsAuthenticated(true);
 		} catch (error) {
 			console.log(error);
 			console.log(error.response.data);
@@ -48,6 +48,11 @@ export const AuthProvider = ({ children }) => {
 			console.log("error from loginRequest in signin: ", error);
 		}
 	};
+
+	// Modificar estado de autenticacion
+	const updateStateAuthentication = (newAuthentication) => {
+		setIsAuthenticated(newAuthentication);
+	}
 
 	// Efecto para eliminar errores despues de 8 segundos
 	useEffect(() => {
@@ -67,6 +72,7 @@ export const AuthProvider = ({ children }) => {
 				user,
 				isAuthenticated,
 				errors,
+				updateStateAuthentication,
 			}}
 		>
 			{children}
