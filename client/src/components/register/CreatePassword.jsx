@@ -87,7 +87,7 @@ function CreatePassword({ insertId }) {
 						type="password"
 						{...register("password", { required: true })}
 						value={password}
-						// onChange={handlePasswordChange}
+						onChange={handlePasswordChange}
 						placeholder="Contraseña"
 						id="password"
 					/>
@@ -101,7 +101,7 @@ function CreatePassword({ insertId }) {
 						type="password"
 						{...register("confirmPass", { required: true })}
 						value={confirmPassword}
-						// onChange={handleConfirmPasswordChange}
+						onChange={handleConfirmPasswordChange}
 						placeholder="Confirmar contraseña"
 						id="confirmPassword"
 					/>
