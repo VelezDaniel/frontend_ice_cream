@@ -5,6 +5,7 @@ import "./index.css";
 import RegisterPage from "./components/register/RegisterPage";
 import LoginPage from "./components/login/LoginPage";
 import HomePage from "./pages/HomePage";
+import Products from "./pages/Products";
 import Banner from "./components/banner/banner";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -17,6 +18,7 @@ function App() {
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/banner" element={<Banner />} />
 					<Route path="/register" element={<RegisterPage />} />
+					<Route path="/products" element={<Products />} />
 					<Route
 						path="/products"
 						element={<h1 className="title">PRODUCTS</h1>}

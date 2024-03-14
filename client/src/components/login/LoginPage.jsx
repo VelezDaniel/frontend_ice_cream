@@ -41,11 +41,9 @@ function LoginPage() {
 								id="user"
 							/>
 						</div>
-						{errors.user && (
-							<span className="errors">Identificaicon requerida!</span>
-						)}
+						{errors.user && <span className="notice">Identificaicon requerida!</span>}
 						<div className="input-group">
-							<label htmlFor="contraseña">
+							<label htmlFor="contrasena">
 								<i className="bi bi-lock"></i>
 							</label>
 							{/* <input type="text" name="apellidos" id="apellidos" placeholder="Apellidos"/> */}
@@ -53,7 +51,7 @@ function LoginPage() {
 								type="password"
 								{...register("password", { required: true })}
 								placeholder="Contraseña"
-								id="contraseña"
+								id="contrasena"
 							/>
 							<i
 								className="bi bi-eye"
@@ -61,9 +59,7 @@ function LoginPage() {
 								onClick={togglePasswordVisibility}
 							></i>
 						</div>
-						{errors.password && (
-							<span className="errors">Contraseña requerida</span>
-						)}
+						{errors.password && <span className="notice">Contraseña requerida</span>}
 						{signinErrors.map((error, i) => (
 							<div className="errors" key={i}>
 								{error}
@@ -71,7 +67,7 @@ function LoginPage() {
 						))}
 						<input className="btn-Ingresar" type="submit" value="Ingresar" />
 						<Link className="btn-Registrarse" to="/register">Registrarse</Link>
-						<p className="btn-Olvido">¿Olvidaste tu contraseña?</p>
+						<a className="btn-Olvido">¿Olvidaste tu contraseña?</a>
 					</form>
 				</div>
 			</div>

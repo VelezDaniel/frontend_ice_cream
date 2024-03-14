@@ -44,7 +44,10 @@ export const AuthProvider = ({ children }) => {
 			const res = await loginRequest(user);
 			console.log("respuesta de loguinRequest: ", res);
 		} catch (error) {
-			// setErrors(error.response.data);
+			if (Array.isArray(error.response.data)) {
+				return setErrors(error.response.data);
+			}
+			setErrors([error.response.data.message])
 			console.log("error from loginRequest in signin: ", error);
 		}
 	};
