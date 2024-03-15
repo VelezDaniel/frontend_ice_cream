@@ -39,11 +39,11 @@
 }
 
 /* NAV */
-nav {
-	position: fixed;
+.nav-static {
+	/* position: relative;
 	top: 0;
 	left: 0;
-	z-index: 10000;
+	z-index: 10000; */
 	width: 100%;
 	/* background-color: var(--backgroundNav); */
 	color: var(--lightTitles);
@@ -54,17 +54,17 @@ nav {
 	padding: 20px 32px;
 }
 
-.nav-navBar .sticky {
+.nav-static .sticky {
 	padding: 6px 32px;
 	background-color: var(--mainColor);
 }
 
-.nav-navBar .main-menu {
+.nav-static .main-menu {
 	display: flex;
 	list-style: none;
 }
 
-.nav-navBar .main-menu li a {
+.nav-static .main-menu li a {
 	display: block;
 	padding: 4px 16px;
 	color: var(--lightTitles);
@@ -75,11 +75,11 @@ nav {
 	border-bottom: 2px solid transparent;
 }
 
-.nav-navBar .main-menu li a:hover {
+.nav-static .main-menu li a:hover {
 	border-bottom: 2px solid var(--lightTitles);
 }
 
-.nav-navBar .open-menu,
+.nav-static .open-menu,
 .close-menu {
 	font-size: 26px;
 	margin: 20px;
@@ -87,7 +87,7 @@ nav {
 	cursor: pointer;
 }
 
-.nav-navBar .logo {
+.nav-static .logo {
 	margin: 6px;
 	font-size: 26px;
 	cursor: pointer;
@@ -96,24 +96,24 @@ nav {
 	align-items: center;
 }
 
-.nav-navBar .icons {
+.nav-static .icons {
 	display: flex;
 	justify-content: end;
 	gap: 22px;
 }
 
-.nav-navBar .icons .nav-item i{
+.nav-static .icons .nav-item i{
   font-size: 32px;
   color: var(--lightTitles);
   padding: 6px;
 } 
 
-.nav-navBar .icons .nav-item .icon-person {
+.nav-static .icons .nav-item .icon-person {
   font-size: 36px;
   padding: 4px;
 }
 
-.nav-navBar .icons .nav-item i:hover {
+.nav-static .icons .nav-item i:hover {
   background-color: var(--btn-home-hover);
   border-radius: 12px;
 }
@@ -137,11 +137,11 @@ nav {
 		display: none;
 	}
 
-	.nav-navBar {
+	.nav-static {
 		padding: 10px;
 	}
 
-	.nav-navBar .main-menu {
+	.nav-static .main-menu {
 		height: 100%;
 		width: 40%;
 		position: fixed;
@@ -159,40 +159,40 @@ nav {
 		align-items: start;
 	}
 
-	.nav-navBar .main-menu.hidden {
+	.nav-static .main-menu.hidden {
 		transform: translateX(-100%);
 	}
 
-	.nav-navBar .main-menu .close-menu {
+	.nav-static .main-menu .close-menu {
 		display: block;
 		position: absolute;
 		top: 20px;
 		right: 20px;
 	}
 
-	.nav-navBar .open-menu {
+	.nav-static .open-menu {
 		width: fit-content;
 		display: block;
 		margin: 10px 4px;
 		padding: 8px 12px 8px 16px;
 	}
 
-	.nav-navBar .main-menu li a {
+	.nav-static .main-menu li a {
 		font-size: 24px;
 		font-weight: 600;
 		letter-spacing: 0.4px;
 	}
 
-	.nav-navBar .main-menu li:last-child {
+	.nav-static .main-menu li:last-child {
 		margin-bottom: 6px;
 	}
 
-	.nav-navBar .main-menu li a:hover {
+	.nav-static .main-menu li a:hover {
 		background: none;
 		color: var(--mainColor);
 	}
 
-	.nav-navBar .icons {
+	.nav-static .icons {
 		display: flex;
 		gap: 6px;
 	}
@@ -223,27 +223,27 @@ nav {
 
 @media (width < 440px) {
 
-	.nav-navBar {
+	.nav-static {
 		padding: 8px 0px;
 		margin: 0;
 		grid-template-columns: 2fr 1fr 2fr;
 	}
 
-	.nav-navBar .logo {
+	.nav-static .logo {
 		font-size: 16px;
 		font-weight: 400;
 	}
 
-	.nav-navBar .main-menu {
+	.nav-static .main-menu {
 		width: 50%;
 	}
 
-	.nav-navBar .icons {
+	.nav-static .icons {
 		gap: 10px;
 		padding-right: 8px;
 	}
 
-	.nav-navBar .icons a .icon-svg {
+	.nav-static .icons a .icon-svg {
 		width: 26px;
 		height: 24px;
 	}

@@ -1,9 +1,9 @@
-import './navbar.css';
+import './nav.css';
 import { useState } from 'react';
 // import { useNavigate } from "react-router-dom";
 // import { Link } from 'react-router-dom';
 
-function NavBar() {
+function Nav() {
     // const navigate = useNavigate();
     const [scroll, setScroll] = useState(false);
 
@@ -19,7 +19,7 @@ function NavBar() {
 
   return (
     <div>
-      <nav className={`nav-navBar ${scroll ? 'navbar active' : 'navbar'}`}>
+      <nav className={`nav-static`}>
         <div className="open-menu"><i className="fa fa-bars"></i></div>
         <ul className="main-menu hidden">
             <li><a href="#">Home</a></li>
@@ -42,4 +42,4 @@ function NavBar() {
   )
 }
 
-export default NavBar;
+export default Nav;
