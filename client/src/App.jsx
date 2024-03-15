@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 
+import Dashboard from "./pages/Dashboard";
 import RegisterPage from "./components/register/RegisterPage";
 import LoginPage from "./components/login/LoginPage";
 import HomePage from "./pages/HomePage";
@@ -19,6 +20,7 @@ function App() {
 					<Route path="/banner" element={<Banner />} />
 					<Route path="/register" element={<RegisterPage />} />
 					<Route path="/products" element={<Products />} />
+					<Route path="/dashboard" element={<Dashboard />} />
 					<Route
 						path="/products"
 						element={<h1 className="title">PRODUCTS</h1>}

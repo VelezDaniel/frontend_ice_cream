@@ -1,14 +1,14 @@
 import './navbar.css';
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
+// import { useNavigate } from "react-router-dom";
+// import { Link } from 'react-router-dom';
 
 function NavBar() {
     // const navigate = useNavigate();
     const [scroll, setScroll] = useState(false);
 
     const changeColorNav = () => {
-        if(window.scrollY >= 500) {
+        if(window.scrollY >= 400) {
             setScroll(true);
         } else {
             setScroll(false);
@@ -23,9 +23,9 @@ function NavBar() {
         <div className="open-menu"><i className="fa fa-bars"></i></div>
         <ul className="main-menu hidden">
             <li><a href="#">Home</a></li>
-            {/* <li><a href="/products">Productos</a></li> */}
-            <Link className="btn-Registrarse" to="/products">Productos</Link>
-            <li><a href="#">Reservar</a></li>
+            
+            <li><a href="/products">Productos</a></li>
+            <li><a href="/">Reservar</a></li>
             <div className="close-menu"><i className="fa fa-times"></i></div>
         </ul>
         <div className="logo h-content">
