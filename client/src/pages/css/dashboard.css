@@ -153,6 +153,10 @@
   text-align: center;
 }
 
+.user-dashboard {
+	margin-bottom: 26px;
+}
+
 .rol-text-name {
   color: var(--lightTitles);
   text-align: center;

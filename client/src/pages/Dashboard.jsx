@@ -14,8 +14,6 @@ function Dashboard() {
 							</div>
 							Mostrar Menos
 						</button>
-					</div>
-					<div className="wrap-btns">
 						<button className="btn-pedidos">
 							<div className="icon-container">
 								<IoIceCreamOutline size={28} />
@@ -41,7 +39,7 @@ function Dashboard() {
 							Portafolio
 						</button>
 					</div>
-					<div>
+					<div className="user-dashboard">
 						<p className="rol-text">ADMINISTRADOR</p>
 						<p className="rol-text-name">David Calderon</p>
 					</div>
