@@ -133,19 +133,6 @@
 	cursor: pointer;
 }
 
-.btn-cerrarsesion {
-	cursor: pointer;
-	border-radius: 16px;
-	border: none;
-	background: var(--mainColor);
-	color: var(--lightTitles);
-	display: flex;
-	align-items: center;
-	font-size: 18px;
-	font-weight: bold;
-  padding-left: 6px;
-}
-
 .rol-text {
 	color: var(--lightTitles);
 	font-size: 22px;
@@ -169,7 +156,6 @@
 .btn-ventas:hover,
 .btn-usuario:hover,
 .btn-portafolio:hover,
-.btn-cerrarsesion:hover,
 .btn-mostrarmenos:hover {
 	background-color: var(--btn-dark-green);
 	color: var(--lightTitles);

@@ -1,5 +1,6 @@
 import "./css/dashboard.css";
 import { IoIceCreamOutline } from "react-icons/io5";
+import UserSettings from "../components/user_settings/UserSettings";
 
 function Dashboard() {
 	return (
@@ -25,6 +26,12 @@ function Dashboard() {
 								<i className="bi bi-cash-coin"></i>
 							</div>
 							Ventas
+						</button>
+						<button className="btn-ventas">
+							<div className="icon-container">
+								<i className="bi bi-journal-check"></i>
+							</div>
+							Reservas
 						</button>
 						<button className="btn-usuario">
 							<div className="icon-container">
@@ -66,6 +73,7 @@ function Dashboard() {
 					</a>
 				</div>
 			</div>
+			<UserSettings />
 		</div>
 	);
 }
