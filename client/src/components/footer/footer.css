@@ -1,13 +1,5 @@
 @import url("../../index.css");
 
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-	text-transform: none;
-	font-family: "Montserrat", sans-serif;
-}
-
 .content {
 	display: grid;
 	place-items: center;
@@ -32,8 +24,13 @@
 	flex-direction: column;
 }
 
+.celda1 {
+	display: flex;
+	justify-content: center;
+}
+
 .celda1 img {
-	height: 350px;
+	height: auto;
 	max-height: 400px;
 	width: auto;
 	width: 90%;
@@ -87,9 +84,9 @@
 
 .celda5 {
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	align-items: center;
-	gap: 8em;
+	gap: 18px;
   padding: 20px 0;
 }
 
@@ -109,4 +106,90 @@
 .item {
   font-weight: 600;
   font-size: 18px;
+}
+
+/* * RESPONSIVE * */
+
+@media (width < 990px) {
+
+	.celda1 img {
+		height: auto;
+		max-height: 400px;
+		width: auto;
+		width: 90%;
+	}
+}
+
+@media (width < 865px) {
+
+	.item {
+		font-size: 18px;
+	}
+
+	.celda2 h2 {
+		font-size: 20px;
+	}
+
+	.box-item-foot h3 {
+		font-size: 14px;
+	}
+
+	.celda3 button {
+		width: 160px;
+	}
+
+	.celda3 button p {
+		font-size: 14px;
+	}
+	
+	.celda4 h1 {
+		font-size: 26px;
+	}
+
+	.celda5 {
+		padding: 20px 38px;
+	}
+
+	.celda5 p {
+		font-size: 14px;
+	}
+}
+
+@media (width < 710px) {
+
+	.item {
+		font-size: 10px;
+	}
+
+	.celda2 h2 {
+		font-size: 14px;
+	}
+
+	.box-item-foot h3 {
+		font-size: 12px;
+	}
+
+	.box-item-foot p {
+		font-size: 10px;
+	}
+
+	.celda3 button {
+		width: 132px;
+	}
+
+	.celda3 button p {
+		font-size: 10px;
+	}
+
+	.celda4 h1 {
+		font-size: 18px;
+	}
+
+	.celda5 p {
+		font-size: 10px;
+	}	
+
+	.btn-foot-social-media {
+		font-size: 10px;
+	}
 }

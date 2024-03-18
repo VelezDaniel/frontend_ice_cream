@@ -24,17 +24,11 @@
 .welcome-menu h3 {
 	color: var(--lightTitles);
 	font-weight: 600;
-}
-
-.welcome-menu p {
-	color: var(--grayFonts);
-}
-
-.welcome-menu h3 {
 	font-size: 42px;
 }
 
 .welcome-menu p {
+	color: var(--grayFonts);
 	font-size: 22px;
 }
 
@@ -126,6 +120,16 @@ nav {
 }
 
 @media (width < 990px) {
+
+	.welcome-menu h3 {
+		font-size: 36px;
+	}
+	
+	.welcome-menu p {
+		font-size: 18px;
+	}
+	
+
 	/* Cover - Sidebar*/
 	#cover-sidebar {
 		position: fixed;

@@ -13,16 +13,16 @@ function Footer() {
 					<div></div>
 					<div></div>
 					<div></div>
-					<h2>Los horarios de atención</h2>
-					<div>
+					<h2>Horarios de atención</h2>
+					<div className="box-item-foot">
 						<h3>Lunes a sábado</h3>
 						<p>1:00pm a 8:30pm</p>
 					</div>
-					<div>
+					<div className="box-item-foot">
 						<h3>Domingos y festivos</h3>
 						<p>1:00pm a 9:00pm</p>
 					</div>
-					<div>
+					<div className="box-item-foot">
 						<h3>Ubicación</h3>
 						<p>Carrera 55 #63A-82 Barrio La Aldea</p>
 					</div>
@@ -36,16 +36,16 @@ function Footer() {
 						<p>Registrate</p>
 						<i className="bi bi-arrow-right-circle"></i>
 					</button>
-					<h3>Contacto</h3>
+					<p className="item">Contacto</p>
 					<p className="item">3016040064</p>
-					<h3>Redes Sociales</h3>
-					<div>
+					<p className="item">Redes Sociales</p>
+					<div className="btn-foot-social-media">
 						<i className="bi-facebook"> Helados helartico</i>
 					</div>
-					<div>
+					<div className="btn-foot-social-media">
 						<i className="bi-instagram"> @Heladoshelartico</i>
 					</div>
-					<div>
+					<div className="btn-foot-social-media">
 						<i className="bi-whatsapp"></i> 3016040064
 					</div>
 				</div>
