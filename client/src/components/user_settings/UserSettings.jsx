@@ -1,31 +1,13 @@
 import "./usersettings.css";
 import { LuPencilLine } from "react-icons/lu";
 import { IoClose } from "react-icons/io5";
-import { useEffect, useState } from "react";
-
-function UserSettings() {
-
-	const [settingsVisible, setSettingsVisible] = useState(false);
-
-	// ? Terminar el menu de ajustes para usuario con sus datos
-	// Se requiere la informacion del usuario para mostrar el menu
-	// const openSettingsUser = () => {
-	// 	setSettingsVisible(true);
-	// }
-
-	// const closeSettingsUser = () => {
-	// 	setSettingsVisible(false);
-	// }
-
-	// useEffect(() => {
-
-	// })
+function UserSettings( closeMethod) {
 
 	return (
-		<div className="user-container">
+		<div className="user-container settings-user-hidden">
 			<div className="u-container1">
 				<div className="wrap-btn">
-					<button className="btn-back">
+					<button className="btn-back" onClick={closeMethod}>
 						<i>
 							<IoClose />
 						</i>

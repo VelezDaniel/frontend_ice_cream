@@ -1,8 +1,33 @@
 import "./css/dashboard.css";
-import { IoIceCreamOutline } from "react-icons/io5";
-import UserSettings from "../components/user_settings/UserSettings";
+import "../components/user_settings/usersettings.css";
+import { useEffect, useState } from "react";
+import { IoIceCreamOutline, IoClose } from "react-icons/io5";
+import { LuPencilLine } from "react-icons/lu";
+// import UserSettings from "../components/user_settings/UserSettings";
 
 function Dashboard() {
+	const [settingsVisible, setSettingsVisible] = useState(false);
+
+	const openSettingsUser = () => {
+		setSettingsVisible(true);
+	};
+
+	const closeSettingsUser = () => {
+		setSettingsVisible(false);
+	};
+
+	useEffect(() => {
+		const $userContainer = document.querySelector(".user-container");
+
+		if ($userContainer) {
+			if (settingsVisible) {
+				$userContainer.style.display = "flex";
+			} else {
+				$userContainer.style.display = "none";
+			}
+		}
+	}, [settingsVisible]);
+
 	return (
 		<div className="main-container">
 			<div className="dashContent">
@@ -59,7 +84,6 @@ function Dashboard() {
 					</button> */}
 				</div>
 			</div>
-			{/* DASHBOARD */}
 			<div className="nav-sup">
 				<div className="logo h-content">
 					<h1>HELARTICO</h1>
@@ -68,12 +92,46 @@ function Dashboard() {
 					<a className="nav-item nav-icon" href="">
 						<i className="bi bi-handbag"></i>
 					</a>
-					<a className="nav-item nav-icon" href="login">
+					<a className="nav-item nav-icon" onClick={openSettingsUser}>
 						<i className="bi bi-person icon-person"></i>
 					</a>
 				</div>
 			</div>
-			<UserSettings />
+			{/* <UserSettings closeMethod={closeSettingsUser} /> */}
+			<div className="user-container settings-user-hidden">
+				<div className="u-container1">
+					<div className="wrap-btn">
+						<button className="btn-back" onClick={closeSettingsUser}>
+							<i>
+								<IoClose />
+							</i>
+						</button>
+					</div>
+					<div className="u-container2">
+						<div className="u-container2-1">
+							<span className="user-sett-item text-highlighted">Nombres</span>
+							<span className="user-sett-item text-highlighted">Apellidos</span>
+							<span className="user-sett-item">Administrador</span>
+						</div>
+						<div className="u-container2-2">
+							<span className="user-sett-item text-highlighted">Estado</span>
+							<span className="user-sett-item">Identificacion</span>
+							<span className="user-sett-item">Celular</span>
+							<span className="user-sett-item">correodeluser@gmail.com</span>
+							<span className="user-sett-item text-highlighted">Direccion</span>
+							<button className="btn-edit-u-data">
+								<LuPencilLine size={22} />
+								Editar
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<button className="btn-cerrarsesion">
+					<i className="bi bi-box-arrow-right"></i>
+					Cerrar Sesión
+				</button>
+			</div>
 		</div>
 	);
 }

@@ -4,7 +4,7 @@
 	height: 100%;
 	width: fit-content;
 	background-color: var(--bg-cards);
-	display: none;
+	display: flex;
 	flex-direction: column;
 	padding: 18px 14px 46px 14px;
 	justify-content: space-between;
@@ -13,7 +13,6 @@
 	position: absolute;
 	right: 0;
 	top: 0;
-
 }
 
 .u-container1 {
@@ -121,6 +120,10 @@
 
 .btn-cerrarsesion:hover {
 	color: var(--mainColor);
+}
+
+.settings-user-hidden {
+	display: none;
 }
 
 
