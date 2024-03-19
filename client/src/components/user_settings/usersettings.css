@@ -4,12 +4,16 @@
 	height: 100%;
 	width: fit-content;
 	background-color: var(--bg-cards);
-	display: flex;
+	display: none;
 	flex-direction: column;
 	padding: 18px 14px 46px 14px;
 	justify-content: space-between;
 	align-items: center;
 	gap: 18px;
+	position: absolute;
+	right: 0;
+	top: 0;
+
 }
 
 .u-container1 {
@@ -20,7 +24,6 @@
   margin: 8px 0;
   gap: 20px;
 }
-
 
 .wrap-btn {
 	width: 100%;
@@ -75,6 +78,26 @@
   font-weight: 700;
   font-size: 18px;
 
+}
+
+.btn-edit-u-data {
+	background-color: transparent;
+	border: 2px solid var(--mainColor);
+	color: var(--mainColor);
+	border-radius: 8px;
+	padding: 4px 8px;
+	font-size: 16px;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	cursor: pointer;
+	margin-top: 22px;
+}
+
+.btn-edit-u-data:hover {
+	color: var(--lightTitles);
+	background-color: var(--mainColor);
 }
 
 .btn-cerrarsesion {

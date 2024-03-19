@@ -1,7 +1,12 @@
 import "./navbar.css";
 import { useState, useEffect } from "react";
-import { IoMenu } from "react-icons/io5";
-import { IoClose } from "react-icons/io5";
+import {
+	IoMenu,
+	IoClose,
+	IoIceCreamOutline,
+	IoBookmarksOutline,
+} from "react-icons/io5";
+import { HiOutlineHome } from "react-icons/hi";
 // import { useNavigate } from "react-router-dom";
 // import { Link } from 'react-router-dom';
 
@@ -56,18 +61,27 @@ function NavBar() {
 		<div>
 			<nav className={`nav-navBar ${scroll ? "navbar active" : "navbar"}`}>
 				<button className="open-menu" onClick={openMenu}>
-					<IoMenu size={32} />
+					<IoMenu size={36} />
 				</button>
 				<ul className={`main-menu ${menuVisible ? "" : "hidden"}`}>
 					<li>
-						<a href="#">Home</a>
+						<a href="#">
+							<HiOutlineHome size={38} className="icon-nav-responsive"/>
+							Home
+						</a>
 					</li>
 
 					<li>
-						<a href="/products">Productos</a>
+						<a href="/products">
+							<IoIceCreamOutline size={40} className="icon-nav-responsive"/>
+							Productos
+						</a>
 					</li>
 					<li>
-						<a href="/">Reservar</a>
+						<a href="/">
+							<IoBookmarksOutline size={40} className="icon-nav-responsive"/>
+							Reservar
+						</a>
 					</li>
 					<div className="close-menu" onClick={closeMenu}>
 						<IoClose size={36} />

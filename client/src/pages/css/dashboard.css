@@ -1,8 +1,8 @@
 @import url("../../index.css");
 
 .main-container {
-  width: 100%;
-  height: 100vh;
+	width: 100%;
+	height: 100vh;
 	display: flex;
 }
 
@@ -17,7 +17,7 @@
 	display: flex;
 	align-items: center;
 	padding: 8px 32px;
-  background-color: var(--mainColor);
+	background-color: var(--mainColor);
 }
 
 .nav-sup .logo {
@@ -26,7 +26,7 @@
 	display: flex;
 	justify-content: end;
 	align-items: center;
-	width: 50%;
+	width: 86%;
 }
 .nav-sup .icons {
 	width: 50%;
@@ -35,20 +35,21 @@
 	gap: 8px;
 }
 
-.nav-sup .icons .nav-item i{
-  font-size: 32px;
-  color: var(--lightTitles);
-  padding: 6px;
-} 
+.nav-sup .icons .nav-item i {
+	font-size: 32px;
+	color: var(--lightTitles);
+	padding: 6px;
+	transition: background-color 0.3s ease;
+}
 
 .nav-sup .icons .nav-item .icon-person {
-  font-size: 36px;
-  padding: 4px;
+	font-size: 36px;
+	padding: 4px;
 }
 
 .nav-sup .icons .nav-item i:hover {
-  background-color: var(--btn-home-hover);
-  border-radius: 12px;
+	background-color: var(--btn-home-hover);
+	border-radius: 12px;
 }
 
 /* Nav lateral styles */
@@ -67,26 +68,27 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	transition: background-color 0.3s ease;
 }
 .icon-container1 {
 	margin-right: 8px;
 	padding: 2px 4px;
 	border-radius: 10px;
 	font-size: 28px;
+	transition: background-color 0.3s ease;
 }
 
 .icon-container i {
-  font-size: 26px;
+	font-size: 26px;
 }
 
 .style-panel {
 	display: flex;
-  height: 100%;
+	height: 100%;
 	flex-direction: column;
 	justify-content: space-between;
 	gap: 8px;
-  padding: 28px 10px;
-
+	padding: 28px 10px;
 }
 
 .style-panel button {
@@ -95,7 +97,7 @@
 }
 
 .wrap-sup {
-	margin-top: 2px;
+	margin-top: 4px;
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
@@ -116,14 +118,15 @@
 	font-size: 18px;
 	font-weight: bold;
 	padding: 0px 10px;
+	transition: background-color 0.3s ease;
 }
 
 .btn-pedidos,
 .btn-ventas,
 .btn-usuario,
 .btn-portafolio {
-  width: 244px;
-  padding: 6px 8px;
+	width: 244px;
+	padding: 6px 8px;
 	border-radius: 16px;
 	border: none;
 	background: var(--mainColor);
@@ -131,13 +134,18 @@
 	font-size: 18px;
 	font-weight: bold;
 	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.btn-pedidos {
+	margin-top: 22px;
 }
 
 .rol-text {
 	color: var(--lightTitles);
 	font-size: 22px;
 	font-weight: bold;
-  text-align: center;
+	text-align: center;
 }
 
 .user-dashboard {
@@ -145,11 +153,11 @@
 }
 
 .rol-text-name {
-  color: var(--lightTitles);
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  font-style: italic;
+	color: var(--lightTitles);
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+	font-style: italic;
 }
 
 .btn-pedidos:hover,
@@ -162,3 +170,64 @@
 }
 
 /* * RESPONSIVE * */
+
+@media (width < 1024px) {
+	.btn-pedidos,
+	.btn-ventas,
+	.btn-usuario,
+	.btn-portafolio,
+	.btn-mostrarmenos {
+		width: 44px;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.btn-pedidos .btn-text,
+	.btn-ventas .btn-text,
+	.btn-usuario .btn-text,
+	.btn-portafolio .btn-text,
+	.btn-mostrarmenos .btn-text {
+		display: none;
+	}
+
+	.title,
+	.rol-text,
+	.rol-text-name {
+		display: none;
+	}
+
+	.icon-container {
+		margin-right: 0;
+		margin: 0px;
+	}
+
+	.icon-container:hover {
+		background-color: var(--btn-dark-green);
+	}
+
+	.wrap-sup {
+		gap: 30px;
+		padding: 0 6px;
+	}
+
+	.btn-pedidos:hover,
+	.btn-ventas:hover,
+	.btn-usuario:hover,
+	.btn-portafolio:hover,
+	.btn-mostrarmenos:hover {
+		box-shadow: 2px 2px 6px 0px var(--bg-cards);
+	}
+
+	.btn-pedidos{
+		margin-top: 56px;
+	}
+}
+
+@media (width < 624px) {
+	.nav-sup .logo {
+		font-size: 16px;
+	}
+}

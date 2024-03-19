@@ -9,41 +9,41 @@ function Dashboard() {
 				<div className="style-panel">
 					<div className="wrap-sup">
 						<h2 className="rol-text title">Panel de Gestión</h2>
-						<button className="btn-mostrarmenos">
+						{/* <button className="btn-mostrarmenos">
 							<div className="icon-container1">
-								<i className="bi bi-arrow-left"></i>
+								<i className="bi bi-arrow-right"></i>
 							</div>
-							Mostrar Menos
-						</button>
+							<span className="btn-text">Mostrar Menos</span>
+						</button> */}
 						<button className="btn-pedidos">
 							<div className="icon-container">
 								<IoIceCreamOutline size={28} />
 							</div>
-							Pedidos
+							<span className="btn-text">Pedidos</span>
 						</button>
 						<button className="btn-ventas">
 							<div className="icon-container">
 								<i className="bi bi-cash-coin"></i>
 							</div>
-							Ventas
+							<span className="btn-text">Ventas</span>
 						</button>
 						<button className="btn-ventas">
 							<div className="icon-container">
 								<i className="bi bi-journal-check"></i>
 							</div>
-							Reservas
+							<span className="btn-text">Reservas</span>
 						</button>
 						<button className="btn-usuario">
 							<div className="icon-container">
 								<i className="bi bi-people"></i>
 							</div>
-							Usuarios
+							<span className="btn-text">Usuarios</span>
 						</button>
 						<button className="btn-portafolio">
 							<div className="icon-container">
 								<i className="bi bi-briefcase"></i>
 							</div>
-							Portafolio
+							<span className="btn-text">Portafolio</span>
 						</button>
 					</div>
 					<div className="user-dashboard">
