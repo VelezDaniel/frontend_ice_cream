@@ -4,7 +4,7 @@
 	height: 100%;
 	width: fit-content;
 	background-color: var(--bg-cards);
-	display: none;
+	display: flex;
 	flex-direction: column;
 	padding: 18px 14px 46px 14px;
 	justify-content: space-between;

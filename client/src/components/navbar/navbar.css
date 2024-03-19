@@ -147,16 +147,16 @@ nav {
 
 	.nav-navBar .main-menu {
 		height: 100%;
-		width: 40%;
+		width: 30%;
 		position: fixed;
 		padding: 12px;
 		top: 0;
 		left: 0;
 		z-index: 10;
 		flex-direction: column;
-		padding-top: 26%;
+		padding-top: 118px;
 		gap: 24px;
-		background-color: rgb(18, 144, 167);
+		background-color: var(--bg-sideBar);
 		transform: translateX(0);
 		transition: transform 0.5s ease;
 		display: none;
@@ -177,14 +177,14 @@ nav {
 	.nav-navBar .open-menu {
 		width: fit-content;
 		display: block;
-		margin: 10px 4px;
-		padding: 8px 12px 8px 16px;
+		
 	}
 
 	.nav-navBar .main-menu li a {
-		font-size: 24px;
+		font-size: 20px;
 		font-weight: 600;
 		letter-spacing: 0.4px;
+		padding: 6px 16px;
 	}
 
 	.nav-navBar .main-menu li:last-child {
@@ -193,7 +193,8 @@ nav {
 
 	.nav-navBar .main-menu li a:hover {
 		background: none;
-		color: var(--mainColor);
+		color: var(--grayFonts);
+		border-color: transparent;
 	}
 
 	.nav-navBar .icons {
