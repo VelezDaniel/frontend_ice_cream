@@ -63,7 +63,7 @@ function NavBar() {
 				<button className="open-menu" onClick={openMenu}>
 					<IoMenu size={36} />
 				</button>
-				<ul className={`main-menu ${menuVisible ? "" : "hidden"}`}>
+				<ul className="main-menu">
 					<li>
 						<a href="#">
 							<HiOutlineHome size={38} className="icon-nav-responsive"/>
@@ -101,7 +101,7 @@ function NavBar() {
 				</div>
 				<div
 					id="cover-sidebar"
-					className={`cover-sidebar ${menuVisible ? "" : "hidden"}`}
+					className="cover-sidebar"
 					onClick={closeMenu}
 				></div>
 			</nav>

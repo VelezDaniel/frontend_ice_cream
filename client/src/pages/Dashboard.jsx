@@ -72,8 +72,8 @@ function Dashboard() {
 						</button>
 					</div>
 					<div className="user-dashboard">
-						<p className="rol-text">ADMINISTRADOR</p>
-						<p className="rol-text-name">David Calderon</p>
+						<p className="rol-text">HELARTICO</p>
+						<p className="rol-text-name">Ice cream bussines</p>
 					</div>
 
 					{/* <button className="btn-cerrarsesion">
@@ -97,8 +97,8 @@ function Dashboard() {
 					</a>
 				</div>
 			</div>
-			{/* <UserSettings closeMethod={closeSettingsUser} /> */}
-			<div className="user-container settings-user-hidden">
+			{/* USER SETTINGS */}
+			<div className={`user-container ${settingsVisible ? "settings-user-visible" : "settings-user-hidden"}`}>
 				<div className="u-container1">
 					<div className="wrap-btn">
 						<button className="btn-back" onClick={closeSettingsUser}>
