@@ -63,12 +63,14 @@ function CreatePassword({ insertId }) {
 			console.log("Response of createPassword:", res);
 			console.log("Response data of createPassword:", res.data);
 			console.log("Insert Id from createPassword:", res.insertId);
+			
+			// setPassword("");
 
 			console.log(
 				`Insert Id (proviene de password form): ${insertId}, / UserInfo post query = ${userInfo}`
 			);
 		} catch (error) {
-			console.log(error);
+			console.log("Error from createPassword: ",error);
 		}
 	});
 

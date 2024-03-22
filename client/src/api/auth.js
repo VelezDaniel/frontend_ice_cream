@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "./axios";
 
 // ? Se crea la direccion para enviar el form al backend por medio de peticion axios
 const api = 'http://localhost:3000/api';
@@ -23,16 +23,18 @@ const api = 'http://localhost:3000/api';
 //   }
 // }
 
-export const registerRequest = async (user) => axios.post(`${api}/person`, user);
+export const registerRequest = async (user) => axios.post(`/person`, user);
 
-export const loginRequest = async (user) => axios.post(`${api}/auth/login`, user);
+export const loginRequest = async (user) => axios.post(`/auth/login`, user);
 
 export const createPassword = async (pass) => {
   try {
-    const res = await axios.post(`${api}/auth`, pass);
+    const res = await axios.post(`/auth`, pass);
     console.log(`response of createPassword: ${res}`);
     return res;
   } catch (error) {
     throw new Error(error);
   }
 } 
+
+export const verifyTokenRequest = async () => axios.post(`/auth/verify`);

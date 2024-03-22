@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "./register.css";
 import CreatePassword from "./CreatePassword";
 import logoImg from "../../assets/imgs/helarticologo2.png";
-// import { registerRequest, createPassword } from "../../api/auth";
+import { registerRequest, createPassword } from "../../api/auth";
 import { useAuth } from "../../context/AuthContext";
 // import { useNavigate } from "react-router-dom";
 
@@ -42,9 +42,9 @@ function RegisterPage() {
 	// });
 
 	const onSubmit = handleSubmit(async (values) => {
-		await signup(values);
 		setRegisterForm(false);
 		setPasswordForm(true);
+		await signup(values);
 	});
 
 	// const handleSubmitPass = async () => {
@@ -54,10 +54,10 @@ function RegisterPage() {
 	// 		console.log("Password:", password);
 	// 		console.log("Confirm Password:", confirmPassword);
 
-	// 		if (password !== confirmPassword) {
-	// 			setPasswordError("Contraseñas no coinciden");
-	// 			return;
-	// 		}
+	// 		// if (password !== confirmPassword) {
+	// 		// 	setPasswordError("Contraseñas no coinciden");
+	// 		// 	return;
+	// 		// }
 
 	// 		const userInfo = {
 	// 			user: userId,
@@ -97,7 +97,6 @@ function RegisterPage() {
 							<label htmlFor="name">
 								<i className="bi bi-person"></i>
 							</label>
-							{/* <input type="text" name="nombres" id="nombres" placeholder="Nombres" /> */}
 							<input
 								type="text"
 								{...register("name", { required: true })}
@@ -110,7 +109,6 @@ function RegisterPage() {
 							<label htmlFor="lastName">
 								<i className="bi bi-person"></i>
 							</label>
-							{/* <input type="text" name="apellidos" id="apellidos" placeholder="Apellidos"/> */}
 							<input
 								type="text"
 								{...register("lastName", { required: true })}
@@ -125,7 +123,6 @@ function RegisterPage() {
 							<label htmlFor="identity">
 								<i className="bi bi-person-vcard"></i>
 							</label>
-							{/* <input type="number" name="documento" id="documento" placeholder="Documento"/> */}
 							<input
 								type="text"
 								{...register("identity", { required: true })}
@@ -142,7 +139,6 @@ function RegisterPage() {
 							<label htmlFor="email">
 								<i className="bi bi-envelope"></i>
 							</label>
-							{/* <input type="email" name="correo" id="correo" placeholder="Correo"/> */}
 							<input
 								type="text"
 								{...register("email", { required: true })}
@@ -155,7 +151,6 @@ function RegisterPage() {
 							<label htmlFor="phone">
 								<i className="bi bi-phone"></i>
 							</label>
-							{/* <input type="number" name="celular" id="celular" placeholder="Celular"/> */}
 							<input
 								type="text"
 								{...register("phone", { required: true })}
@@ -167,7 +162,6 @@ function RegisterPage() {
 						<label htmlFor="birth">
 							<i className="bi bi-calendar3"></i> Fecha de Nacimiento
 						</label>
-						{/* <input type="date" name="nacimiento" id="nacimiento"/> */}
 						<input
 							type="date"
 							{...register("birth", { required: true })}
@@ -192,6 +186,7 @@ function RegisterPage() {
 			{/* Password Form */}
 			{/* <CreatePassword insertId={insertId} /> */}
 			{passwordForm && <CreatePassword insertId={userId} />}
+			{/* {passwordForm && <div></div>} */}
 		</div>
 	);
 }
