@@ -52,6 +52,12 @@
 	border-radius: 12px;
 }
 
+/* nav & component */
+.contanier-nav-component {
+	width: 100%;
+}
+
+
 /* Nav lateral styles */
 
 .dashContent {

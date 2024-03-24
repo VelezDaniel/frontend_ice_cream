@@ -1,17 +1,42 @@
 import "./css/dashboard.css";
 import "../components/user_settings/usersettings.css";
+import DashPortfolio from "./dashboard/dash_portfolio";
+import DashBookings from "./dashboard/dash_booking";
 import { useEffect, useState } from "react";
 import { IoIceCreamOutline, IoClose } from "react-icons/io5";
 import { LuPencilLine } from "react-icons/lu";
 // import UserSettings from "../components/user_settings/UserSettings";
 
 function Dashboard() {
+	const [activeComponent, setActiveComponent] = useState(null);
 	const [settingsVisible, setSettingsVisible] = useState(false);
 
+	// Seleccionar componente PEDIDOS
+	// Seleccionar componente VENTAS
+	
+	// Seleccionar componente RESERVAS
+	const handleBookingsComponent = () => {
+		showComponent('DashBookings');
+	}
+
+	// Seleccionar componente Usuarios
+
+	// Seleccionar componente PORTAFOLIO
+	const handlePortfolioComponent = () => {
+		showComponent('DashPortfolio');
+	}
+
+	// Cambiar el componente a mostrar en el dashboard
+	const showComponent = (component) => {
+		setActiveComponent(component);
+	}
+
+	// Abrir ajustes de usuario
 	const openSettingsUser = () => {
 		setSettingsVisible(true);
 	};
 
+	// Cerrar ajustes de usuario
 	const closeSettingsUser = () => {
 		setSettingsVisible(false);
 	};
@@ -52,7 +77,7 @@ function Dashboard() {
 							</div>
 							<span className="btn-text">Ventas</span>
 						</button>
-						<button className="btn-ventas">
+						<button className="btn-ventas" onClick={handleBookingsComponent}>
 							<div className="icon-container">
 								<i className="bi bi-journal-check"></i>
 							</div>
@@ -64,7 +89,7 @@ function Dashboard() {
 							</div>
 							<span className="btn-text">Usuarios</span>
 						</button>
-						<button className="btn-portafolio">
+						<button className="btn-portafolio" onClick={handlePortfolioComponent}>
 							<div className="icon-container">
 								<i className="bi bi-briefcase"></i>
 							</div>
@@ -84,21 +109,31 @@ function Dashboard() {
 					</button> */}
 				</div>
 			</div>
-			<div className="nav-sup">
-				<div className="logo h-content">
-					<h1>HELARTICO</h1>
+			<div className="contanier-nav-component">
+				<div className="nav-sup">
+					<div className="logo h-content">
+						<h1>HELARTICO</h1>
+					</div>
+					<div className="icons h-content">
+						<a className="nav-item nav-icon" href="">
+							<i className="bi bi-handbag"></i>
+						</a>
+						<a className="nav-item nav-icon" onClick={openSettingsUser}>
+							<i className="bi bi-person icon-person"></i>
+						</a>
+					</div>
 				</div>
-				<div className="icons h-content">
-					<a className="nav-item nav-icon" href="">
-						<i className="bi bi-handbag"></i>
-					</a>
-					<a className="nav-item nav-icon" onClick={openSettingsUser}>
-						<i className="bi bi-person icon-person"></i>
-					</a>
+				<div className="div-specific-content">
+					{activeComponent === 'DashPortfolio' && <DashPortfolio/>}
+					{activeComponent === 'DashBookings' && <DashBookings/>}
 				</div>
 			</div>
 			{/* USER SETTINGS */}
-			<div className={`user-container ${settingsVisible ? "settings-user-visible" : "settings-user-hidden"}`}>
+			<div
+				className={`user-container ${
+					settingsVisible ? "settings-user-visible" : "settings-user-hidden"
+				}`}
+			>
 				<div className="u-container1">
 					<div className="wrap-btn">
 						<button className="btn-back" onClick={closeSettingsUser}>
