@@ -5,21 +5,24 @@ import DashBookings from "./dashboard/dash_booking";
 import { useEffect, useState } from "react";
 import { IoIceCreamOutline, IoClose } from "react-icons/io5";
 import { LuPencilLine } from "react-icons/lu";
-// import UserSettings from "../components/user_settings/UserSettings";
+import { useAuth } from "../context/AuthContext";
 
 function Dashboard() {
 	const [activeComponent, setActiveComponent] = useState(null);
 	const [settingsVisible, setSettingsVisible] = useState(false);
 
-	// Seleccionar componente PEDIDOS
-	// Seleccionar componente VENTAS
+	const { user } = useAuth();
+	console.log('show User: ',user);
+
+	// ! Seleccionar componente PEDIDOS
+	// ! Seleccionar componente VENTAS
 	
 	// Seleccionar componente RESERVAS
 	const handleBookingsComponent = () => {
 		showComponent('DashBookings');
 	}
 
-	// Seleccionar componente Usuarios
+	// ! Seleccionar componente Usuarios
 
 	// Seleccionar componente PORTAFOLIO
 	const handlePortfolioComponent = () => {

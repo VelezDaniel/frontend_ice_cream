@@ -38,11 +38,12 @@ export const AuthProvider = ({ children }) => {
 	}, [errors]);
 
 	// Metodo para register
-	const signup = async (user) => {
+	const signup = async (userData) => {
 		try {
-			const res = await registerRequest(user);
-			console.log("info from authContext: ", res.data);
-			setUser(res.data);
+			const res = await registerRequest(userData);
+			const userInfo = res.data.body;
+			console.log("UserInfo: ", userInfo);
+			setUser(userInfo);
 			// setIsAuthenticated(true);
 		} catch (error) {
 			console.log(error);
@@ -52,12 +53,16 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	// Metodo para login
-	const signin = async (user) => {
+	const signin = async (userCredentials) => {
 		try {
-			const res = await loginRequest(user);
+			const res = await loginRequest(userCredentials);
 			console.log("respuesta de loguinRequest: ", res, "res.data = ", res.data);
 			setIsAuthenticated(true);
-			setUser(res.data);
+			const userInfo = res.data.body;
+			console.log("UserInfo: ", userInfo);
+			setUser(userInfo);
+			console.log("user credentials from authcontext: ", userCredentials);
+			console.log("Global user: ", user);
 		} catch (error) {
 			console.log(error);
 			// if (Array.isArray(error.response.data)) {
@@ -87,14 +92,14 @@ export const AuthProvider = ({ children }) => {
 			try {
 				const res = await verifyTokenRequest(cookies.token);
 				console.log(cookies.token);
-				console.log('res: ', res)
-				console.log("res.data: --> ", res.data);
+				console.log("res: ", res);
+				console.log("res.data: --> ", res.data.body);
 				// if (!res.data) {
 				// 	setIsAuthenticated(false);
 				// 	setLoading(false);
 				// 	return;
 				// }
-				if(!res.data) return setIsAuthenticated(false)
+				if (!res.data) return setIsAuthenticated(false);
 
 				setIsAuthenticated(true);
 				setUser(res.data);
