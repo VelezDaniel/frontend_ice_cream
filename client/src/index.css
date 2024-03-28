@@ -7,14 +7,17 @@
   --btn-hover-light-blue-cake: #8efbff;
   --mainColor: #37dbff;
   --btn-blue: #0D5D7D;
+	--btn-blue-purple: #4c8bd4;
 	--btn-dark-green: #0c7676;
   --backgroundNav: #37daff71;
   --bg-cards: #C1FFFF;
   --lightTitles: #ffffff;
   --extraLight-color: #ebebeb;
   --btn-home-hover: #dfdfdf67;
+	--bg-cover: #3f3f3f56;
 	--lightMainColor: #e3faff;
 	--danger: #ff3131;
+	--danger-dark : #703131;
 	--bg-sideBar: rgb(20, 140, 161)
 }
 
@@ -85,4 +88,41 @@
 	font-size: 14px;
 	margin: 4px 0;
 	font-weight: 600;
+}
+
+.dash-btn-edit, .dash-btn-delete {
+	width: 52px;
+	height: 50px;
+	cursor: pointer;
+	color: var(--lightTitles);
+	border-radius: 12px;
+	border: none;
+	transition: .3s ease all;
+	/* padding: 8px; */
+}
+
+.dash-btn-delete {
+	background-color: var(--mainColor);
+}
+
+.dash-btn-edit {
+	background-color: var(--mainColor);
+}
+
+.dash-btn-delete:hover {
+	box-shadow: 1px 2px 8px var(--grayFonts);
+	background-color: var(--danger);
+}
+
+.dash-btn-edit:hover {
+	background-color: var(--btn-blue);
+	box-shadow: 1px 2px 8px var(--grayFonts)
+}
+
+.modal-alert-color {
+	background-color: var(--danger);
+}
+
+.modal-info-color {
+	background-color: var(--btn-hover-light-blue-cake);
 }

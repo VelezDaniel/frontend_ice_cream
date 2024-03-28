@@ -1,0 +1,62 @@
+@import url('../../index.css');
+
+.cover-modal {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0,0,0, .5);
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-modal {
+  min-width: 380px;
+  min-height: 240px;
+  position: absolute;
+  background-color: var(--extraLight-color);
+  box-shadow: rgba(100, 100, 111, 0.719) 2px 4px 8px 0px;
+  border-radius: 8px;
+}
+
+.modal-header {
+  width: 100%;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 16px;
+  /* background-color: var(--btn-hover-light-blue-cake); */
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  color: var(--font-darkgray);
+  margin-bottom: 12px;
+}
+
+.modal-content {
+  margin: 0 10px 8px 10px;
+}
+
+.btn-close-modal {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  width: fit-content;
+  height: fit-content;
+  border: none;
+  cursor: pointer;
+  transition: .3s ease all;
+  background-color: transparent;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.btn-close-modal:hover {
+  background-color: var(--bg-cover);
+}

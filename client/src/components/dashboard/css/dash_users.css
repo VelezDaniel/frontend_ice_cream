@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  /* overflow: auto; */
 }
 
 .p-cont-header {
@@ -11,36 +12,90 @@
   width: 100%;
   justify-content: space-between;
   padding: 16px 32px;
+
+}
+
+.div-btn-add-user {
+  width: 100%;
+  padding: 2px 26px;
+  display: flex;
+  justify-content: end;
+}
+
+.div-btn-add-user button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--lightTitles);
+  color: var(--mainColor);
+  border: 2px solid var(--mainColor);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px;
+  gap: 6px;
+}
+
+.div-btn-add-user button:hover {
+  background-color: var(--mainColor);
+  color: var(--lightTitles);
 }
 
 .dash-container-cards {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px;
+  overflow-y: auto;
 }
 
 .dash-container-card {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
 }
 
 .dash-card-user {
   display: flex;
-  background-color: aquamarine;
+  background-color: var(--bg-cards);
   gap: 8px;
+  border-radius: 10px;
+  min-width: 460px;
+  padding: 14px 14px;
 }
 
 .dash-card-user .colum-one {
   display: flex;
+  width: 34%;
   flex-direction: column;
+  /* padding: 10px 22px; */
+  font-size: 14px;
+  font-weight: 700;
+  justify-content: center;
+  align-items: center;
 }
 
 .dash-card-user .colum-two {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+  width: 66%;
+  /* padding: 10px 22px 10px 0px; */
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .dash-card-user .colum-two div {
   display: flex;
   gap: 16px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.dash-container-btns {
+  display: flex;
+  gap: 22px;
 }
