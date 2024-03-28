@@ -36,9 +36,9 @@ function LoginPage() {
 							{/* <input type="text" name="nombres" id="nombres" placeholder="Nombres" /> */}
 							<input
 								type="number"
-								{...register("user", { required: true })}
+								{...register("identity", { required: true })}
 								placeholder="Identificacion"
-								id="user"
+								id="identity"
 							/>
 						</div>
 						{errors.user && <span className="notice">Identificaicon requerida!</span>}

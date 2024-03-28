@@ -37,6 +37,12 @@ export const AuthProvider = ({ children }) => {
 		}
 	}, [errors]);
 
+	// Revisar contenido de user (al ser asincrono se debe usar useEffect de esta manera)
+	useEffect(() => {
+		console.log("User global: ", user);
+	}, [user]);
+	
+
 	// Metodo para register
 	const signup = async (userData) => {
 		try {
@@ -55,14 +61,13 @@ export const AuthProvider = ({ children }) => {
 	// Metodo para login
 	const signin = async (userCredentials) => {
 		try {
-			const res = await loginRequest(userCredentials);
-			console.log("respuesta de loguinRequest: ", res, "res.data = ", res.data);
-			setIsAuthenticated(true);
-			const userInfo = res.data.body;
-			console.log("UserInfo: ", userInfo);
+			const result = await loginRequest(userCredentials);
+			console.log("respuesta de loguinRequest: ", result, "res.data = ", result.data);
+			const userInfo = result.data.body;
+			console.log(`UserInfo:  ${userInfo}`);
 			setUser(userInfo);
 			console.log("user credentials from authcontext: ", userCredentials);
-			console.log("Global user: ", user);
+			setIsAuthenticated(true);
 		} catch (error) {
 			console.log(error);
 			// if (Array.isArray(error.response.data)) {
@@ -90,24 +95,24 @@ export const AuthProvider = ({ children }) => {
 			}
 
 			try {
-				const res = await verifyTokenRequest(cookies.token);
+				const result = await verifyTokenRequest(cookies.token);
 				console.log(cookies.token);
-				console.log("res: ", res);
-				console.log("res.data: --> ", res.data.body);
+				console.log("res: ", result);
+				console.log("res.data: --> ", result.data.body);
 				// if (!res.data) {
 				// 	setIsAuthenticated(false);
 				// 	setLoading(false);
 				// 	return;
 				// }
-				if (!res.data) return setIsAuthenticated(false);
-
+				if (!result.data) return setIsAuthenticated(false);
+				const userInformation = result.data.body;
 				setIsAuthenticated(true);
-				setUser(res.data);
+				setUser(userInformation);
 				setLoading(false);
 			} catch (error) {
 				console.log("Error in catch from verifyToken UseEffect", error);
 				setIsAuthenticated(false);
-				// setUser(null);
+				setUser(null);
 				setLoading(false);
 			}
 		};
