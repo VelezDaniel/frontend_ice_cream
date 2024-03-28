@@ -1,7 +1,8 @@
-import "./css/dashboard.css";
+import "../css/dashboard.css";
 import "../components/user_settings/usersettings.css";
-import DashPortfolio from "./dashboard/dash_portfolio";
-import DashBookings from "./dashboard/dash_booking";
+import DashPortfolio from "../components/dashboard/dash_portfolio";
+import DashBookings from "../components/dashboard/dash_booking";
+import DashUsers from "../components/dashboard/dash_users";
 import { useEffect, useState } from "react";
 import { IoIceCreamOutline, IoClose } from "react-icons/io5";
 import { LuPencilLine } from "react-icons/lu";
@@ -12,27 +13,30 @@ function Dashboard() {
 	const [settingsVisible, setSettingsVisible] = useState(false);
 
 	const { user } = useAuth();
-	console.log('show User: ',user);
+	console.log("show User: ", user);
 
 	// ! Seleccionar componente PEDIDOS
 	// ! Seleccionar componente VENTAS
-	
+
 	// Seleccionar componente RESERVAS
 	const handleBookingsComponent = () => {
-		showComponent('DashBookings');
-	}
+		showComponent("DashBookings");
+	};
 
 	// ! Seleccionar componente Usuarios
+	const handleUsersListComponent = () => {
+		showComponent("DashUsers");
+	};
 
 	// Seleccionar componente PORTAFOLIO
 	const handlePortfolioComponent = () => {
-		showComponent('DashPortfolio');
-	}
+		showComponent("DashPortfolio");
+	};
 
 	// Cambiar el componente a mostrar en el dashboard
 	const showComponent = (component) => {
 		setActiveComponent(component);
-	}
+	};
 
 	// Abrir ajustes de usuario
 	const openSettingsUser = () => {
@@ -86,13 +90,16 @@ function Dashboard() {
 							</div>
 							<span className="btn-text">Reservas</span>
 						</button>
-						<button className="btn-usuario">
+						<button className="btn-usuario" onClick={handleUsersListComponent}>
 							<div className="icon-container">
 								<i className="bi bi-people"></i>
 							</div>
 							<span className="btn-text">Usuarios</span>
 						</button>
-						<button className="btn-portafolio" onClick={handlePortfolioComponent}>
+						<button
+							className="btn-portafolio"
+							onClick={handlePortfolioComponent}
+						>
 							<div className="icon-container">
 								<i className="bi bi-briefcase"></i>
 							</div>
@@ -127,8 +134,9 @@ function Dashboard() {
 					</div>
 				</div>
 				<div className="div-specific-content">
-					{activeComponent === 'DashPortfolio' && <DashPortfolio/>}
-					{activeComponent === 'DashBookings' && <DashBookings/>}
+					{activeComponent === "DashPortfolio" && <DashPortfolio />}
+					{activeComponent === "DashBookings" && <DashBookings />}
+					{activeComponent === "DashUsers" && <DashUsers />}
 				</div>
 			</div>
 			{/* USER SETTINGS */}

@@ -1,4 +1,4 @@
-import '../css/dash_bookings.css';
+import './css/dash_bookings.css';
 
 function DashBookings () {
 

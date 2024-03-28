@@ -1,0 +1,46 @@
+@import url('../../../index.css');
+
+.pannel-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.p-cont-header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 16px 32px;
+}
+
+.dash-container-cards {
+  width: 100%;
+}
+
+.dash-container-card {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.dash-card-user {
+  display: flex;
+  background-color: aquamarine;
+  gap: 8px;
+}
+
+.dash-card-user .colum-one {
+  display: flex;
+  flex-direction: column;
+}
+
+.dash-card-user .colum-two {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dash-card-user .colum-two div {
+  display: flex;
+  gap: 16px;
+}

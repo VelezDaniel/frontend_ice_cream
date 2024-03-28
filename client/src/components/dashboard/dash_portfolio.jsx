@@ -1,4 +1,4 @@
-import "../css/dash_portfolio.css";
+import "./css/dash_portfolio.css";
 
 function DashPortfolio() {
 	
