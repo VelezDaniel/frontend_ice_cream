@@ -47,9 +47,11 @@ export const AuthProvider = ({ children }) => {
 	const signup = async (userData) => {
 		try {
 			const res = await registerRequest(userData);
+			console.log('res_register in authContext: ',res);
 			const userInfo = res.data.body;
 			console.log("UserInfo: ", userInfo);
 			setUser(userInfo);
+			return res.data;
 			// setIsAuthenticated(true);
 		} catch (error) {
 			console.log(error);

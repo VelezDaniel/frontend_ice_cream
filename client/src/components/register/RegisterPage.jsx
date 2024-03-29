@@ -28,58 +28,15 @@ function RegisterPage() {
 		setUserId(e.target.value);
 	};
 
-	// const handleSubmitData = handleSubmit(async (values) => {
-	// 	try {
-	// 		// console.log(`values: ${values}`);
-	// 		const res = await registerRequest(values);
-	// 		console.log(`response of registerRequest: ${res}`);
-	// 		setUserId(res.insertId);
-	// 		setRegisterForm(false);
-	// 		setPasswordForm(true)
-	// 	} catch (error) {
-	// 		console.log("Error durante el registro:", error);
-	// 	}
-	// });
-
 	const onSubmit = handleSubmit(async (values) => {
-		setRegisterForm(false);
-		setPasswordForm(true);
-		await signup(values);
+		const resultSignup = await signup(values);
+		if( resultSignup && resultSignup.status === 201) {
+			setRegisterForm(false);
+			setPasswordForm(true);
+		}
+		console.log('resultSignup: ',resultSignup);
+		
 	});
-
-	// const handleSubmitPass = async () => {
-	// 	// e.preventDefault();
-
-	// 	try {
-	// 		console.log("Password:", password);
-	// 		console.log("Confirm Password:", confirmPassword);
-
-	// 		// if (password !== confirmPassword) {
-	// 		// 	setPasswordError("Contraseñas no coinciden");
-	// 		// 	return;
-	// 		// }
-
-	// 		const userInfo = {
-	// 			user: userId,
-	// 			password: password,
-	// 			confirmPassword: confirmPassword,
-	// 		};
-
-	// 		console.log("UserInfo:", userInfo);
-
-	// 		const result = await createPassword(userInfo);
-
-	// 		console.log("Response of createPassword:", result);
-	// 		console.log("Response data of createPassword:", result.data);
-	// 		console.log("Insert Id from createPassword:", result.insertId);
-
-	// 		console.log(
-	// 			`Insert Id (proviene de register form): ${insertId}, / UserInfo post query = ${userInfo}`
-	// 		);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// };
 
 	return (
 		<div className="contenedor-padre">
@@ -166,7 +123,7 @@ function RegisterPage() {
 							type="submit"
 							value="Continuar"
 						></input>
-						{registerErrors.map((error, i) => (
+						{Array.isArray(registerErrors) && registerErrors.map((error, i) => (
 							<div className="errors" key={i}>
 								{error}
 							</div>
