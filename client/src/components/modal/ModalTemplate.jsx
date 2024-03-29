@@ -11,7 +11,7 @@ const ModalTemplate = ({
 }) => {
 	return (
 		<div className="cover-modal">
-			<div className="container-modal" isOpen={true}>
+			<div className="container-modal">
 				{showHeader && (
 					<div
 						className={`modal-header ${

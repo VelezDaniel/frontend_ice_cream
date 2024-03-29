@@ -126,3 +126,27 @@
 .modal-info-color {
 	background-color: var(--btn-hover-light-blue-cake);
 }
+
+.container-btn-alert-modal {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.btn-alert-modal {
+	width: 112px;
+	background-color: none;
+	border: 2px solid var(--danger);
+	color: var(--danger);
+	border-radius: 8px;
+	padding: 6px;
+	font-size: 14px;
+	font-weight: 600;
+	margin: 6px 0;
+	cursor: pointer;
+}
+
+.btn-alert-modal:hover {
+	background-color: var(--danger);
+	color: var(--lightTitles);
+}

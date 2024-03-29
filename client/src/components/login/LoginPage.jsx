@@ -3,7 +3,8 @@ import { useAuth } from "../../context/AuthContext";
 import logoImg from "../../assets/imgs/helarticologo2.png";
 import "./login.css";
 import { togglePasswordVisibility } from "../../utils/visibility";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function LoginPage() {
 	const {
@@ -11,12 +12,17 @@ function LoginPage() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
-	const { signin, errors: signinErrors } = useAuth();
+	const { signin, errors: signinErrors, isAuthenticated } = useAuth();
+	const navigate = useNavigate();
 
 	const onSubmit = handleSubmit((data) => {
 		signin(data);
 		console.log(data);
 	});
+
+	useEffect(() => {
+		if(isAuthenticated) navigate("/dashboard");
+	}, [isAuthenticated])
 
 	return (
 		<div>

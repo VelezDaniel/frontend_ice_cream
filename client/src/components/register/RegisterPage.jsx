@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "./register.css";
 import CreatePassword from "./CreatePassword";
 import logoImg from "../../assets/imgs/helarticologo2.png";
-import { registerRequest, createPassword } from "../../api/auth";
+// import { registerRequest, createPassword } from "../../api/auth";
 import { useAuth } from "../../context/AuthContext";
 // import { useNavigate } from "react-router-dom";
 
@@ -101,7 +101,6 @@ function RegisterPage() {
 								type="text"
 								{...register("name", { required: true })}
 								placeholder="Nombres"
-								id="nombres"
 							/>
 						</div>
 						{errors.name && <p className="notice">Campo nombres requerido</p>}
@@ -113,7 +112,6 @@ function RegisterPage() {
 								type="text"
 								{...register("lastName", { required: true })}
 								placeholder="Apellidos"
-								id="apellidos"
 							/>
 						</div>
 						{errors.lastName && (
@@ -129,7 +127,6 @@ function RegisterPage() {
 								placeholder="Documento"
 								// value={userId}
 								onChange={handleUserIdChange}
-								id="documento"
 							/>
 						</div>
 						{errors.identity && (
@@ -143,7 +140,6 @@ function RegisterPage() {
 								type="text"
 								{...register("email", { required: true })}
 								placeholder="correo"
-								id="correo"
 							/>
 						</div>
 						{errors.email && <p className="notice">Campo correo requerido</p>}
@@ -155,18 +151,13 @@ function RegisterPage() {
 								type="text"
 								{...register("phone", { required: true })}
 								placeholder="Celular"
-								id="celular"
 							/>
 						</div>
 						{errors.phone && <p className="notice">Campo Celular requerido</p>}
 						<label htmlFor="birth">
 							<i className="bi bi-calendar3"></i> Fecha de Nacimiento
 						</label>
-						<input
-							type="date"
-							{...register("birth", { required: true })}
-							id="nacimiento"
-						/>
+						<input type="date" {...register("birth", { required: true })} />
 						{errors.birth && (
 							<p className="notice">Campo nacimiento requerido</p>
 						)}

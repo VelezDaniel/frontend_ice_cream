@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
-import { showUsers } from "../../api/users";
+import { useForm } from "react-hook-form";
+import {
+	showUsersRequest,
+	deleteUserRequest,
+} from "../../api/users";
+import { createPassword } from "../../api/auth";
+import { createUserRequest } from "../../api/users";
 import ModalTemplate from "../modal/ModalTemplate";
+import { useAuth } from "../../context/AuthContext";
 import "./css/dash_users.css";
 import { IoSearch } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
@@ -13,6 +20,14 @@ function DashUsers() {
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [selectedUserIndex, setSelectedUserIndex] = useState(null);
 
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm();
+
+	const { errors: registerErrors } = useAuth();
+
 	const openModalEdit = (index) => {
 		setEditModal(true);
 		setSelectedUserIndex(index);
@@ -23,20 +38,13 @@ function DashUsers() {
 		setSelectedUserIndex(index);
 	};
 
-	// const openNewUserModal = () => {
-	// 	setNewUSerModalOpen(true);
-	// }
-
-	// const closeModal = () => {
-	// 	setEditModalOpen(false);
-	// };
-
 	useEffect(() => {
 		// Realizar consulta a la base de datos para traer la informacion
 		const handleShowUsers = async () => {
 			try {
-				const items = await showUsers();
+				const items = await showUsersRequest();
 				// Establecer usuarios en estado
+				console.log(items);
 				setUsersData(items.data.body);
 			} catch (error) {
 				console.log("Error in dash_users: ", error);
@@ -44,6 +52,38 @@ function DashUsers() {
 		};
 		handleShowUsers();
 	}, []);
+
+	const onSubmit = handleSubmit(async (values) => {
+		console.log(values)
+		const result = await createUserRequest(values);
+		console.log('result from dash_users: ',result);
+		const userInserted = result.data.body;
+		if (result && result.data) {
+			const userInfo = {
+				user: userInserted.id,
+				password: values.password,
+			}
+			const resultPass = await createPassword(userInfo);
+			console.log(resultPass);
+		}
+		
+	});
+
+	// const deleteUser = async (userData) => {
+	// 	try {
+	// 		const result = await deleteUserRequest(userData);
+	// 		if (result) {
+	// 			// setDeleteModal(false);
+	// 			console.log("Registro eliminado");
+	// 		}
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// };
+
+	// const handleDeleteUser = () => {
+
+	// }
 
 	return (
 		<div className="pannel-container">
@@ -66,7 +106,91 @@ function DashUsers() {
 					title="Nuevo Usuario"
 					showHeader={true}
 				>
-					<p>New user</p>
+					<div className="modal-content-body">
+						<h4>Ingresa los datos del usuario</h4>
+						<form className="form-register" onSubmit={onSubmit}>
+							<div className="input-group">
+								<input
+									type="text"
+									{...register("name", { required: true })}
+									placeholder="Nombres"
+								/>
+							</div>
+							{errors.name && <p className="notice">Campo nombres requerido</p>}
+							<div className="input-group">
+								<input
+									type="text"
+									{...register("lastName", { required: true })}
+									placeholder="Apellidos"
+								/>
+							</div>
+							{errors.lastName && (
+								<p className="notice">Campo apellidos requerido</p>
+							)}
+							<div className="input-group">
+								<input
+									type="text"
+									{...register("identity", { required: true })}
+									placeholder="Documento"
+								/>
+							</div>
+							{errors.identity && (
+								<p className="notice">Campo Documento requerido</p>
+							)}
+							<div className="input-group">
+								<input
+									type="text"
+									{...register("email", { required: true })}
+									placeholder="correo"
+								/>
+							</div>
+							{errors.email && <p className="notice">Campo correo requerido</p>}
+							<div className="input-group">
+								<input
+									type="text"
+									{...register("phone", { required: true })}
+									placeholder="Celular"
+								/>
+							</div>
+							{errors.phone && (
+								<p className="notice">Campo Celular requerido</p>
+							)}
+							<div className="input-group">
+								<input
+									type="text"
+									{...register("address", { required: true })}
+									placeholder="Direccion"
+								/>
+							</div>
+							{errors.address && <p className="notice">Direccion requerida</p>}
+							<div className="input-group">
+								<input type="date" {...register("birth", { required: true })} />
+							</div>
+							{errors.birth && (
+								<p className="notice">Campo nacimiento requerido</p>
+							)}
+							<div className="input-group">
+								<input
+									type="text"
+									{...register("password", { required: true })}
+									placeholder="Contraseña"
+								/>
+							</div>
+							{errors.password && (
+								<p className="notice">contraseña requerida</p>
+							)}
+							<input
+								className="btn-enviar"
+								type="submit"
+								value="Continuar"
+							></input>
+							{registerErrors.map((error, i) => (
+								<div className="errors" key={i}>
+									{error}
+								</div>
+							))}
+						</form>
+					</div>
 				</ModalTemplate>
 			)}
 			{/* Contenedor de cada fila */}
@@ -142,8 +266,24 @@ function DashUsers() {
 								showHeader={true}
 								designClass={"alert"}
 							>
-								<div>
-									<span>{userData.email}</span>
+								<div className="modal-content-body">
+									<span className="modal-subtitle">
+										Seguro que deseas eliminar el usuario:
+									</span>
+									<span className="modal-info">
+										Nombre: {userData.name.concat(` ${userData.lastName}`)}
+									</span>
+									<span className="modal-info">
+										Identificacion: {userData.identity}
+									</span>
+								</div>
+								<div className="container-btn-alert-modal">
+									<button
+										className="btn-alert-modal"
+										// onClick={deleteUser(userData)}
+									>
+										Aceptar
+									</button>
 								</div>
 							</ModalTemplate>
 						)}
