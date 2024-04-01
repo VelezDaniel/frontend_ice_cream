@@ -104,6 +104,7 @@ input#nacimiento {
 }
 
 .btn-enviar {
+    width: 160px;
     background: var(--btn-blue);
     color: var(--bg-cards);
     border-radius: 25px;
