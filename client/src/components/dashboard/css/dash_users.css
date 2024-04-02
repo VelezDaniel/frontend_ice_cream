@@ -129,3 +129,37 @@
 .container-form {
   width: 200px;
 }
+
+/* Modal edit */
+
+.dashboard-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group-select {
+  margin-bottom: 4px;
+}
+
+.form-control {
+  width: 122px;
+  border: 1px solid var(--grayFonts);
+  border-radius: 8px;
+  background: none;
+  font-weight: 600;
+  padding: 4px 6px;
+  font-size: 14px;
+}
+
+.span-edit-form{
+  font-weight: 600;
+  color: var(--grayFonts);
+  font-size: 14px;
+}
+
+.input-group input {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--font-darkgray);
+}

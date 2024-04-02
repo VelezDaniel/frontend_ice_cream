@@ -19,6 +19,7 @@ import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 
 function DashUsers() {
 	const [usersData, setUsersData] = useState([]);
+	// const [userData, setUserData] = useState({});
 	const [editModal, setEditModal] = useState(false);
 	const [newUserModal, setNewUSerModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
@@ -29,6 +30,7 @@ function DashUsers() {
 		register,
 		handleSubmit,
 		reset,
+		setValue,
 		formState: { errors },
 	} = useForm();
 
@@ -72,6 +74,11 @@ function DashUsers() {
 		};
 		handleGetRoles();
 	}, []);
+
+	// useEffect(() => {
+	// 	setValue('name', userData.name);
+	// 	setValue('lastName', userData.lastName);
+	// }, [setValue, userData]);
 
 	const onSubmit = handleSubmit(async (values) => {
 		console.log(values);
@@ -294,89 +301,82 @@ function DashUsers() {
 							>
 								<div className="modal-content-body">
 									<h4>Ingresa los datos del usuario</h4>
-									<form className="dashboard-form" onSubmit={onSubmit}>
+									<form className="dashboard-form" >
+										<span>id: {userData.id}</span>
+										<span className="span-edit-form">Nombres</span>
 										<div className="input-group">
 											<input
 												type="text"
-												{...register("name", { required: true })}
-												placeholder="Nombres"
+												name="name"
 												defaultValue={userData.name}
 											/>
 										</div>
 										{errors.name && (
 											<p className="notice">Campo nombres requerido</p>
 										)}
+										<span className="span-edit-form">Apellidos</span>
 										<div className="input-group">
 											<input
 												type="text"
-												{...register("lastName", { required: true })}
-												placeholder="Apellidos"
+												name="lastName"
 												defaultValue={userData.lastName}
 											/>
 										</div>
 										{errors.lastName && (
 											<p className="notice">Campo apellidos requerido</p>
 										)}
+										<span className="span-edit-form">Correo</span>
 										<div className="input-group">
 											<input
 												type="text"
-												{...register("email", { required: true })}
-												placeholder="correo"
+												name="email"
 												defaultValue={userData.email}
 											/>
 										</div>
 										{errors.email && (
 											<p className="notice">Campo correo requerido</p>
 										)}
+										<span className="span-edit-form">Rol</span>
 										{/* role */}
 										<div className="form-group-select">
-											<select name="roles" className="form-control">
+											<select name="roles" className="form-control" value={userData.idUserRole}>
 												{roles.map((role) => (
 													<option
 														key={role.idRole}
-														defaultValue={userData.role}
+														value={role.idRole}
 													>
 														{role.nameRole}
 													</option>
 												))}
 											</select>
 										</div>
+										<span className="span-edit-form">Celular</span>
 										<div className="input-group">
 											<input
 												type="text"
-												{...register("phone", { required: true })}
-												placeholder="Celular"
+												name="phone"
 												defaultValue={userData.phone}
 											/>
 										</div>
 										{errors.phone && (
 											<p className="notice">Campo Celular requerido</p>
 										)}
+										<span className="span-edit-form">Direccion</span>
 										<div className="input-group">
 											<input
 												type="text"
-												{...register("address", { required: true })}
-												placeholder="Direccion"
+												name="address"
 												defaultValue={userData.address}
 											/>
 										</div>
 										{errors.address && (
 											<p className="notice">Direccion requerida</p>
 										)}
+										<span className="span-edit-form">Fecha nacimiento</span>
 										<div className="input-group">
 											<input
 												type="date"
-												{...register("birth", { required: true })}
-												defaultValue={userData.birth}
-											/>
-										</div>
-										{errors.birth && (
-											<p className="notice">Campo nacimiento requerido</p>
-										)}
-										<div className="input-group">
-											<input
-												type="text"
-												{...register("birth", { required: true })}
+												name="birth"
 												defaultValue={userData.birth}
 											/>
 										</div>
