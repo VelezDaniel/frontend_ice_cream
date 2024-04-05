@@ -21,3 +21,11 @@ export const deleteUserRequest = async (user) => {
 
 // ROLE
 export const getRolesRequest = async () => axios.get('/roles');
+export const insertRegisterRoleRequest = async (role) => {
+  try {
+    const response = await axios.post('/roles', role);
+    return response;
+  } catch (error) {
+    console.log('error in users.js: ',error)
+  }
+}

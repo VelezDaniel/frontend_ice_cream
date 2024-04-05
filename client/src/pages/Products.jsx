@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { showProducts } from "../api/products";
+import { showProductsRequest } from "../api/products";
 
 function Products() {
 	const [products, setProducts] = useState([]);
@@ -7,7 +7,7 @@ function Products() {
 	// let products;
 	const handleShowProducts = async () => {
 		try {
-			const result = await showProducts();
+			const result = await showProductsRequest();
       const productsInfo = result.data.body;
 			console.log(productsInfo);
 			setProducts(productsInfo);

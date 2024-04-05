@@ -7,6 +7,7 @@ import {
 	updateUserRequest,
 	createUserRequest,
 	getRolesRequest,
+	insertRegisterRoleRequest,
 } from "../../api/users";
 import { createPassword } from "../../api/auth";
 import ModalTemplate from "../modal/ModalTemplate";
@@ -21,16 +22,17 @@ function DashUsers() {
 	const [usersData, setUsersData] = useState([]);
 	// const [userData, setUserData] = useState({});
 	const [editModal, setEditModal] = useState(false);
-	const [newUserModal, setNewUSerModal] = useState(false);
+	const [addModal, setAddModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
-	const [selectedUserIndex, setSelectedUserIndex] = useState(null);
+	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
 	const [roles, setRoles] = useState([]);
+	// Se utiliza para controlar el valor de rol, en el modal edit (con el fin de comparar su id con el del rol que tiene el usuario en la base de datos)
+	const [roleInEdit, setRoleInEdit] = useState(null);
 
 	const {
 		register,
 		handleSubmit,
 		reset,
-		setValue,
 		formState: { errors },
 	} = useForm();
 
@@ -38,12 +40,12 @@ function DashUsers() {
 
 	const openModalEdit = (index) => {
 		setEditModal(true);
-		setSelectedUserIndex(index);
+		setselectedObjectIndex(index);
 	};
 
 	const openModalDelete = (index) => {
 		setDeleteModal(true);
-		setSelectedUserIndex(index);
+		setselectedObjectIndex(index);
 	};
 
 	// Use effect para traer todos los usuarios
@@ -68,6 +70,8 @@ function DashUsers() {
 			try {
 				const roleItems = await getRolesRequest();
 				setRoles(roleItems.data.body);
+				console.log("roleItems: ", roleItems.data.body);
+				console.log("roles: ", roles);
 			} catch (error) {
 				console.log("Error in dash_u", error);
 			}
@@ -97,17 +101,47 @@ function DashUsers() {
 		window.location.reload();
 	});
 
-	const updateUser = async (userData) => {
+	const handleSubmitEdit = (userData) => {
+		updateUser(userData, roleInEdit);
+	};
+
+	const updateUser = async (userData, role) => {
+		let resultUser,
+			resultPerson,
+			insertRole,
+			operationDone = false;
+		console.log("role in updateUser: ", role);
 		try {
-			const resultPerson = await updatePersonRequest(userData);
-			const resultUser = await updateUserRequest(userData);
-			if (result) {
-				setEditModal(false);
-				console.log("Registro eliminado: ", result);
-				window.location.reload();
+			if (userData) {
+				// Si el rol del usuario es diferente del rol seleccionado en el formulario
+				if (userData.idUserRole != role.idRole) {
+					insertRole = await insertRegisterRoleRequest(role);
+					console.log("insertRole: ", insertRole);
+					const idRoleinserted = insertRole.insertId;
+					userData.registerRole = idRoleinserted;
+					resultUser = await updateUserRequest(userData);
+
+					resultPerson = await updatePersonRequest(userData);
+					operationDone = true;
+				} else {
+					// SI no son diferentes la tabla registro_rol no se actualiza
+					resultUser = await updateUserRequest(userData);
+					resultPerson = await updatePersonRequest(userData);
+					operationDone = true;
+				}
+				if (operationDone) {
+					setEditModal(false);
+					console.log("Registro actualizado: ", resultPerson);
+					window.location.reload();
+				}
+				console.log("insertRole: ", insertRole);
+				console.log("Result User: ", resultUser);
+				console.log("resultPerson: ", resultPerson);
+			} else {
+				throw new Error("user not found or not inserted");
 			}
 		} catch (error) {
-			console.log(error);
+			console.log("error in dash-users: ", error);
 		}
 	};
 
@@ -132,16 +166,16 @@ function DashUsers() {
 					<input type="text" placeholder="Buscar por Identificacion" />
 				</div>
 			</div>
-			<div className="div-btn-add-user">
-				<button onClick={() => setNewUSerModal(!newUserModal)}>
+			<div className="div-dash-btn-add">
+				<button onClick={() => setAddModal(!addModal)}>
 					<FaRegUser size={20} />
 					Agregar
 				</button>
 			</div>
 			{/* MODAL AÑADIR USUARIO */}
-			{newUserModal && (
+			{addModal && (
 				<ModalTemplate
-					setStateModal={setNewUSerModal}
+					setStateModal={setAddModal}
 					title="Nuevo Usuario"
 					showHeader={true}
 				>
@@ -292,7 +326,7 @@ function DashUsers() {
 						</div>
 
 						{/* mostrar modal editar */}
-						{editModal && selectedUserIndex === index && (
+						{editModal && selectedObjectIndex === index && (
 							<ModalTemplate
 								setStateModal={setEditModal}
 								title="Editar Usuario"
@@ -301,7 +335,10 @@ function DashUsers() {
 							>
 								<div className="modal-content-body">
 									<h4>Ingresa los datos del usuario</h4>
-									<form className="dashboard-form" >
+									<form
+										className="dashboard-form"
+										// onSubmit={handleSubmitEdit(userData)}
+									>
 										<span>id: {userData.id}</span>
 										<span className="span-edit-form">Nombres</span>
 										<div className="input-group">
@@ -339,12 +376,25 @@ function DashUsers() {
 										<span className="span-edit-form">Rol</span>
 										{/* role */}
 										<div className="form-group-select">
-											<select name="roles" className="form-control" value={userData.idUserRole}>
+											<select
+												name="roles"
+												className="form-control"
+												defaultValue={userData.idUserRole}
+												
+												onChange={(e) => {
+													// NECESARIO para guardar el objeto completo de role
+													const selectedRoleId = e.target.value;
+													console.log("selectedRoleId: ", selectedRoleId);
+													console.log("roles in edit: ", roles);
+													const selectedRoleObject = roles.find(
+														(role) => role.idRole.toString() === selectedRoleId
+													);
+													console.log("roleObject: ", selectedRoleObject);
+													setRoleInEdit(selectedRoleObject);
+												}}
+											>
 												{roles.map((role) => (
-													<option
-														key={role.idRole}
-														value={role.idRole}
-													>
+													<option key={role.idRole} value={role.idRole}>
 														{role.nameRole}
 													</option>
 												))}
@@ -383,9 +433,18 @@ function DashUsers() {
 										{errors.birth && (
 											<p className="notice">Campo nacimiento requerido</p>
 										)}
-										<button className="btn-enviar" id="btn-add-user">
-											Actualizar
-										</button>
+										{console.log('userData and role EDIT: ', userData, roleInEdit)}
+										{/* Boton para enviar formulario de actualizacion de usuario */}
+										<input
+											type="submit"
+											className="btn-enviar"
+											id="btn-add-user"
+											value="Actualizar"
+											onClick={() => {
+												updateUser(userData, roleInEdit);
+											}}
+										/>
+
 										{registerErrors.map((error, i) => (
 											<div className="errors" key={i}>
 												{error}
@@ -396,7 +455,7 @@ function DashUsers() {
 							</ModalTemplate>
 						)}
 						{/* Mostrar modal eliminar */}
-						{deleteModal && selectedUserIndex === index && (
+						{deleteModal && selectedObjectIndex === index && (
 							<ModalTemplate
 								setStateModal={setDeleteModal}
 								title={" Eliminar Usuario "}

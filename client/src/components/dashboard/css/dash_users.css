@@ -15,14 +15,14 @@
 
 }
 
-.div-btn-add-user {
+.div-dash-btn-add {
   width: 100%;
   padding: 2px 26px;
   display: flex;
   justify-content: end;
 }
 
-.div-btn-add-user button {
+.div-dash-btn-add button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,7 +37,7 @@
   gap: 6px;
 }
 
-.div-btn-add-user button:hover {
+.div-dash-btn-add button:hover {
   background-color: var(--mainColor);
   color: var(--lightTitles);
 }
@@ -62,6 +62,7 @@
   display: flex;
   background-color: var(--bg-cards);
   gap: 8px;
+  width: 600px;
   border-radius: 10px;
   min-width: 460px;
   padding: 14px 14px;

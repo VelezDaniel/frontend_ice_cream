@@ -3,6 +3,7 @@ import "../components/user_settings/usersettings.css";
 import DashPortfolio from "../components/dashboard/dash_portfolio";
 import DashBookings from "../components/dashboard/dash_booking";
 import DashUsers from "../components/dashboard/dash_users";
+import DashOrders from "../components/dashboard/dash_orders";
 import { useEffect, useState } from "react";
 import { IoIceCreamOutline, IoClose } from "react-icons/io5";
 import { LuPencilLine } from "react-icons/lu";
@@ -16,6 +17,9 @@ function Dashboard() {
 	console.log("show User: ", user);
 
 	// ! Seleccionar componente PEDIDOS
+	const handleOrdersComponent = () => {
+		showComponent("DashOrders");
+	}
 	// ! Seleccionar componente VENTAS
 
 	// Seleccionar componente RESERVAS
@@ -72,13 +76,13 @@ function Dashboard() {
 							</div>
 							<span className="btn-text">Mostrar Menos</span>
 						</button> */}
-						<button className="btn-pedidos">
+						<button className="btn-pedidos" onClick={handleOrdersComponent}>
 							<div className="icon-container">
 								<IoIceCreamOutline size={28} />
 							</div>
 							<span className="btn-text">Pedidos</span>
 						</button>
-						<button className="btn-ventas">
+						<button className="btn-ventas" >
 							<div className="icon-container">
 								<i className="bi bi-cash-coin"></i>
 							</div>
@@ -137,6 +141,7 @@ function Dashboard() {
 					{activeComponent === "DashPortfolio" && <DashPortfolio />}
 					{activeComponent === "DashBookings" && <DashBookings />}
 					{activeComponent === "DashUsers" && <DashUsers />}
+					{activeComponent === "DashOrders" && <DashOrders/>}
 				</div>
 			</div>
 			{/* USER SETTINGS */}
