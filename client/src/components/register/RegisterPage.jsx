@@ -30,12 +30,11 @@ function RegisterPage() {
 
 	const onSubmit = handleSubmit(async (values) => {
 		const resultSignup = await signup(values);
-		if( resultSignup && resultSignup.status === 201) {
+		if (resultSignup && resultSignup.status === 201) {
 			setRegisterForm(false);
 			setPasswordForm(true);
 		}
-		console.log('resultSignup: ',resultSignup);
-		
+		console.log("resultSignup: ", resultSignup);
 	});
 
 	return (
@@ -56,23 +55,49 @@ function RegisterPage() {
 							</label>
 							<input
 								type="text"
-								{...register("name", { required: true })}
+								{...register("name", {
+									required: {
+										value: true,
+										message: "Campo nombre es requerido",
+									},
+									minLength: {
+										value: 2,
+										message: "Nombre debe ser minimo de dos letras",
+									},
+									maxLength: {
+										value: 25,
+										message: "Nombre debe ser menor a 25 letras",
+									},
+								})}
 								placeholder="Nombres"
 							/>
 						</div>
-						{errors.name && <p className="notice">Campo nombres requerido</p>}
+						{errors.name && <p className="notice">{errors.name.message}</p>}
 						<div className="input-group">
 							<label htmlFor="lastName">
 								<i className="bi bi-person"></i>
 							</label>
 							<input
 								type="text"
-								{...register("lastName", { required: true })}
+								{...register("lastName", {
+									required: {
+										value: true,
+										message: "Apellidos es requerido",
+									},
+									minLength: {
+										value: 2,
+										message: "Apellido debe ser minimo de dos letras",
+									},
+									maxLength: {
+										value: 40,
+										message: "Apellido debe ser menor a 40 letras",
+									},
+								})}
 								placeholder="Apellidos"
 							/>
 						</div>
 						{errors.lastName && (
-							<p className="notice">Campo apellidos requerido</p>
+							<p className="notice">{errors.lastName.message}</p>
 						)}
 						<div className="input-group">
 							<label htmlFor="identity">
@@ -80,14 +105,23 @@ function RegisterPage() {
 							</label>
 							<input
 								type="text"
-								{...register("identity", { required: true })}
+								{...register("identity", {
+									required: {
+										value: true,
+										message: "Identificacion requerida",
+									},
+									minLength: {
+										value: 6,
+										message: "No es una identificacion válida",
+									},
+								})}
 								placeholder="Documento"
 								// value={userId}
 								onChange={handleUserIdChange}
 							/>
 						</div>
 						{errors.identity && (
-							<p className="notice">Campo Documento requerido</p>
+							<p className="notice">{errors.identity.message}</p>
 						)}
 						<div className="input-group">
 							<label htmlFor="email">
@@ -95,39 +129,71 @@ function RegisterPage() {
 							</label>
 							<input
 								type="text"
-								{...register("email", { required: true })}
+								{...register("email", {
+									required: {
+										value: true,
+										message: "Correo es requerido",
+									},
+									pattern: {
+										value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+										message: "Correo no es valido",
+									},
+								})}
 								placeholder="correo"
 							/>
 						</div>
-						{errors.email && <p className="notice">Campo correo requerido</p>}
+						{errors.email && <p className="notice">{errors.email.message}</p>}
 						<div className="input-group">
 							<label htmlFor="phone">
 								<i className="bi bi-phone"></i>
 							</label>
 							<input
 								type="text"
-								{...register("phone", { required: true })}
+								{...register("phone", {
+									required: {
+										value: true,
+										message: "Celular es requerido",
+									},
+									minLength: {
+										value: 10,
+										message: "No es un celular valido",
+									},
+								})}
 								placeholder="Celular"
 							/>
 						</div>
-						{errors.phone && <p className="notice">Campo Celular requerido</p>}
+						{errors.phone && <p className="notice">{errors.phone.message}</p>}
 						<label htmlFor="birth">
 							<i className="bi bi-calendar3"></i> Fecha de Nacimiento
 						</label>
-						<input type="date" {...register("birth", { required: true })} />
+						<input
+							type="date"
+							{...register("birth", {
+								required: {
+									value: true,
+									message: "Fecha de nacimiento es requerida",
+								},
+							})}
+						/>
 						{errors.birth && (
-							<p className="notice">Campo nacimiento requerido</p>
+							<p className="notice">{errors.birth.message}</p>
+						)}
+						<label htmlFor="terms">Terminos y condiciones</label>
+						<input type="checkbox" {...register("terms", { required: true })} />
+						{errors.checkbox && (
+							<p className="notice">Debes aceptar los terminos</p>
 						)}
 						<input
 							className="btn-enviar"
 							type="submit"
 							value="Continuar"
 						></input>
-						{Array.isArray(registerErrors) && registerErrors.map((error, i) => (
-							<div className="errors" key={i}>
-								{error}
-							</div>
-						))}
+						{Array.isArray(registerErrors) &&
+							registerErrors.map((error, i) => (
+								<div className="errors" key={i}>
+									{error}
+								</div>
+							))}
 					</form>
 				</div>
 			)}

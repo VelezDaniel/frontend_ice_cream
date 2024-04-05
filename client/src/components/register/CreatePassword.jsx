@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "./register.css";
 import logoImg from "../../assets/imgs/helarticologo2.png";
@@ -12,6 +12,7 @@ function CreatePassword({ insertId }) {
 	const { updateStateAuthentication, isAuthenticated } = useAuth();
 	const {
 		register,
+		watch,
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
@@ -26,30 +27,11 @@ function CreatePassword({ insertId }) {
 	// const user = userId;
 	console.log("userId: ", insertId);
 	// console.log("user: ", user);
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
-	const [passwordError, setPasswordError] = useState("");
 
-	const handlePasswordChange = (e) => {
-		setPassword(e.target.value);
-	};
-
-	const handleConfirmPasswordChange = (e) => {
-		setConfirmPassword(e.target.value);
-	};
-
-	const handleSubmitPass = handleSubmit( async (e) => {
+	const handleSubmitPass = handleSubmit(async (e) => {
 		// e.preventDefault();
 
 		try {
-			console.log("Password:", password);
-			console.log("Confirm Password:", confirmPassword);
-
-			if (password !== confirmPassword) {
-				setPasswordError("Contraseñas no coinciden");
-				return;
-			}
-
 			const userInfo = {
 				user: insertId,
 				password: password,
@@ -63,14 +45,14 @@ function CreatePassword({ insertId }) {
 			console.log("Response of createPassword:", res);
 			console.log("Response data of createPassword:", res.data);
 			console.log("Insert Id from createPassword:", res.insertId);
-			
+
 			// setPassword("");
 
 			console.log(
 				`Insert Id (proviene de password form): ${insertId}, / UserInfo post query = ${userInfo}`
 			);
 		} catch (error) {
-			console.log("Error from createPassword: ",error);
+			console.log("Error from createPassword: ", error);
 		}
 	});
 
@@ -87,28 +69,55 @@ function CreatePassword({ insertId }) {
 					</label>
 					<input
 						type="password"
-						{...register("password", { required: true })}
-						value={password}
-						onChange={handlePasswordChange}
+						{...register("password", {
+							required: {
+								value: true,
+								message: "Se requiere la contraseña",
+							},
+							minLength: {
+								value: 5,
+								message: "La contraseña debe tener minimo 5 caracteres",
+							},
+							maxLength: {
+								value: 20,
+								message: "La contraseña no puede ser mayor a 20 caracteres",
+							},
+						})}
 						placeholder="Contraseña"
 						id="password"
 					/>
-					{passwordError && <p>{passwordError}</p>}
 				</div>
+				{errors.password && <p className="notice">{errors.password.message}</p>}
 				<div className="input-group">
 					<label htmlFor="confirmPassword">
 						<i className="bi bi-lock"></i>
 					</label>
 					<input
 						type="password"
-						{...register("confirmPass", { required: true })}
-						value={confirmPassword}
-						onChange={handleConfirmPasswordChange}
+						{...register("confirmPass", {
+							required: {
+								value: true,
+								message: "Se requiere confirmar la contraseña",
+							},
+							minLength: {
+								value: 5,
+								message: "La contraseña debe tener minimo 5 caracteres",
+							},
+							maxLength: {
+								value: 20,
+								message: "La contraseña no puede ser mayor a 20 caracteres",
+							},
+							validate: (value) =>
+								value === watch("password") || "Las contraseñas no coinciden",
+						})}
 						placeholder="Confirmar contraseña"
 						id="confirmPassword"
 					/>
+					{errors.confirmPass && (
+						<p className="notice">{errors.confirmPass.message}</p>
+					)}
 				</div>
-				<input className="btn-enviar" type="submit" value="Confirmar"></input>
+				<input className="btn-enviar" type="submit" value="Confirmar" />
 			</form>
 		</div>
 	);

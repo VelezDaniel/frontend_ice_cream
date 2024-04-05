@@ -20,18 +20,19 @@ import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 
 function DashUsers() {
 	const [usersData, setUsersData] = useState([]);
-	// const [userData, setUserData] = useState({});
+	const [userData, setUserData] = useState(null);
 	const [editModal, setEditModal] = useState(false);
 	const [addModal, setAddModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
 	const [roles, setRoles] = useState([]);
 	// Se utiliza para controlar el valor de rol, en el modal edit (con el fin de comparar su id con el del rol que tiene el usuario en la base de datos)
-	const [roleInEdit, setRoleInEdit] = useState(null);
+	// const [roleInEdit, setRoleInEdit] = useState(null);
 
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		reset,
 		formState: { errors },
 	} = useForm();
@@ -39,14 +40,23 @@ function DashUsers() {
 	const { errors: registerErrors } = useAuth();
 
 	const openModalEdit = (index) => {
+		console.log(index);
 		setEditModal(true);
 		setselectedObjectIndex(index);
+		setUserData(usersData[index]);
 	};
 
 	const openModalDelete = (index) => {
 		setDeleteModal(true);
 		setselectedObjectIndex(index);
 	};
+
+	// Reinicio del formulario de edicion
+	// useEffect(() => {
+	// 	if(selectedObjectIndex) {
+	// 		reset(selectedObjectIndex);
+	// 	}
+	// }, [selectedObjectIndex]);
 
 	// Use effect para traer todos los usuarios
 	useEffect(() => {
@@ -79,10 +89,17 @@ function DashUsers() {
 		handleGetRoles();
 	}, []);
 
-	// useEffect(() => {
-	// 	setValue('name', userData.name);
-	// 	setValue('lastName', userData.lastName);
-	// }, [setValue, userData]);
+	useEffect(() => {
+		if (userData) {
+			setValue("editName", userData.name);
+			setValue("editLastName", userData.lastName);
+			setValue("editEmail", userData.email);
+			setValue("editRole", userData.idUserRole);
+			setValue("editPhone", userData.phone);
+			setValue("editAddress", userData.address);
+			setValue("editBirth", userData.birth);
+		}
+	}, [userData]);
 
 	const onSubmit = handleSubmit(async (values) => {
 		console.log(values);
@@ -101,9 +118,15 @@ function DashUsers() {
 		window.location.reload();
 	});
 
-	const handleSubmitEdit = (userData) => {
-		updateUser(userData, roleInEdit);
-	};
+	// const handleSubmitEdit = (userData) => {
+	// 	updateUser(userData, roleInEdit);
+	// };
+
+	const onSubmitEdit = handleSubmit(async (values) => {
+		console.log("values for edit: ", values);
+		// const resultPerson = await updatePersonRequest(values);
+		// const resultUser = await updateUserRequest(values);
+	});
 
 	const updateUser = async (userData, role) => {
 		let resultUser,
@@ -185,72 +208,158 @@ function DashUsers() {
 							<div className="input-group">
 								<input
 									type="text"
-									{...register("name", { required: true })}
+									{...register("addName", {
+										required: {
+											value: true,
+											message: "Campo nombre es requerido",
+										},
+										minLength: {
+											value: 2,
+											message: "Nombre debe ser minimo de dos letras",
+										},
+										maxLength: {
+											value: 25,
+											message: "Nombre debe ser menor a 25 letras",
+										},
+									})}
 									placeholder="Nombres"
 								/>
 							</div>
-							{errors.name && <p className="notice">Campo nombres requerido</p>}
+							{errors.addName && (
+								<p className="notice">{errors.addName.message}</p>
+							)}
 							<div className="input-group">
 								<input
 									type="text"
-									{...register("lastName", { required: true })}
+									{...register("addLastName", {
+										required: {
+											value: true,
+											message: "Apellidos es requerido",
+										},
+										minLength: {
+											value: 2,
+											message: "Apellido debe ser minimo de dos letras",
+										},
+										maxLength: {
+											value: 40,
+											message: "Apellido debe ser menor a 40 letras",
+										},
+									})}
 									placeholder="Apellidos"
 								/>
 							</div>
-							{errors.lastName && (
-								<p className="notice">Campo apellidos requerido</p>
+							{errors.addLastName && (
+								<p className="notice">{errors.addLastName.message}</p>
 							)}
 							<div className="input-group">
 								<input
 									type="text"
-									{...register("identity", { required: true })}
+									{...register("addIdentity", {
+										required: {
+											value: true,
+											message: "Identificacion requerida",
+										},
+										minLength: {
+											value: 6,
+											message: "No es una identificacion válida",
+										},
+									})}
 									placeholder="Documento"
 								/>
 							</div>
-							{errors.identity && (
-								<p className="notice">Campo Documento requerido</p>
+							{errors.addIdentity && (
+								<p className="notice">{errors.addIdentity.message}</p>
 							)}
 							<div className="input-group">
 								<input
 									type="text"
-									{...register("email", { required: true })}
+									{...register("addEmail", {
+										required: {
+											value: true,
+											message: "Correo es requerido",
+										},
+										pattern: {
+											value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+											message: "Correo no es valido",
+										},
+									})}
 									placeholder="correo"
 								/>
 							</div>
-							{errors.email && <p className="notice">Campo correo requerido</p>}
+							{errors.addEmail && (
+								<p className="notice">{errors.addEmail.message}</p>
+							)}
 							<div className="input-group">
 								<input
 									type="text"
-									{...register("phone", { required: true })}
+									{...register("addPhone", {
+										required: {
+											value: true,
+											message: "Celular es requerido",
+										},
+										minLength: {
+											value: 10,
+											message: "No es un celular valido",
+										},
+									})}
 									placeholder="Celular"
 								/>
 							</div>
-							{errors.phone && (
-								<p className="notice">Campo Celular requerido</p>
+							{errors.addPhone && (
+								<p className="notice">{errors.addPhone.message}</p>
 							)}
 							<div className="input-group">
 								<input
 									type="text"
-									{...register("address", { required: true })}
+									{...register("addAddress", {
+										required: {
+											value: true,
+											message: "Direccion es requerida",
+										},
+									})}
 									placeholder="Direccion"
 								/>
 							</div>
-							{errors.address && <p className="notice">Direccion requerida</p>}
+							{errors.addAddress && (
+								<p className="notice">{errors.addAddress.message}</p>
+							)}
 							<div className="input-group">
-								<input type="date" {...register("birth", { required: true })} />
+								<input
+									type="date"
+									{...register("addBirth", {
+										required: {
+											value: true,
+											message: "Fecha de nacimiento es requerida",
+										},
+									})}
+								/>
 							</div>
-							{errors.birth && (
-								<p className="notice">Campo nacimiento requerido</p>
+							{errors.addBirth && (
+								<p className="notice">{errors.addBirth.message}</p>
 							)}
 							<div className="input-group">
 								<input
 									type="text"
-									{...register("password", { required: true })}
+									{...register("addPassword", {
+										required: {
+											value: true,
+											message: "Se requiere la contraseña",
+										},
+										minLength: {
+											value: 5,
+											message: "La contraseña debe tener minimo 5 caracteres",
+										},
+										maxLength: {
+											value: 20,
+											message:
+												"La contraseña no puede ser mayor a 20 caracteres",
+										},
+									})}
 									placeholder="Contraseña"
 								/>
 							</div>
-							{errors.password && (
-								<p className="notice">contraseña requerida</p>
+							{errors.addPassword && (
+								<p className="notice">{errors.addPassword.message}</p>
 							)}
 							<input
 								className="btn-enviar"
@@ -335,63 +444,102 @@ function DashUsers() {
 							>
 								<div className="modal-content-body">
 									<h4>Ingresa los datos del usuario</h4>
-									<form
-										className="dashboard-form"
-										// onSubmit={handleSubmitEdit(userData)}
-									>
+									<form className="dashboard-form" onSubmit={onSubmitEdit}>
 										<span>id: {userData.id}</span>
 										<span className="span-edit-form">Nombres</span>
 										<div className="input-group">
 											<input
 												type="text"
-												name="name"
+												{...register("editName", {
+													required: {
+														value: true,
+														message: "Campo nombre es requerido",
+													},
+													minLength: {
+														value: 2,
+														message: "Nombre debe ser minimo de dos letras",
+													},
+													maxLength: {
+														value: 25,
+														message: "Nombre debe ser menor a 25 letras",
+													},
+												})}
 												defaultValue={userData.name}
 											/>
 										</div>
-										{errors.name && (
-											<p className="notice">Campo nombres requerido</p>
+										{errors.editName && (
+											<p className="notice">{errors.editName.message}</p>
 										)}
 										<span className="span-edit-form">Apellidos</span>
 										<div className="input-group">
 											<input
 												type="text"
-												name="lastName"
+												{...register("editLastName", {
+													required: {
+														value: true,
+														message: "Apellidos es requerido",
+													},
+													minLength: {
+														value: 2,
+														message: "Apellido debe ser minimo de dos letras",
+													},
+													maxLength: {
+														value: 40,
+														message: "Apellido debe ser menor a 40 letras",
+													},
+												})}
 												defaultValue={userData.lastName}
 											/>
 										</div>
-										{errors.lastName && (
-											<p className="notice">Campo apellidos requerido</p>
+										{errors.editLastName && (
+											<p className="notice">{errors.editLastName.message}</p>
 										)}
 										<span className="span-edit-form">Correo</span>
 										<div className="input-group">
 											<input
 												type="text"
-												name="email"
+												{...register("editEmail", {
+													required: {
+														value: true,
+														message: "Correo es requerido",
+													},
+													pattern: {
+														value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+														message: "Correo no es valido",
+													},
+												})}
 												defaultValue={userData.email}
 											/>
 										</div>
-										{errors.email && (
-											<p className="notice">Campo correo requerido</p>
+										{errors.editEmail && (
+											<p className="notice">{errors.editEmail.message}</p>
 										)}
 										<span className="span-edit-form">Rol</span>
 										{/* role */}
 										<div className="form-group-select">
 											<select
-												name="roles"
 												className="form-control"
+												{...register("editRole", {
+													validate: (value) => {
+														if (value != userData.idUserRole) {
+															return value;
+														} else {
+															return userData.idUserRole;
+														}
+													},
+												})}
 												defaultValue={userData.idUserRole}
-												
-												onChange={(e) => {
-													// NECESARIO para guardar el objeto completo de role
-													const selectedRoleId = e.target.value;
-													console.log("selectedRoleId: ", selectedRoleId);
-													console.log("roles in edit: ", roles);
-													const selectedRoleObject = roles.find(
-														(role) => role.idRole.toString() === selectedRoleId
-													);
-													console.log("roleObject: ", selectedRoleObject);
-													setRoleInEdit(selectedRoleObject);
-												}}
+												// onChange={(e) => {
+												// 	// NECESARIO para guardar el objeto completo de role
+												// 	const selectedRoleId = e.target.value;
+												// 	console.log("selectedRoleId: ", selectedRoleId);
+												// 	console.log("roles in edit: ", roles);
+												// 	const selectedRoleObject = roles.find(
+												// 		(role) => role.idRole.toString() === selectedRoleId
+												// 	);
+												// 	console.log("roleObject: ", selectedRoleObject);
+												// 	setRoleInEdit(selectedRoleObject);
+												// }}
 											>
 												{roles.map((role) => (
 													<option key={role.idRole} value={role.idRole}>
@@ -404,45 +552,67 @@ function DashUsers() {
 										<div className="input-group">
 											<input
 												type="text"
-												name="phone"
+												{...register("editPhone", {
+													required: {
+														value: true,
+														message: "Celular es requerido",
+													},
+													minLength: {
+														value: 10,
+														message: "No es un celular valido",
+													},
+												})}
 												defaultValue={userData.phone}
 											/>
 										</div>
-										{errors.phone && (
-											<p className="notice">Campo Celular requerido</p>
+										{errors.editPhone && (
+											<p className="notice">{errors.editPhone.message}</p>
 										)}
 										<span className="span-edit-form">Direccion</span>
 										<div className="input-group">
 											<input
 												type="text"
-												name="address"
+												{...register("editAddress", {
+													required: {
+														value: true,
+														message: "Direccion es requerida",
+													},
+												})}
 												defaultValue={userData.address}
 											/>
 										</div>
-										{errors.address && (
-											<p className="notice">Direccion requerida</p>
+										{errors.editAddress && (
+											<p className="notice">{errors.editAddress.message}</p>
 										)}
 										<span className="span-edit-form">Fecha nacimiento</span>
 										<div className="input-group">
 											<input
 												type="date"
-												name="birth"
+												{...register("editBirth", {
+													required: {
+														value: true,
+														message: "Fecha de nacimiento requerida",
+													},
+												})}
 												defaultValue={userData.birth}
 											/>
 										</div>
-										{errors.birth && (
-											<p className="notice">Campo nacimiento requerido</p>
+										{errors.editBirth && (
+											<p className="notice">{errors.editBirth.message}</p>
 										)}
-										{console.log('userData and role EDIT: ', userData, roleInEdit)}
+										{/* {console.log(
+											"userData and role EDIT: ",
+											userData,
+											roleInEdit
+										)} */}
 										{/* Boton para enviar formulario de actualizacion de usuario */}
+
 										<input
 											type="submit"
 											className="btn-enviar"
 											id="btn-add-user"
 											value="Actualizar"
-											onClick={() => {
-												updateUser(userData, roleInEdit);
-											}}
+											// onClick={onSubmitEdit}
 										/>
 
 										{registerErrors.map((error, i) => (
@@ -454,6 +624,7 @@ function DashUsers() {
 								</div>
 							</ModalTemplate>
 						)}
+
 						{/* Mostrar modal eliminar */}
 						{deleteModal && selectedObjectIndex === index && (
 							<ModalTemplate

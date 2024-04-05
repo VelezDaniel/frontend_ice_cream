@@ -5,16 +5,22 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
 // import { useAuth } from "../../context/AuthContext";
-import { showProductsRequest, createProductRequest } from "../../api/products";
+import {
+	showProductsRequest,
+	createProductRequest,
+	deleteProductRequest,
+	getProductsTypeRequest,
+} from "../../api/products";
 
 import photo from "../../assets/imgs/main_products_imgs/irlandez.png";
 
 function DashPortfolio() {
-	const [prodcutsData, setProductsData] = useState([]);
+	const [productsData, setProductsData] = useState([]);
 	const [editModal, setEditModal] = useState(false);
 	const [addModal, setAddModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
+	const [productTypes, setProductsType] = useState(null);
 
 	const {
 		register,
@@ -39,6 +45,22 @@ function DashPortfolio() {
 		handleShowProducts();
 	}, []);
 
+	useEffect(() => {
+		const handleGetProductsType = async () => {
+			try {
+				const productsTypeItems = await getProductsTypeRequest();
+				if (productsTypeItems.data.body.length > 1) {
+					setProductsType(productsTypeItems.data.body);
+				} else {
+					throw new Error("no result from body in productsType");
+				}
+			} catch (error) {
+				console.log("error in getProductsType: ", error);
+			}
+		};
+		handleGetProductsType();
+	}, []);
+
 	const openModalEdit = (index) => {
 		setEditModal(true);
 		setselectedObjectIndex(index);
@@ -57,6 +79,19 @@ function DashPortfolio() {
 		window.location.reload();
 	});
 
+	const deleteProduct = async (productData) => {
+		try {
+			const result = await deleteProductRequest(productData);
+			if (result) {
+				setDeleteModal(false);
+				console.log("Registro eliminado: ", result);
+				window.location.reload();
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<div className="pannel-container">
 			<div className="p-cont-header">
@@ -66,7 +101,7 @@ function DashPortfolio() {
 				</div>
 			</div>
 			<div className="div-dash-btn-add">
-				<button>
+				<button onClick={() => setAddModal(!addModal)}>
 					<IoIceCreamOutline size={26} />
 					Agregar
 				</button>
@@ -84,14 +119,18 @@ function DashPortfolio() {
 							<div className="input-group">
 								<input
 									type="text"
-									{...register("name", { required: true })}
+									name="nameProduct"
+									{...register("nameProduct", { required: true })}
 									placeholder="Nombre"
 								/>
 							</div>
-							{errors.name && <p className="notice">Campo nombre requerido</p>}
+							{errors.nameProduct && (
+								<p className="notice">Campo nombre requerido</p>
+							)}
 							<div className="input-group">
 								<input
 									type="text"
+									name="description"
 									{...register("description", { required: true })}
 									placeholder="Descripcion"
 								/>
@@ -102,6 +141,7 @@ function DashPortfolio() {
 							<div className="input-group">
 								<input
 									type="text"
+									name="price"
 									{...register("price", { required: true })}
 									placeholder="Precio unitario"
 								/>
@@ -110,6 +150,7 @@ function DashPortfolio() {
 							<div className="input-group">
 								<input
 									type="text"
+									name="rank"
 									{...register("rank", { required: true })}
 									placeholder="Rango"
 								/>
@@ -118,21 +159,47 @@ function DashPortfolio() {
 							<div className="input-group">
 								<input
 									type="text"
+									name="size"
 									{...register("size", { required: true })}
 									placeholder="Tamaño"
 								/>
 							</div>
 							{errors.size && <p className="notice">Campo tamaño requerido</p>}
-							<div className="input-group">
-								<input
-									type="text"
-									{...register("productType", { required: true })}
-									placeholder="Tipo de Producto"
-								/>
+							<span className="span-edit-form">Tipo de producto</span>
+							<div className="form-group-select">
+								<select
+									name="productType"
+									className="form-control"
+									{...register("productType")}
+									onChange={(e) => {
+										// NECESARIO para guardar el objeto completo de role
+										const selectedValue = e.target.value;
+										register("productType").onChange(selectedValue);
+										console.log("selectedValue: ", selectedValue);
+									}}
+								>
+									{productTypes.map((productType) => (
+										<option
+											key={productType.idProductType}
+											value={productType.idProductType}
+										>
+											{productType.nameProductType}
+										</option>
+									))}
+								</select>
 							</div>
-							{errors.productType && (
+							{errors.productsType && (
 								<p className="notice">tipo de producto requerido</p>
 							)}
+							<label htmlFor="imgProduct" className="span-edit-form">
+								Imagen del producto
+							</label>
+							<div className="input-group">
+								<input
+									type="file"
+									{...register("file")}
+								/>
+							</div>
 							<input
 								className="btn-enviar"
 								id="btn-add-user"
@@ -150,7 +217,7 @@ function DashPortfolio() {
 			)}
 			{/* main content */}
 			<div className="dash-container-cards">
-				{prodcutsData.map((productData, index) => (
+				{productsData.map((productData, index) => (
 					<div className="dash-container-card" key={index}>
 						<div className="dash-card-user">
 							<div className="colum-one">
@@ -330,9 +397,7 @@ function DashPortfolio() {
 									<span className="modal-subtitle">
 										Seguro que deseas eliminar el producto:
 									</span>
-									<span className="modal-info">
-										Nombre: {productData.name}
-									</span>
+									<span className="modal-info">Nombre: {productData.name}</span>
 									<span className="modal-info">
 										precio: {productData.price}
 									</span>
@@ -341,7 +406,7 @@ function DashPortfolio() {
 								<div className="container-btn-alert-modal">
 									<button
 										className="btn-alert-modal"
-										onClick={() => deleteUser(productData)}
+										onClick={() => deleteProduct(productData)}
 									>
 										Aceptar
 									</button>
