@@ -97,6 +97,7 @@ function DashUsers() {
 			setValue("editRole", userData.idUserRole);
 			setValue("editPhone", userData.phone);
 			setValue("editAddress", userData.address);
+			setValue("editState", userData.state);
 			setValue("editBirth", userData.birth);
 		}
 	}, [userData]);
@@ -124,49 +125,42 @@ function DashUsers() {
 
 	const onSubmitEdit = handleSubmit(async (values) => {
 		console.log("values for edit: ", values);
-		// const resultPerson = await updatePersonRequest(values);
-		// const resultUser = await updateUserRequest(values);
+		try {
+			const role = {
+				idRole: values.editRole,
+			}
+	
+			const insertRole = await insertRegisterRoleRequest(role);
+			console.log("insertRole: ", insertRole);
+			const personObject = {
+				id: values.userId,
+				name: values.editName,
+				lastName: values.editLastName,
+				phone: values.editPhone === userData.phone ? null : values.editPhone,
+				address: values.editAddress,
+				email: values.editEmail === userData.email ? null : values.editEmail,
+				birth: values.editBirth,
+			};
+	
+			const userObject = {
+				id: values.userId,
+				state: values.editState === userData.state ? null : values.editState,
+				registerRole: insertRole.data.body.insertId,
+			};
+			const resultPerson = await updatePersonRequest(personObject);
+			const resultUser = await updateUserRequest(userObject);
+	
+			if(resultPerson && resultUser) {
+				console.log(resultPerson)
+				console.log(resultUser);
+			}
+			reset();
+			window.location.reload();
+		} catch (error) {
+			console.log('error in onsubmitEdit ',error)
+		}
 	});
 
-	const updateUser = async (userData, role) => {
-		let resultUser,
-			resultPerson,
-			insertRole,
-			operationDone = false;
-		console.log("role in updateUser: ", role);
-		try {
-			if (userData) {
-				// Si el rol del usuario es diferente del rol seleccionado en el formulario
-				if (userData.idUserRole != role.idRole) {
-					insertRole = await insertRegisterRoleRequest(role);
-					console.log("insertRole: ", insertRole);
-					const idRoleinserted = insertRole.insertId;
-					userData.registerRole = idRoleinserted;
-					resultUser = await updateUserRequest(userData);
-
-					resultPerson = await updatePersonRequest(userData);
-					operationDone = true;
-				} else {
-					// SI no son diferentes la tabla registro_rol no se actualiza
-					resultUser = await updateUserRequest(userData);
-					resultPerson = await updatePersonRequest(userData);
-					operationDone = true;
-				}
-				if (operationDone) {
-					setEditModal(false);
-					console.log("Registro actualizado: ", resultPerson);
-					window.location.reload();
-				}
-				console.log("insertRole: ", insertRole);
-				console.log("Result User: ", resultUser);
-				console.log("resultPerson: ", resultPerson);
-			} else {
-				throw new Error("user not found or not inserted");
-			}
-		} catch (error) {
-			console.log("error in dash-users: ", error);
-		}
-	};
 
 	const deleteUser = async (userData) => {
 		try {
@@ -301,6 +295,7 @@ function DashUsers() {
 											value: 10,
 											message: "No es un celular valido",
 										},
+	
 									})}
 									placeholder="Celular"
 								/>
@@ -445,7 +440,11 @@ function DashUsers() {
 								<div className="modal-content-body">
 									<h4>Ingresa los datos del usuario</h4>
 									<form className="dashboard-form" onSubmit={onSubmitEdit}>
-										<span>id: {userData.id}</span>
+										<input
+											type="hidden"
+											{...register("userId")}
+											value={userData.id}
+										/>
 										<span className="span-edit-form">Nombres</span>
 										<div className="input-group">
 											<input
@@ -521,10 +520,10 @@ function DashUsers() {
 												className="form-control"
 												{...register("editRole", {
 													validate: (value) => {
-														if (value != userData.idUserRole) {
-															return value;
+														if (value !== userData.idUserRole) {
+															return true;
 														} else {
-															return userData.idUserRole;
+															return false;
 														}
 													},
 												})}
@@ -548,6 +547,7 @@ function DashUsers() {
 												))}
 											</select>
 										</div>
+
 										<span className="span-edit-form">Celular</span>
 										<div className="input-group">
 											<input
@@ -561,6 +561,13 @@ function DashUsers() {
 														value: 10,
 														message: "No es un celular valido",
 													},
+													validate: (value) => {
+														if (value !== userData.phone || value === userData.phone) {
+															return true;
+														} else {
+															return "Celular no valido"
+														}
+													}
 												})}
 												defaultValue={userData.phone}
 											/>
@@ -584,6 +591,17 @@ function DashUsers() {
 										{errors.editAddress && (
 											<p className="notice">{errors.editAddress.message}</p>
 										)}
+										<div className="form-group-select">
+											<select
+												className="form-control"
+												{...register("editState")}
+												defaultValue={userData.state}
+											>
+												<option value="ACTIVO">ACTIVO</option>
+												<option value="INACTIVO">INACTIVO</option>
+												<option value="BLOQUEADO">BLOQUEADO</option>
+											</select>
+										</div>
 										<span className="span-edit-form">Fecha nacimiento</span>
 										<div className="input-group">
 											<input
