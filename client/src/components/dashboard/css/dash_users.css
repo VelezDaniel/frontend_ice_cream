@@ -99,6 +99,7 @@
 .dash-container-btns {
   display: flex;
   gap: 22px;
+  margin-left: 6px;
 }
 
 /* modal */
@@ -163,4 +164,71 @@
   font-size: 16px;
   font-weight: 600;
   color: var(--font-darkgray);
+}
+
+@media (width < 1024px) {
+  .p-cont-header {
+    padding: 14px 32px;
+  }
+
+  .div-dash-btn-add button {
+    font-size: 14px;
+  }
+
+  /* .dash-card-user {
+    min-width: 332px;
+    width: min-content;
+    padding: 14px 4px;
+  } */
+
+  .dash-card-user .colum-one {
+    width: 24%;
+  }
+
+  .dash-card-user .colum-one {
+    font-size: 12px;
+  }
+
+  .dash-card-user .colum-two {
+    font-size: 10px;
+  }
+
+  
+
+  
+}
+
+@media (width < 882px) {
+  .dash-container-btns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dash-card-user {
+    min-width: 332px;
+    width: 80%;
+    padding: 14px 4px;
+  }
+}
+
+@media (width < 624px) {
+  .dash-card-user {
+    min-width: 332px;
+    width: min-content;
+    padding: 14px 10px;
+  }
+
+  .dash-btn-delete svg, .dash-btn-edit svg {
+    width: 28px;
+  }
+  .dash-container-btns .dash-btn-edit, .dash-container-btns .dash-btn-delete {
+    width: 38px;
+    height: 38px;
+  }
+
+  .p-cont-header {
+    font-size: 12px;
+  }
 }

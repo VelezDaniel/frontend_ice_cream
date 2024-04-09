@@ -141,7 +141,7 @@
 .btn-ventas,
 .btn-usuario,
 .btn-portafolio {
-	width: 222px;
+	width: auto;
 	padding: 6px 8px;
 	border-radius: 16px;
 	border: none;
@@ -196,8 +196,24 @@
 }
 
 /* * RESPONSIVE * */
+@media (width < 1338px) {
+
+}
+
 
 @media (width < 1024px) {
+
+	.dashContent {
+		width: fit-content;
+	}
+	.nav-sup {
+		width: 100%;
+	}
+
+	.div-specific-content {
+		width: 88%;
+	}
+
 	.btn-pedidos,
 	.btn-ventas,
 	.btn-usuario,
