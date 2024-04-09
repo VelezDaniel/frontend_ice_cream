@@ -15,4 +15,4 @@ export const deleteProductRequest = async (product) => {
 }
 
 // QUERYS TIPO DE PRODUCTO
-export const getProductsTypeRequest = async () => axios.get('/type_product');
+export const getProductsTypeRequest = async () => axios.get('/products');

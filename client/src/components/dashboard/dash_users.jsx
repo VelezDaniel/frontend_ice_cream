@@ -26,8 +26,6 @@ function DashUsers() {
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
 	const [roles, setRoles] = useState([]);
-	// Se utiliza para controlar el valor de rol, en el modal edit (con el fin de comparar su id con el del rol que tiene el usuario en la base de datos)
-	// const [roleInEdit, setRoleInEdit] = useState(null);
 
 	const {
 		register,
@@ -50,13 +48,6 @@ function DashUsers() {
 		setDeleteModal(true);
 		setselectedObjectIndex(index);
 	};
-
-	// Reinicio del formulario de edicion
-	// useEffect(() => {
-	// 	if(selectedObjectIndex) {
-	// 		reset(selectedObjectIndex);
-	// 	}
-	// }, [selectedObjectIndex]);
 
 	// Use effect para traer todos los usuarios
 	useEffect(() => {
@@ -116,12 +107,8 @@ function DashUsers() {
 			console.log(resultPass);
 		}
 		reset();
-		window.location.reload();
+		// window.location.reload();
 	});
-
-	// const handleSubmitEdit = (userData) => {
-	// 	updateUser(userData, roleInEdit);
-	// };
 
 	const onSubmitEdit = handleSubmit(async (values) => {
 		console.log("values for edit: ", values);
@@ -155,7 +142,7 @@ function DashUsers() {
 				console.log(resultUser);
 			}
 			reset();
-			window.location.reload();
+			// window.location.reload();
 		} catch (error) {
 			console.log('error in onsubmitEdit ',error)
 		}
@@ -528,17 +515,6 @@ function DashUsers() {
 													},
 												})}
 												defaultValue={userData.idUserRole}
-												// onChange={(e) => {
-												// 	// NECESARIO para guardar el objeto completo de role
-												// 	const selectedRoleId = e.target.value;
-												// 	console.log("selectedRoleId: ", selectedRoleId);
-												// 	console.log("roles in edit: ", roles);
-												// 	const selectedRoleObject = roles.find(
-												// 		(role) => role.idRole.toString() === selectedRoleId
-												// 	);
-												// 	console.log("roleObject: ", selectedRoleObject);
-												// 	setRoleInEdit(selectedRoleObject);
-												// }}
 											>
 												{roles.map((role) => (
 													<option key={role.idRole} value={role.idRole}>

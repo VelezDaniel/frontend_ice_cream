@@ -144,7 +144,7 @@
 }
 
 .form-control {
-  width: 122px;
+  width: auto;
   border: 1px solid var(--grayFonts);
   border-radius: 8px;
   background: none;

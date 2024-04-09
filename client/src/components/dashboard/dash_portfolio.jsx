@@ -9,22 +9,24 @@ import {
 	showProductsRequest,
 	createProductRequest,
 	deleteProductRequest,
-	getProductsTypeRequest,
 } from "../../api/products";
 
 import photo from "../../assets/imgs/main_products_imgs/irlandez.png";
 
 function DashPortfolio() {
 	const [productsData, setProductsData] = useState([]);
+	const [productInfo, setProductInfo] = useState([]);
 	const [editModal, setEditModal] = useState(false);
 	const [addModal, setAddModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
-	const [productTypes, setProductsType] = useState(null);
+	// const [productTypes, setProductsType] = useState(null);
 
 	const {
 		register,
 		handleSubmit,
+		watch,
+		setValue,
 		reset,
 		formState: { errors },
 	} = useForm();
@@ -46,24 +48,21 @@ function DashPortfolio() {
 	}, []);
 
 	useEffect(() => {
-		const handleGetProductsType = async () => {
-			try {
-				const productsTypeItems = await getProductsTypeRequest();
-				if (productsTypeItems.data.body.length > 1) {
-					setProductsType(productsTypeItems.data.body);
-				} else {
-					throw new Error("no result from body in productsType");
-				}
-			} catch (error) {
-				console.log("error in getProductsType: ", error);
-			}
-		};
-		handleGetProductsType();
-	}, []);
+		if (productInfo) {
+			setValue("editNameProduct", productInfo.name);
+			setValue("editDescription", productInfo.description);
+			setValue("editPrice", productInfo.price);
+			setValue("editState", productInfo.state);
+			setValue("editRank", productInfo.rank);
+			setValue("editProductSize", productInfo.productSize);
+			setValue("editProductType", productInfo.productType);
+		}
+	}, [productInfo]);
 
 	const openModalEdit = (index) => {
 		setEditModal(true);
 		setselectedObjectIndex(index);
+		setProductInfo(productsData[index]);
 	};
 
 	const openModalDelete = (index) => {
@@ -71,12 +70,40 @@ function DashPortfolio() {
 		setselectedObjectIndex(index);
 	};
 
+	// Add new product
 	const onSubmit = handleSubmit(async (values) => {
 		console.log(values);
+		values.id = 0;
 		const result = await createProductRequest(values);
 		console.log("result from dash_portfolio: ", result);
+		setAddModal(false);
 		reset();
-		window.location.reload();
+		// window.location.reload();
+	});
+
+	const onSubmitEdit = handleSubmit(async (values) => {
+		console.log("values for edit: ", values);
+		console.log('mekams: ', productInfo);
+		const editProduct = {
+			id: productInfo.id,
+			nameProduct: values.editNameProduct,
+			description: values.editDescription,
+			price: values.editPrice,
+			state: values.editState,
+			rank: values.editRank,
+			productSize:values.editProductSize,
+			productType: values.editProductType,
+		}
+
+		try {
+			const editResult = await createProductRequest(editProduct);
+			console.log('editResult in dashportfolio: ', editResult);
+			setEditModal(false);
+			reset();
+			// window.location.reload();
+		} catch (error) {
+			console.log('error in onsubmitEdit ',error)
+		}
 	});
 
 	const deleteProduct = async (productData) => {
@@ -85,6 +112,7 @@ function DashPortfolio() {
 			if (result) {
 				setDeleteModal(false);
 				console.log("Registro eliminado: ", result);
+				setEditModal(false);
 				window.location.reload();
 			}
 		} catch (error) {
@@ -120,97 +148,136 @@ function DashPortfolio() {
 								<input
 									type="text"
 									name="nameProduct"
-									{...register("nameProduct", { required: true })}
+									{...register("nameProduct", {
+										required: {
+											value: true,
+											message: "Este cambo es requerido",
+										},
+									})}
 									placeholder="Nombre"
 								/>
 							</div>
 							{errors.nameProduct && (
-								<p className="notice">Campo nombre requerido</p>
+								<span className="notice">{errors.nameProduct.message}</span>
 							)}
 							<div className="input-group">
 								<input
 									type="text"
-									name="description"
-									{...register("description", { required: true })}
+									{...register("description", {
+										required: {
+											value: true,
+											message: "Este cambo es requerido",
+										},
+										minLength: {
+											value: 10,
+											message: "Descripcion debe ser mayor de 10 caracteres",
+										},
+										maxLength: {
+											value: 60,
+											message: "No puedes exceder 60 caracteres",
+										},
+									})}
 									placeholder="Descripcion"
 								/>
 							</div>
 							{errors.description && (
-								<p className="notice">Campo descripcion requerido</p>
+								<p className="notice">{errors.description.message}</p>
 							)}
 							<div className="input-group">
 								<input
-									type="text"
-									name="price"
-									{...register("price", { required: true })}
+									type="number"
+									step="0.01"
+									{...register("price", {
+										required: {
+											value: true,
+											message: "Este cambo es requerido",
+										},
+										pattern: {
+											value: /^\d{3,}\.\d{2}$/, // Al menos 3 enteros y 2 decimales
+											message: 'Precio debe tener al menos 3 enteros y 2 decimales',
+										},
+									})}
 									placeholder="Precio unitario"
 								/>
 							</div>
-							{errors.price && <p className="notice">Campo Precio requerido</p>}
+							{errors.price && <p className="notice">{errors.price.message}</p>}
 							<div className="input-group">
 								<input
-									type="text"
-									name="rank"
-									{...register("rank", { required: true })}
+									type="number"
+									step="0.1"
+									{...register("rank", {
+										required: {
+											value: true,
+											message: "Este cambo es requerido",
+										},
+										pattern: {
+											value: /^\d+\.\d{1}$/, // 1 entero y un decimal
+											message: "Ingrese un número entero seguido de un decimal",
+										},
+									})}
 									placeholder="Rango"
 								/>
 							</div>
-							{errors.rank && <p className="notice">Campo rango requerido</p>}
-							<div className="input-group">
-								<input
-									type="text"
-									name="size"
-									{...register("size", { required: true })}
-									placeholder="Tamaño"
-								/>
-							</div>
-							{errors.size && <p className="notice">Campo tamaño requerido</p>}
-							<span className="span-edit-form">Tipo de producto</span>
+							{errors.rank && <p className="notice">{errors.rank.message}</p>}
 							<div className="form-group-select">
 								<select
-									name="productType"
-									className="form-control"
-									{...register("productType")}
-									onChange={(e) => {
-										// NECESARIO para guardar el objeto completo de role
-										const selectedValue = e.target.value;
-										register("productType").onChange(selectedValue);
-										console.log("selectedValue: ", selectedValue);
-									}}
+									type="text"
+									{...register("productSize", { required: true })}
+									placeholder="Tamaño"
 								>
-									{productTypes.map((productType) => (
-										<option
-											key={productType.idProductType}
-											value={productType.idProductType}
-										>
-											{productType.nameProductType}
-										</option>
-									))}
+									<option value="GRANDE">GRANDE</option>
+									<option value="MEDIANO">MEDIANO</option>
+									<option value="PEQUEÑO">PEQUEÑO</option>
+									<option value="UNICO">UNICO</option>
 								</select>
 							</div>
-							{errors.productsType && (
-								<p className="notice">tipo de producto requerido</p>
+							{errors.size && <p className="notice">{errors.size.message}</p>}
+							<span className="span-edit-form">Tipo de producto</span>
+							<div className="form-group-select">
+								<select className="form-control" {...register("productType")}>
+									<option value="Banana">Banana</option>
+									<option value="Copa">Copa</option>
+									<option value="Café">Café</option>
+									<option value="Malteada">Malteada</option>
+									<option value="Infantil">Infantil</option>
+									<option value="Ensalada">Ensalada</option>
+									<option value="Wafle">Wafle</option>
+									<option value="Bebida">Bebida</option>
+									<option value="Ninguno">Ninguno</option>
+									<option value="otro">OTRO</option>
+								</select>
+
+								{watch("productType") === "otro" && (
+									<>
+										<input
+											type="text"
+											placeholder="Nuevo tipo"
+											{...register("otro", {
+												required: {
+													value: true,
+													message: "Campo requerido",
+												},
+											})}
+										/>
+										{errors.otro && <span>{errors.otro.message}</span>}
+									</>
+								)}
+							</div>
+							{errors.productType && (
+								<p className="notice">{errors.productType.message}</p>
 							)}
-							<label htmlFor="imgProduct" className="span-edit-form">
+							{/* <label htmlFor="imgProduct" className="span-edit-form">
 								Imagen del producto
 							</label>
 							<div className="input-group">
-								<input
-									type="file"
-									{...register("file")}
-								/>
-							</div>
+								<input type="file" {...register("file")} />
+							</div> */}
 							<input
 								className="btn-enviar"
 								id="btn-add-user"
 								type="submit"
 								value="Continuar"
 							></input>
-							{/* {registerErrors.map((error, i) => (
-								<div className="errors" key={i}>
-									{error}
-								</div>
-							))} */}
 						</form>
 					</div>
 				</ModalTemplate>
@@ -288,99 +355,149 @@ function DashPortfolio() {
 									<h5>Actualiza los datos del producto</h5>
 									<form
 										className="dashboard-form"
-										// onSubmit={handleSubmitEdit(productData)}
+										onSubmit={onSubmitEdit}
 									>
 										<span>id: {productData.id}</span>
 										<span className="span-edit-form">Nombre</span>
 										<div className="input-group">
 											<input
 												type="text"
-												name="name"
+												{...register("editNameProduct", {
+													required: {
+														value: true,
+														message: "Este cambo es requerido",
+													},
+												})}
 												defaultValue={productData.name}
 											/>
 										</div>
-										{errors.name && (
-											<p className="notice">Campo nombre requerido</p>
+										{errors.editNameProduct && (
+											<span>{errors.editNameProduct.message}</span>
 										)}
 										<span className="span-edit-form">Descripcion</span>
 										<div className="input-group">
 											<input
 												type="text"
-												name="description"
+												{...register("editDescription", {
+													required: {
+														value: true,
+														message: "Este cambo es requerido",
+													},
+													minLength: {
+														value: 10,
+														message: "Debe tener al menos 10 caracteres",
+													},
+													maxLength: {
+														value: 60,
+														message: "no puede sobrepasar los 60 caracteres",
+													},
+												})}
 												defaultValue={productData.description}
 											/>
 										</div>
-										{errors.description && (
-											<p className="notice">Campo descripcion requerido</p>
+										{errors.editDescription && (
+											<span>{errors.editDescription.message}</span>
 										)}
 										<span className="span-edit-form">Precio</span>
 										<div className="input-group">
 											<input
-												type="text"
-												name="price"
+												type="number"
+												step="0.01"
+												{...register("editPrice", {
+													required: {
+														value: true,
+														message: "Este cambo es requerido",
+													},
+													pattern: {
+														value: /^\d{3,}\.\d{2}$/, // Al menos 3 enteros y 2 decimales
+														message: 'Precio debe tener al menos 3 enteros y 2 decimales',
+													},
+												})}
 												defaultValue={productData.price}
 											/>
 										</div>
-										{errors.price && (
-											<p className="notice">Campo precio requerido</p>
+										{errors.editPrice && (
+											<span>{errors.editPrice.message}</span>
 										)}
 										<span className="span-edit-form">Estado</span>
-										<select name="state" defaultValue={productData.state}>
-											<option value="DISPONIBLE"></option>
-											<option value="NO DISPONIBLE"></option>
+										<select
+											className="form-control"
+											{...register("editState", {
+												required: {
+													value: true,
+													message: "Este cambo es requerido",
+												},
+											})}
+											defaultValue={productData.state}
+										>
+											<option value="DISPONIBLE">DISPONIBLE</option>
+											<option value="NO DISPONIBLE">NO DISPONIBLE</option>
 										</select>
 										<span className="span-edit-form">Rango</span>
 										<div className="input-group">
 											<input
-												type="text"
-												name="rank"
+												type="number"
+												step="0.1"
+												{...register("editRank", {
+													required: {
+														value: true,
+														message: "Este cambo es requerido",
+													},
+													pattern: {
+														value: /^\d+\.\d{1}$/, // 1 entero y un decimal
+														message:
+															"Ingrese un número entero seguido de un decimal",
+													},
+												})}
 												defaultValue={productData.rank}
 											/>
 										</div>
-										{errors.rank && (
-											<p className="notice">Campo Rango requerido</p>
-										)}
+										{errors.editRank && <span>{errors.editRank.message}</span>}
 										<span className="span-edit-form">Tamaño</span>
-										<div className="input-group">
-											<input
+										<div className="form-group-select">
+											<select
 												type="text"
-												name="size"
-												defaultValue={productData.productSize}
-											/>
+												className="form-control"
+												{...register("editSize", { required: true })}
+												placeholder="Tamaño"
+												defaultValue={productData.size}
+											>
+												<option value="GRANDE">GRANDE</option>
+												<option value="MEDIANO">MEDIANO</option>
+												<option value="PEQUEÑO">PEQUEÑO</option>
+												<option value="UNICO">UNICO</option>
+											</select>
 										</div>
-										{errors.size && <p className="notice">Tamaño requerido</p>}
-										<span className="span-edit-form">Tipo de producto</span>
-										<div className="input-group">
-											<input
-												type="number"
-												name="productType"
-												defaultValue={productData.productType}
-											/>
-											{/* TRAER INFORMACION DEL TIPO DE PRODUCTO PARA MOSTRAR EN EL SELECT */}
-										</div>
-										{errors.productType && (
-											<p className="notice">Tipo de producto requerido</p>
+										{errors.editSize && (
+											<span className="notice">{errors.editSize.message}</span>
 										)}
-										{/* {console.log(
-											"productData and role EDIT: ",
-											productData,
-										)} */}
-										{/* Boton para enviar formulario de actualizacion de usuario */}
+										<span className="span-edit-form">Tipo de producto</span>
+										<div className="form-group-select">
+											<select
+												className="form-control"
+												{...register("editProductType")}
+												defaultValue={productData.productType}
+											>
+												<option value="Banana">Banana</option>
+												<option value="Copa">Copa</option>
+												<option value="Café">Café</option>
+												<option value="Malteada">Malteada</option>
+												<option value="Infantil">Infantil</option>
+												<option value="Ensalada">Ensalada</option>
+												<option value="Wafle">Wafle</option>
+												<option value="Bebida">Bebida</option>
+												<option value="Ninguno">Ninguno</option>
+											</select>
+										</div>
+										{errors.editProductType && (
+											<p className="notice">{errors.editProductType.message}</p>
+										)}
 										<input
 											type="submit"
 											className="btn-enviar"
 											id="btn-add-user"
 											value="Actualizar"
-											// onClick={() => {
-											// 	updateUser(productData, roleInEdit);
-											// }}
 										/>
-
-										{/* {registerErrors.map((error, i) => (
-											<div className="errors" key={i}>
-												{error}
-											</div>
-										))} */}
 									</form>
 								</div>
 							</ModalTemplate>
