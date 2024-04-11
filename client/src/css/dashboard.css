@@ -103,8 +103,8 @@
 	height: 100%;
 	flex-direction: column;
 	justify-content: space-between;
-	gap: 8px;
-	padding: 28px 10px;
+	gap: 12px;
+	padding: 16px 10px;
 }
 
 .style-panel button {
@@ -119,11 +119,17 @@
 	gap: 20px;
 }
 
-.wrap-btns {
+.top-space {
+	margin-top: 24px;
+}
+
+/* .wrap-btns {
 	display: flex;
 	flex-direction: column;
 	gap: 22px;
-}
+	margin-top: 22px;
+
+} */
 
 .btn-mostrarmenos {
 	cursor: pointer;
@@ -137,10 +143,7 @@
 	transition: background-color 0.3s ease;
 }
 
-.btn-pedidos,
-.btn-ventas,
-.btn-usuario,
-.btn-portafolio {
+.btn-lateral-dash {
 	width: auto;
 	padding: 6px 8px;
 	border-radius: 16px;
@@ -151,10 +154,6 @@
 	font-weight: bold;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
-}
-
-.btn-pedidos {
-	margin-top: 22px;
 }
 
 .rol-text {
@@ -176,10 +175,7 @@
 	font-style: italic;
 }
 
-.btn-pedidos:hover,
-.btn-ventas:hover,
-.btn-usuario:hover,
-.btn-portafolio:hover,
+.btn-lateral-dash:hover,
 .btn-mostrarmenos:hover {
 	background-color: var(--btn-dark-green);
 	color: var(--lightTitles);
@@ -196,12 +192,29 @@
 }
 
 /* * RESPONSIVE * */
-@media (width < 1338px) {
+@media (width < 1258px) {
 
+	.style-panel {
+		margin-top: 32px;
+	}
+
+	.title,
+	.rol-text,
+	.rol-text-name {
+		display: none;
+	}
 }
 
 
 @media (width < 1024px) {
+
+	.style-panel{ 
+		margin-top: 56px;
+	}
+
+	.top-space {
+		margin-top: 44px;
+	}
 
 	.dashContent {
 		width: fit-content;
@@ -214,10 +227,7 @@
 		width: 88%;
 	}
 
-	.btn-pedidos,
-	.btn-ventas,
-	.btn-usuario,
-	.btn-portafolio,
+	.btn-lateral-dash,
 	.btn-mostrarmenos {
 		width: 44px;
 		margin: 0;
@@ -227,11 +237,7 @@
 		justify-content: center;
 	}
 
-	.btn-pedidos .btn-text,
-	.btn-ventas .btn-text,
-	.btn-usuario .btn-text,
-	.btn-portafolio .btn-text,
-	.btn-mostrarmenos .btn-text {
+	.btn-lateral-dash .btn-text {
 		display: none;
 	}
 
@@ -258,8 +264,8 @@
 	.btn-pedidos:hover,
 	.btn-ventas:hover,
 	.btn-usuario:hover,
-	.btn-portafolio:hover,
-	.btn-mostrarmenos:hover {
+	.btn-lateral-dash:hover,
+	.btn-portafolio:hover {
 		box-shadow: 2px 2px 6px 0px var(--bg-cards);
 	}
 
@@ -272,4 +278,13 @@
 	.nav-sup .logo {
 		font-size: 16px;
 	}
+
+	.div-specific-content {
+		width: 84%;
+	}
+
+	.top-space {
+		margin-top: 44px;
+	}
+
 }

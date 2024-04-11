@@ -8,3 +8,10 @@
 .span-description-card {
   text-align: end;
 }
+
+@media (width < 1024px) {
+  .dash-card-img-product {
+    width: 84px;
+    height: 102px;
+  }
+}

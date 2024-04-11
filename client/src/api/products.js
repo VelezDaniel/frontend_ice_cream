@@ -13,6 +13,3 @@ export const deleteProductRequest = async (product) => {
     console.log('error for request: ',error);
   }
 }
-
-// QUERYS TIPO DE PRODUCTO
-export const getProductsTypeRequest = async () => axios.get('/products');

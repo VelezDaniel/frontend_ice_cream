@@ -231,4 +231,8 @@
   .p-cont-header {
     font-size: 12px;
   }
+
+  .dash-container-cards {
+    padding: 22px 4px;
+  }
 }

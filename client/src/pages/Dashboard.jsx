@@ -4,9 +4,11 @@ import DashPortfolio from "../components/dashboard/dash_portfolio";
 import DashBookings from "../components/dashboard/dash_booking";
 import DashUsers from "../components/dashboard/dash_users";
 import DashOrders from "../components/dashboard/dash_orders";
+import DashAditions from "../components/dashboard/dash_aditions";
 import { useEffect, useState } from "react";
 import { IoIceCreamOutline, IoClose } from "react-icons/io5";
 import { LuPencilLine } from "react-icons/lu";
+import { TbCandy } from "react-icons/tb";
 import { useAuth } from "../context/AuthContext";
 
 function Dashboard() {
@@ -16,7 +18,7 @@ function Dashboard() {
 	const { user } = useAuth();
 	console.log("show User: ", user);
 
-	// ! Seleccionar componente PEDIDOS
+	//  Seleccionar componente PEDIDOS
 	const handleOrdersComponent = () => {
 		showComponent("DashOrders");
 	}
@@ -27,7 +29,7 @@ function Dashboard() {
 		showComponent("DashBookings");
 	};
 
-	// ! Seleccionar componente Usuarios
+	//  Seleccionar componente Usuarios
 	const handleUsersListComponent = () => {
 		showComponent("DashUsers");
 	};
@@ -35,6 +37,11 @@ function Dashboard() {
 	// Seleccionar componente PORTAFOLIO
 	const handlePortfolioComponent = () => {
 		showComponent("DashPortfolio");
+	};
+
+	// Seleccionar componente ADICIONES
+	const handleAditionComponent = () => {
+		showComponent("DashAditions");
 	};
 
 	// Cambiar el componente a mostrar en el dashboard
@@ -76,38 +83,47 @@ function Dashboard() {
 							</div>
 							<span className="btn-text">Mostrar Menos</span>
 						</button> */}
-						<button className="btn-pedidos" onClick={handleOrdersComponent}>
+						<button className="btn-lateral-dash top-space" onClick={handleOrdersComponent}>
 							<div className="icon-container">
 								<IoIceCreamOutline size={28} />
 							</div>
 							<span className="btn-text">Pedidos</span>
 						</button>
-						<button className="btn-ventas" >
+						<button className="btn-lateral-dash" >
 							<div className="icon-container">
 								<i className="bi bi-cash-coin"></i>
 							</div>
 							<span className="btn-text">Ventas</span>
 						</button>
-						<button className="btn-ventas" onClick={handleBookingsComponent}>
+						<button className="btn-lateral-dash" onClick={handleBookingsComponent}>
 							<div className="icon-container">
 								<i className="bi bi-journal-check"></i>
 							</div>
 							<span className="btn-text">Reservas</span>
 						</button>
-						<button className="btn-usuario" onClick={handleUsersListComponent}>
+						<button className="btn-lateral-dash" onClick={handleUsersListComponent}>
 							<div className="icon-container">
 								<i className="bi bi-people"></i>
 							</div>
 							<span className="btn-text">Usuarios</span>
 						</button>
 						<button
-							className="btn-portafolio"
+							className="btn-lateral-dash"
 							onClick={handlePortfolioComponent}
 						>
 							<div className="icon-container">
 								<i className="bi bi-briefcase"></i>
 							</div>
 							<span className="btn-text">Portafolio</span>
+						</button>
+						<button
+							className="btn-lateral-dash"
+							onClick={handleAditionComponent}
+						>
+							<div className="icon-container">
+							<TbCandy />
+							</div>
+							<span className="btn-text">Adiciones</span>
 						</button>
 					</div>
 					<div className="user-dashboard">
@@ -142,6 +158,7 @@ function Dashboard() {
 					{activeComponent === "DashBookings" && <DashBookings />}
 					{activeComponent === "DashUsers" && <DashUsers />}
 					{activeComponent === "DashOrders" && <DashOrders/>}
+					{activeComponent === "DashAditions" && <DashAditions/>}
 				</div>
 			</div>
 			{/* USER SETTINGS */}

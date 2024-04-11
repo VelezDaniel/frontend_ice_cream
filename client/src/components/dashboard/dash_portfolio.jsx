@@ -20,7 +20,6 @@ function DashPortfolio() {
 	const [addModal, setAddModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
-	// const [productTypes, setProductsType] = useState(null);
 
 	const {
 		register,
