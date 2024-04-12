@@ -123,14 +123,6 @@
 	margin-top: 24px;
 }
 
-/* .wrap-btns {
-	display: flex;
-	flex-direction: column;
-	gap: 22px;
-	margin-top: 22px;
-
-} */
-
 .btn-mostrarmenos {
 	cursor: pointer;
 	border-radius: 14px;
@@ -189,6 +181,13 @@
 	position: fixed;
 	right: 0;
 	bottom: 0;
+}
+
+.dash-box-titles {
+	width: auto;
+	border-bottom: 2px solid var(--font-darkgray);
+	padding: 0 0 4px 0;
+	margin: 6px 32px;
 }
 
 /* * RESPONSIVE * */

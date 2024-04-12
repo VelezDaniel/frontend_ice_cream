@@ -2,6 +2,17 @@ import axios from "./axios";
 
 export const showUsersRequest = async () => axios.get('/users');
 
+export const showUserRequest = async (client) => {
+
+  try {
+    const result = await axios.get(`/person/${client.id}`, client);
+    console.log('result showUser: ', result)
+    return result;
+  } catch (error) {
+    console.log('Error in users.js: ', error);
+  }
+}
+
 export const createUserRequest = async (user) => axios.post('/person/complete', user);
 
 export const updatePersonRequest = async (user) => axios.patch('/person', user);
@@ -26,6 +37,6 @@ export const insertRegisterRoleRequest = async (role) => {
     const response = await axios.post('/roles', role);
     return response;
   } catch (error) {
-    console.log('error in users.js: ',error)
+    console.log('error in users.js: ', error)
   }
 }
