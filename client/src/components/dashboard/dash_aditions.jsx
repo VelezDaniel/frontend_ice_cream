@@ -22,10 +22,11 @@ const DashAditions = () => {
 	const [flavorsData, setFlavorsData] = useState([]);
 	const [flavorInfo, setFlavorInfo] = useState([]);
 	const [editModal, setEditModal] = useState(false);
-	const [addModal, setAddModal] = useState(false);
+	const [addAditionModal, setAddAditionModal] = useState(false);
+	const [addFlavorModal, setAddFlavorModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
-	// const [productTypes, setProductsType] = useState(null);
+	const [typeOfInformation, setTypeOfInformation] = useState(null);
 
 	const {
 		register,
@@ -74,66 +75,142 @@ const DashAditions = () => {
 	}, [aditionInfo]);
 
 	useEffect(() => {
-		if(flavorInfo) {
+		if (flavorInfo) {
 			setValue("editNameFlavor", flavorInfo.nameFlavor);
 			setValue("editStateFlavor", flavorInfo.stateFlavor);
 		}
-	}, [flavorInfo])
+	}, [flavorInfo]);
 
-	const openModalEdit = (index) => {
-		setEditModal(true);
+	const openModalEdit = (index, infoType) => {
 		setselectedObjectIndex(index);
-		setAditionInfo(aditionsData[index]);
-	};
-
-	const openModalDelete = (index) => {
-		setDeleteModal(true);
-		setselectedObjectIndex(index);
-	};
-
-	// Add new adition
-	const onSubmit = handleSubmit(async (values) => {
-		console.log(values);
-		values.id = 0;
-		const result = await createAditionRequest(values);
-		console.log("result from dash_portfolio: ", result);
-		setAddModal(false);
-		reset();
-		// window.location.reload();
-	});
-
-	const onSubmitEdit = handleSubmit(async (values) => {
-		console.log("values for edit: ", values);
-		console.log("mekams: ", aditionInfo);
-		const editAdition = {
-			id: aditionInfo.id,
-			nameAdition: values.editNameAdition,
-			price: values.editPrice,
-			stateAdition: values.editStateAdition,
-		};
-
-		try {
-			const editResult = await createAditionRequest(editAdition);
-			console.log("editResult in dashportfolio: ", editResult);
-			setEditModal(false);
-			reset();
-			// window.location.reload();
-		} catch (error) {
-			console.log("error in onsubmitEdit ", error);
+		if (infoType === "adition") {
+			setAditionInfo(aditionsData[index]);
+			setTypeOfInformation("editAdition");
+			setEditModal(true);
+		} else {
+			setFlavorInfo(flavorsData[index]);
+			setTypeOfInformation("editFlavor")
+			setEditModal(true);
 		}
-	});
+	};
 
-	const deleteAdition = async (aditionData) => {
-		try {
-			const result = await deleteAditionRequest(aditionData);
-			if (result) {
-				setDeleteModal(false);
-				console.log("Registro eliminado: ", result);
-				setEditModal(false);
-				window.location.reload();
+	const openModalDelete = (index, infoType) => {
+		setselectedObjectIndex(index);
+		if (infoType === "adition") {
+			// setAditionInfo(aditionsData[index]);
+			setTypeOfInformation("deleteAdition");
+			setDeleteModal(true);
+		} else {
+			// setFlavorInfo(flavorsData[index]);
+			setTypeOfInformation("deleteFlavor");
+			setDeleteModal(true);
+		}
+	};
+
+	// Funcion para agregar informacion (adicion o sabor)
+	const onSubmit = (addingInfo) => {
+		return handleSubmit(async (values) => {
+			console.log(values);
+			console.log(addingInfo);
+			values.id = 0;
+			if (addingInfo === "adition") {
+				try {
+					const result = await createAditionRequest(values);
+					console.log("result from dash_portfolio: ", result);
+					setAddAditionModal(false);
+					reset();
+				} catch (error) {
+					console.log(error);
+				}
+			} else if (addingInfo === "flavor") {
+				try {
+					const result = await createFlavorRequest(values);
+					console.log("result from dash_portfolio: ", result);
+					setAddFlavorModal(false);
+					reset();
+				} catch (error) {
+					console.log(error);
+				}
+			} else {
+				console.log("Consulta no realizada");
 			}
-		} catch (error) {
-			console.log(error);
+
+			// window.location.reload();
+		});
+	};
+
+	// Funcion para Editar informacion (adicion o sabor)
+	const onSubmitEdit = (editingInfo) => {
+		return handleSubmit(async (values) => {
+			console.log("values for edit: ", values);
+			if (editingInfo === "adition") {
+				console.log("mekams: ", aditionInfo);
+				const editAdition = {
+					id: aditionInfo.id,
+					nameAdition: values.editNameAdition,
+					price: values.editPrice,
+					stateAdition: values.editStateAdition,
+				};
+
+				try {
+					const editResult = await createAditionRequest(editAdition);
+					console.log("editResult in dashportfolio: ", editResult);
+					setEditModal(false);
+					reset();
+					// window.location.reload();
+				} catch (error) {
+					console.log("error in onsubmitEdit ", error);
+				}
+			} else if (editingInfo === "flavor") {
+				console.log("mekams: ", flavorInfo);
+				const editFlavor = {
+					id: flavorInfo.id,
+					nameFlavor: values.editNameFlavor,
+					stateFlavor: values.editStateFlavor,
+				};
+
+				try {
+					const editResult = await createFlavorRequest(editFlavor);
+					console.log("editResult in dashportfolio: ", editResult);
+					setEditModal(false);
+					reset();
+					// window.location.reload();
+				} catch (error) {
+					console.log("error in onsubmitEdit ", error);
+				}
+			} else {
+				console.log("NO se ejecuto la funcion !");
+			}
+		});
+	};
+
+	// Funcion para eliminar informacion (adicion o sabor)
+	const handleDeleteInfo = async (deletingInfo, infoSelected) => {
+		if (infoSelected === "adition") {
+			try {
+				const result = await deleteAditionRequest(deletingInfo);
+				if (result) {
+					setDeleteModal(false);
+					console.log("Registro eliminado: ", result);
+					window.location.reload();
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		} else if (infoSelected === "flavor") {
+			try {
+				const result = await deleteFlavorRequest(deletingInfo);
+				if (result) {
+					setDeleteModal(false);
+					console.log("Registro eliminado: ", result);
+					// setEditModal(false);
+					window.location.reload();
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		} else {
+			console.log("NO SE SELECCIONÓ NADA");
 		}
 	};
 
@@ -149,7 +226,7 @@ const DashAditions = () => {
 		return (
 			<div className="modal-content-body">
 				<h4>Ingresa la información de la adición</h4>
-				<form className="dashboard-form" onSubmit={onSubmit}>
+				<form className="dashboard-form" onSubmit={onSubmit("adition")}>
 					<div className="input-group">
 						<input
 							type="text"
@@ -214,7 +291,7 @@ const DashAditions = () => {
 		return (
 			<div className="modal-content-body">
 				<h5>Actualiza los datos de la adición</h5>
-				<form className="dashboard-form" onSubmit={onSubmitEdit}>
+				<form className="dashboard-form" onSubmit={onSubmitEdit("adition")}>
 					<span>id: {aditionData.id}</span>
 					<span className="span-edit-form">Nombre</span>
 					<div className="input-group">
@@ -291,7 +368,7 @@ const DashAditions = () => {
 				<div className="container-btn-alert-modal">
 					<button
 						className="btn-alert-modal"
-						onClick={() => deleteAdition(aditionData)}
+						onClick={() => handleDeleteInfo(aditionData, "adition")}
 					>
 						Aceptar
 					</button>
@@ -307,7 +384,7 @@ const DashAditions = () => {
 		return (
 			<div className="modal-content-body">
 				<h4>Ingresa la información del Sabor</h4>
-				<form className="dashboard-form" onSubmit={onSubmit}>
+				<form className="dashboard-form" onSubmit={onSubmit("flavor")}>
 					<div className="input-group">
 						<input
 							type="text"
@@ -355,7 +432,7 @@ const DashAditions = () => {
 		return (
 			<div className="modal-content-body">
 				<h5>Actualiza los datos del Sabor</h5>
-				<form className="dashboard-form" onSubmit={onSubmitEdit}>
+				<form className="dashboard-form" onSubmit={onSubmitEdit("flavor")}>
 					<span>id: {flavorData.id}</span>
 					<span className="span-edit-form">Nombre</span>
 					<div className="input-group">
@@ -413,7 +490,7 @@ const DashAditions = () => {
 				<div className="container-btn-alert-modal">
 					<button
 						className="btn-alert-modal"
-						onClick={() => deleteAdition(flavorData)}
+						onClick={() => handleDeleteInfo(flavorData, "flavor")}
 					>
 						Aceptar
 					</button>
@@ -427,17 +504,17 @@ const DashAditions = () => {
 	return (
 		<div className="pannel-container">
 			<div className="p-cont-header">
-				<h2>Lista de Adiciones, Sabores y Zonas de Domicilio</h2>
+				<h2>Lista de Adiciones, Sabores de Helado</h2>
 				<div>
 					<input type="text" placeholder="Buscar por nombre" />
 				</div>
 			</div>
 			<div className="div-dash-btn-add">
-				<button onClick={() => setAddModal(!addModal)}>
+				<button onClick={() => setAddAditionModal(!addAditionModal)}>
 					<TbCandy size={26} />
 					Agregar Adicion
 				</button>
-				<button onClick={() => setAddModal(!addModal)}>
+				<button onClick={() => setAddFlavorModal(!addFlavorModal)}>
 					<TbCandy size={26} />
 					Agregar Sabor
 				</button>
@@ -446,16 +523,16 @@ const DashAditions = () => {
 				<h2>Adiciones</h2>
 			</div>
 			{/* MODAL AÑADIR ADICION */}
-			{addModal && (
+			{addAditionModal && (
 				<ModalTemplate
-					setStateModal={setAddModal}
+					setStateModal={setAddAditionModal}
 					title="Nueva Adición"
 					showHeader={true}
 				>
-					{() => addAditionForm()}
+					{addAditionForm()}
 				</ModalTemplate>
 			)}
-			{/* main content */}
+
 			<div className="dash-container-cards">
 				{aditionsData.map((aditionData, index) => (
 					<div className="dash-container-card" key={index}>
@@ -468,6 +545,10 @@ const DashAditions = () => {
 								/>
 							</div> */}
 							<div className="colum-two">
+							<div>
+									<span>Nombre</span>
+									<span>{aditionData.id}</span>
+								</div>
 								<div>
 									<span>Nombre</span>
 									<span>{aditionData.nameAdition}</span>
@@ -486,36 +567,38 @@ const DashAditions = () => {
 						<div className="dash-container-btns">
 							<button
 								className="dash-btn-edit"
-								onClick={() => openModalEdit(index)}
+								onClick={() => openModalEdit(index, "adition")}
 							>
 								<HiOutlinePencilAlt size={38} />
 							</button>
 							<button
 								className="dash-btn-delete"
-								onClick={() => openModalDelete(index)}
+								onClick={() => openModalDelete(index, "adition")}
 							>
 								<HiOutlineTrash size={38} />
 							</button>
 						</div>
 						{/* mostrar modal editar */}
-						{editModal && selectedObjectIndex === index && (
+						{editModal && typeOfInformation === "editAdition" && selectedObjectIndex === index && (
 							<ModalTemplate
 								setStateModal={setEditModal}
 								title="Editar Adición"
 								showHeader={true}
 								designClass={""}
 							>
-								{() => editAditionForm()}
+								{editAditionForm(aditionData)}
 							</ModalTemplate>
 						)}
 						{/* Mostrar modal eliminar */}
-						{deleteModal && selectedObjectIndex === index && (
+						{deleteModal && typeOfInformation === "deleteAdition" && selectedObjectIndex === index && (
 							<ModalTemplate
 								setStateModal={setDeleteModal}
 								title={" Eliminar Adición "}
 								showHeader={true}
 								designClass={"alert"}
-							></ModalTemplate>
+							>
+								{deleteAditionForm(aditionData)}
+							</ModalTemplate>
 						)}
 					</div>
 				))}
@@ -523,8 +606,18 @@ const DashAditions = () => {
 			<div className="dash-box-titles">
 				<h2>Sabores</h2>
 			</div>
+			{/* MODAL AÑADIR SABOR */}
+			{addFlavorModal && (
+				<ModalTemplate
+					setStateModal={setAddFlavorModal}
+					title="Nuevo Sabor de Helado"
+					showHeader={true}
+				>
+					{addFlavorForm()}
+				</ModalTemplate>
+			)}
 			<div className="dash-container-cards">
-			{flavorsData.map((flavorData, index) => (
+				{flavorsData.map((flavorData, index) => (
 					<div className="dash-container-card" key={index}>
 						<div className="dash-card-user">
 							{/* <div className="colum-one">
@@ -535,6 +628,10 @@ const DashAditions = () => {
 								/>
 							</div> */}
 							<div className="colum-two">
+							<div>
+									<span>Nombre</span>
+									<span>{flavorData.id}</span>
+								</div>
 								<div>
 									<span>Nombre</span>
 									<span>{flavorData.nameFlavor}</span>
@@ -549,36 +646,38 @@ const DashAditions = () => {
 						<div className="dash-container-btns">
 							<button
 								className="dash-btn-edit"
-								onClick={() => openModalEdit(index)}
+								onClick={() => openModalEdit(index, "flavor")}
 							>
 								<HiOutlinePencilAlt size={38} />
 							</button>
 							<button
 								className="dash-btn-delete"
-								onClick={() => openModalDelete(index)}
+								onClick={() => openModalDelete(index, "flavor")}
 							>
 								<HiOutlineTrash size={38} />
 							</button>
 						</div>
 						{/* mostrar modal editar */}
-						{editModal && selectedObjectIndex === index && (
+						{editModal && typeOfInformation === "editFlavor" && selectedObjectIndex === index && (
 							<ModalTemplate
 								setStateModal={setEditModal}
-								title="Editar Adición"
+								title="Editar Sabor de Helado"
 								showHeader={true}
 								designClass={""}
 							>
-								{() => editAditionForm()}
+								{editFlavorForm(flavorData)}
 							</ModalTemplate>
 						)}
 						{/* Mostrar modal eliminar */}
-						{deleteModal && selectedObjectIndex === index && (
+						{deleteModal && typeOfInformation === "deleteFlavor" && selectedObjectIndex === index && (
 							<ModalTemplate
 								setStateModal={setDeleteModal}
-								title={" Eliminar Adición "}
+								title={" Eliminar Sabor de Helado "}
 								showHeader={true}
 								designClass={"alert"}
-							></ModalTemplate>
+							>
+								{deleteFlavorForm(flavorData)}
+							</ModalTemplate>
 						)}
 					</div>
 				))}
@@ -586,5 +685,4 @@ const DashAditions = () => {
 		</div>
 	);
 };
-
 export default DashAditions;
