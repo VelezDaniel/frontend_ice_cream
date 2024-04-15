@@ -12,7 +12,12 @@ function LoginPage() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
-	const { signin, errors: signinErrors, isAuthenticated } = useAuth();
+	const {
+		signin,
+		errors: signinErrors,
+		isAuthenticated,
+		user,
+	} = useAuth();
 	const navigate = useNavigate();
 
 	const onSubmit = handleSubmit((data) => {
@@ -20,9 +25,17 @@ function LoginPage() {
 		console.log(data);
 	});
 
+	// useEffect(() => {
+	// 	if(isAuthenticated) navigate("/dashboard");
+	// }, [isAuthenticated])
+
 	useEffect(() => {
-		if(isAuthenticated) navigate("/dashboard");
-	}, [isAuthenticated])
+		if (isAuthenticated && user.role != "CLIENTE") {
+			navigate("/dashboard");
+		} else if (isAuthenticated && user.role === "CLIENTE") {
+			navigate("/");
+		}
+	}, [isAuthenticated]);
 
 	return (
 		<div>
@@ -47,7 +60,9 @@ function LoginPage() {
 								id="identity"
 							/>
 						</div>
-						{errors.user && <span className="notice">Identificaicon requerida!</span>}
+						{errors.user && (
+							<span className="notice">Identificaicon requerida!</span>
+						)}
 						<div className="input-group">
 							<label htmlFor="contrasena">
 								<i className="bi bi-lock"></i>
@@ -65,14 +80,18 @@ function LoginPage() {
 								onClick={togglePasswordVisibility}
 							></i>
 						</div>
-						{errors.password && <span className="notice">Contraseña requerida</span>}
+						{errors.password && (
+							<span className="notice">Contraseña requerida</span>
+						)}
 						{signinErrors.map((error, i) => (
 							<div className="errors" key={i}>
 								{error}
 							</div>
 						))}
 						<input className="btn-Ingresar" type="submit" value="Ingresar" />
-						<Link className="btn-Registrarse" to="/register">Registrarse</Link>
+						<Link className="btn-Registrarse" to="/register">
+							Registrarse
+						</Link>
 						<a className="btn-Olvido">¿Olvidaste tu contraseña?</a>
 					</form>
 				</div>

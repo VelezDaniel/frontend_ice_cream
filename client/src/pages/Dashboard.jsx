@@ -6,10 +6,11 @@ import DashUsers from "../components/dashboard/dash_users";
 import DashOrders from "../components/dashboard/dash_orders";
 import DashAditions from "../components/dashboard/dash_aditions";
 import { useEffect, useState } from "react";
-import { IoIceCreamOutline, IoClose } from "react-icons/io5";
-import { LuPencilLine } from "react-icons/lu";
+import { IoIceCreamOutline } from "react-icons/io5";
+// import { LuPencilLine } from "react-icons/lu";
 import { TbCandy } from "react-icons/tb";
 import { useAuth } from "../context/AuthContext";
+import UserSettings from "../components/user_settings/UserSettings";
 
 function Dashboard() {
 	const [activeComponent, setActiveComponent] = useState(null);
@@ -162,7 +163,7 @@ function Dashboard() {
 				</div>
 			</div>
 			{/* USER SETTINGS */}
-			<div
+			{/* <div
 				className={`user-container ${
 					settingsVisible ? "settings-user-visible" : "settings-user-hidden"
 				}`}
@@ -199,7 +200,8 @@ function Dashboard() {
 					<i className="bi bi-box-arrow-right"></i>
 					Cerrar Sesión
 				</button>
-			</div>
+			</div> */}
+			{settingsVisible === true && <UserSettings closeMethod={closeSettingsUser}/>}
 		</div>
 	);
 }
