@@ -1,5 +1,10 @@
 @import url('../../index.css');
 
+.aside-user {
+	position: absolute;
+	z-index: 100000;
+}
+
 .welcome-menu {
 	position: absolute;
 	width: 100%;
@@ -96,6 +101,18 @@ nav {
 	gap: 22px;
 }
 
+.nav-btn-user {
+	background: none;
+	border: none;
+}
+
+.nav-navBar .icons .nav-btn-user i {
+	font-size: 34px;
+  color: var(--lightTitles);
+  padding: 6px;
+	cursor: pointer;
+}
+
 .nav-navBar .icons .nav-item i{
   font-size: 32px;
   color: var(--lightTitles);
@@ -107,7 +124,7 @@ nav {
   padding: 4px;
 }
 
-.nav-navBar .icons .nav-item i:hover {
+.nav-navBar .icons .nav-item i:hover, .nav-navBar .icons .nav-btn-user i:hover {
   background-color: var(--btn-home-hover);
   border-radius: 12px;
 }

@@ -25,17 +25,17 @@ function CreatePassword({ insertId }) {
 	}, [isAuthenticated]);
 
 	// const user = userId;
-	console.log("userId: ", insertId);
+	console.log("userId in pass: ", insertId);
 	// console.log("user: ", user);
 
-	const handleSubmitPass = handleSubmit(async (e) => {
+	const handleSubmitPass = handleSubmit(async (values) => {
 		// e.preventDefault();
 
 		try {
 			const userInfo = {
 				user: insertId,
-				password: password,
-				confirmPassword: confirmPassword,
+				password: values.password,
+				confirmPassword: values.confirmPassword,
 			};
 
 			console.log("UserInfo:", userInfo);
@@ -44,7 +44,7 @@ function CreatePassword({ insertId }) {
 			updateStateAuthentication(true);
 			console.log("Response of createPassword:", res);
 			console.log("Response data of createPassword:", res.data);
-			console.log("Insert Id from createPassword:", res.insertId);
+			// console.log("Insert Id from createPassword:", res.data.item.insertId);
 
 			// setPassword("");
 

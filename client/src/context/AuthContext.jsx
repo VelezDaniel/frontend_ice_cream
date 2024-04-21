@@ -121,11 +121,19 @@ export const AuthProvider = ({ children }) => {
 		checkLogIn();
 	}, []);
 
+	// Cerrar la sesion
+	const logout = () => {
+		Cookies.remove("token");
+		setUser(null);
+		setIsAuthenticated(false);
+	}
+
 	return (
 		<AuthContext.Provider
 			value={{
 				signup,
 				signin,
+				logout,
 				user,
 				isAuthenticated,
 				errors,

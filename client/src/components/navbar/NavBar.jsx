@@ -1,5 +1,8 @@
 import "./navbar.css";
 import { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+// import UserSettings from "../user_settings/UserSettings";
+import NoneUserAuthenticated from "../user_settings/NoneUser";
 import {
 	IoMenu,
 	IoClose,
@@ -10,10 +13,20 @@ import { HiOutlineHome } from "react-icons/hi";
 // import { useNavigate } from "react-router-dom";
 // import { Link } from 'react-router-dom';
 
-function NavBar() {
+function NavBar({ navBarType }) {
 	// const navigate = useNavigate();
 	const [scroll, setScroll] = useState(false);
 	const [menuVisible, setMenuVisible] = useState(false);
+	const [userSetting, setUserSetting] = useState(false);
+	const [noneUserSetting, setNoneUserSetting] = useState(false);
+
+	const { isAuthenticated, user } = useAuth();
+
+	useEffect(() => {
+		if (navBarType === "NoHome") {
+			setScroll(true);
+		}
+	}, []);
 
 	const changeColorNav = () => {
 		if (window.scrollY >= 400) {
@@ -24,10 +37,12 @@ function NavBar() {
 	};
 
 	useEffect(() => {
-		window.addEventListener("scroll", changeColorNav);
-		return () => {
-			window.removeEventListener("scroll", changeColorNav);
-		};
+		if (navBarType != "NoHome") {
+			window.addEventListener("scroll", changeColorNav);
+			return () => {
+				window.removeEventListener("scroll", changeColorNav);
+			};
+		}
 	}, []); // Agregamos una dependencia vacía para que se ejecute solo una vez al montar el componente
 
 	const openMenu = () => {
@@ -36,6 +51,32 @@ function NavBar() {
 
 	const closeMenu = () => {
 		setMenuVisible(false);
+	};
+
+	const openSettingsUser = () => {
+		if (user) {
+			setUserSetting(true);
+		} else {
+			setNoneUserSetting(true);
+		}
+	};
+
+	const testting = () => {
+		console.log("boton activandose");
+		// if(user) {
+		// 	setUserSetting(true);
+		// } else {
+		// 	setNoneUserSetting(true);
+		// }
+		setNoneUserSetting(true);
+	};
+
+	const closeSettingsUser = () => {
+		setUserSetting(false);
+	};
+
+	const closeNoneSettingsUser = () => {
+		setNoneUserSetting(false);
 	};
 
 	useEffect(() => {
@@ -58,54 +99,64 @@ function NavBar() {
 	}, [menuVisible]);
 
 	return (
-		<div>
-			<nav className={`nav-navBar ${scroll ? "navbar active" : "navbar"}`}>
-				<button className="open-menu" onClick={openMenu}>
-					<IoMenu size={36} />
-				</button>
-				<ul className="main-menu">
-					<li>
-						<a href="#">
-							<HiOutlineHome size={38} className="icon-nav-responsive"/>
-							Home
-						</a>
-					</li>
+		<>
+			<div>
+				<nav className={`nav-navBar ${scroll ? "navbar active" : "navbar"}`}>
+					<button className="open-menu" onClick={openMenu}>
+						<IoMenu size={36} />
+					</button>
+					<ul className="main-menu">
+						<li>
+							<a href="/">
+								<HiOutlineHome size={38} className="icon-nav-responsive" />
+								Home
+							</a>
+						</li>
 
-					<li>
-						<a href="/products">
-							<IoIceCreamOutline size={40} className="icon-nav-responsive"/>
-							Productos
-						</a>
-					</li>
-					<li>
-						<a href="/">
-							<IoBookmarksOutline size={40} className="icon-nav-responsive"/>
-							Reservar
-						</a>
-					</li>
-					<div className="close-menu" onClick={closeMenu}>
-						<IoClose size={36} />
+						<li>
+							<a href="/products">
+								<IoIceCreamOutline size={40} className="icon-nav-responsive" />
+								Productos
+							</a>
+						</li>
+						<li>
+							<a href="/">
+								<IoBookmarksOutline size={40} className="icon-nav-responsive" />
+								Reservar
+							</a>
+						</li>
+						<div className="close-menu" onClick={closeMenu}>
+							<IoClose size={36} />
+						</div>
+					</ul>
+					<div className="logo h-content">
+						<h1>HELARTICO</h1>
 					</div>
-				</ul>
-				<div className="logo h-content">
-					<h1>HELARTICO</h1>
-				</div>
 
-				<div className="icons h-content">
-					<a className="nav-item nav-icon" href="">
-						<i className="bi bi-handbag"></i>
-					</a>
-					<a className="nav-item nav-icon" href="login">
-						<i className="bi bi-person icon-person"></i>
-					</a>
-				</div>
-				<div
-					id="cover-sidebar"
-					className="cover-sidebar"
-					onClick={closeMenu}
-				></div>
-			</nav>
-		</div>
+					<div className="icons h-content">
+						<a className="nav-item nav-icon" href="">
+							<i className="bi bi-handbag"></i>
+						</a>
+						<button className="nav-btn-user" onClick={testting}>
+							<i className="bi bi-person icon-person"></i>
+						</button>
+					</div>
+					<div
+						id="cover-sidebar"
+						className="cover-sidebar"
+						onClick={closeMenu}
+					></div>
+				</nav>
+				{/* {userSetting && (
+				<UserSettings closeMethod={closeSettingsUser} />
+			)} */}
+			</div>
+			<div className="aside-user">
+				{noneUserSetting && (
+					<NoneUserAuthenticated closeMethod={closeNoneSettingsUser} />
+				)}
+			</div>
+		</>
 	);
 }
 

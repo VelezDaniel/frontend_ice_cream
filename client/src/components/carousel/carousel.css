@@ -1,0 +1,130 @@
+@import url("../../index.css");
+
+/* .superBody{
+    position: relative;
+    height: 100%;
+} */
+.superBody{
+    background-color: var(--lightTitles);
+    font-size: 14px;
+    margin: 0;
+    padding: 36px;
+}
+
+header {
+    margin-bottom: 34px;
+    padding: 0 10px 22px 10px;
+    border-bottom: 4px solid var(--font-darkgray);
+}
+
+.carousel-card {
+    background-color: var(--lightMainColor);
+    box-shadow: 0px 0px 5px -1.5px var(--btn-dark-green);
+    margin: 10px 8px;
+    padding: 8px 2px 16px 2px;
+    width: 272px;
+    height: 404px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.carousel-design ul {
+    width: 0;
+}
+
+.destacado{
+    display: flex;
+    font-weight: bold;
+    font-size: 14px;
+    width: 100%;
+    height: 100px;
+    align-items: end;
+    color: var(--lightTitles);
+}
+
+.destacado h1{
+    text-align: center;
+    width: 100%;
+    color: var(--font-darkgray);
+}
+
+.box-img-carousel-product {
+    display: flex;
+    justify-content: center;
+}
+
+.box-img-carousel-product img {
+    width: 210px;
+}
+
+.carousel-card-product-content{
+    width: 100%;
+    padding: 4px 18px;
+    display: flex;
+}
+
+.carousel-card-p-subcontent {
+    width: 100%;
+}
+/* .product-txt{
+    flex-basis: 50%;
+    text-align: left;
+} */
+
+.carousel-p-box {
+    width: 100%;
+    display: flex;
+    height: fit-content;
+    align-items: center;
+    justify-content: space-between;
+    /* padding-right: 14px; */
+}
+
+.icon-star {
+    width: 22px;
+    height: 22px;
+    color: var(--btn-dark-green);
+}
+
+.rank-box {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--btn-dark-green);
+}
+
+.carousel-p-price {
+    font-weight: 700;
+    font-size: 20px;
+}
+.carousel-p-name {
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.2px;
+}
+
+.carousel-p-size {
+    font-weight: 600;
+}
+
+.btn-carousel-card-product {
+    display: inline-block;
+    padding: 10px 46px;
+    border: 2px solid var(--btn-dark-green);
+    border-radius: 25px;
+    color:  var(--btn-dark-green);
+    text-decoration: none;
+    margin-top: 50px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.btn-carousel-card-product:hover {
+    background-color: var(--btn-dark-green); 
+    color: #fff; 
+}

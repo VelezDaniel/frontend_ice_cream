@@ -1,6 +1,6 @@
 import NavBar from "../components/navbar/NavBar";
 import Banner from "../components/banner/banner";
-import MainProducts from "../components/main_products/MainProducts";
+import ComponentCarousel from "../components/carousel/Carousel";
 import Footer from "../components/footer/Footer";
 
 function HomePage() {
@@ -9,7 +9,7 @@ function HomePage() {
     <div>
       <NavBar/>
       <Banner/>
-      <MainProducts/>
+      <ComponentCarousel/>
       <Footer/>
     </div>
   )

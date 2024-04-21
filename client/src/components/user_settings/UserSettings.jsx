@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 
 function UserSettings({ closeMethod }) {
 	const [updateModal, setUpdateModal] = useState(false);
-	const { user, errors: registerErrors } = useAuth();
+	const { user, errors: registerErrors, logout } = useAuth();
 	const {
 		register,
 		handleSubmit,
@@ -251,7 +251,7 @@ function UserSettings({ closeMethod }) {
 						</div>
 					</div>
 				</div>
-				<button className="btn-cerrarsesion">
+				<button className="btn-cerrarsesion" onClick={logout}>
 					<i className="bi bi-box-arrow-right"></i>
 					Cerrar Sesión
 				</button>
@@ -268,5 +268,4 @@ function UserSettings({ closeMethod }) {
 		</>
 	);
 }
-
 export default UserSettings;

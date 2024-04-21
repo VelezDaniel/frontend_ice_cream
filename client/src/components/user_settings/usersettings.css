@@ -2,7 +2,7 @@
 
 .user-container {
 	height: 100%;
-	width: fit-content;
+	width: 26%;
 	background-color: var(--bg-cards);
 	display: flex;
 	flex-direction: column;
@@ -23,6 +23,14 @@
 
 .settings-user-visible {
   transform: translateX(0%);
+}
+
+#long-text {
+	color: var(--color-text);
+	padding: 20px;
+	margin-top: 20px;
+	font-size: 14px;
+	text-align: center;
 }
 
 .u-container1 {
