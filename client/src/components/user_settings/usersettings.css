@@ -6,7 +6,7 @@
 	background-color: var(--bg-cards);
 	display: flex;
 	flex-direction: column;
-	padding: 18px 14px 46px 14px;
+	padding: 18px 14px 36px 14px;
 	justify-content: space-between;
 	align-items: center;
 	gap: 18px;
@@ -15,6 +15,11 @@
 	top: 0;
 	/* transform: translateX(0); */
 	transition: transform 0.5s ease-in-out;
+}
+
+.img-logo-user-settings {
+	width: 184px;
+	height: 184px;
 }
 
 .settings-user-hidden {
@@ -88,10 +93,10 @@
 	align-items: center;
 }
 
-.user-sett-item {
+/* .user-sett-item {
 	font-weight: 600;
 	color: var(--color-text);
-}
+} */
 
 .text-highlighted {
 	font-weight: 700;
@@ -103,7 +108,7 @@
 	border: 2px solid var(--mainColor);
 	color: var(--mainColor);
 	border-radius: 8px;
-	padding: 4px 8px;
+	padding: 8px 24px;
 	font-size: 16px;
 	font-weight: 600;
 	display: flex;
@@ -119,9 +124,10 @@
 }
 
 .btn-cerrarsesion {
+	width: 72%;
 	cursor: pointer;
 	border-radius: 16px;
-	border: none;
+	border: 3px solid var(--color-text);
 	background: transparent;
 	color: var(--color-text);
 	display: flex;
@@ -130,6 +136,8 @@
 	font-size: 18px;
 	font-weight: bold;
 	padding-left: 6px;
+	padding: 6px 32px;
+	margin-bottom: 14px;
 }
 
 .btn-cerrarsesion i {
@@ -139,8 +147,83 @@
 
 .btn-cerrarsesion:hover {
 	color: var(--mainColor);
+	border-color: var(--mainColor);
+
 }
 
 .settings-user-hidden {
 	display: none;
+}
+
+.container-btns-user-settings {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	padding: 0 24px;
+	justify-content: center;
+	align-items: center;
+}
+
+/* registrado */
+.grid-user-settings-info {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	width: 94%;
+	margin: 16px 0;
+
+}
+
+.column-1-user-settings p {
+	font-weight: 600;
+	color: var(--color-text);
+}
+
+.column-2-user-settings p {
+	font-weight: 600;
+	color: var(--font-darkgray);
+	text-align: end;
+}
+
+@media (width < 1250px) {
+	.btn-cerrarsesion {
+		width: 84%;
+		font-size: 16px;
+		font-weight: bold;
+		padding-left: 6px;
+		padding: 6px 32px;
+		margin-bottom: 14px;
+	}
+
+	.btn-cerrarsesion i {
+		font-size: 24px;
+	}
+
+	.img-logo-user-settings {
+		width: 134px;
+		height: 134px;
+	}
+
+	.column-1-user-settings p {
+		font-size: 14px;
+	}
+	
+	.column-2-user-settings p {
+		font-size: 14px;
+	}
+
+}
+
+@media (width < 1080px) {
+	.user-container {
+		height: 100%;
+		width: 36%;
+		padding: 18px 14px 46px 14px;
+	}
+}
+
+@media (width < 710px) {
+	.user-container {
+		height: 100%;
+		width: 46%;
+	}
 }

@@ -1,0 +1,47 @@
+@import url("../index.css");
+
+.body-bookings {
+  width: 100%;
+  height: 85.6vh;
+  display: flex;
+  position: relative;
+  margin-top: 100px;
+}
+
+.banner-bookigs {
+  /* position: absolute; */
+	width: 40%;
+	height: 100%;
+	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../assets/imgs/imagebooking.png');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center top;
+	/* position: absolute;
+  bottom: 0;
+  top: 40; */
+	display: flex;
+	flex-direction: column;
+	justify-content: end;
+	align-items: center;
+  /* margin-top: 100px; */
+	/* padding: 20px 40% 14% 12%; */
+}
+
+
+.banner-bookigs div {
+  margin-bottom: 200px;
+  background-color: rgba(17, 17, 17, 0.774);
+  padding: 36px 10px;
+  border-radius: 12px;
+  border: 3px solid rgb(19, 19, 19);
+  color: var(--lightTitles);
+}
+
+.banner-bookigs div h4 {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.banner-bookigs div p {
+  font-size: 18px;
+}

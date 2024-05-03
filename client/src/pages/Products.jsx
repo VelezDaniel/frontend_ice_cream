@@ -4,9 +4,13 @@ import NavBar from "../components/navbar/NavBar";
 import "../css/products.css";
 import aldea from "../assets/imgs/main_products_imgs/aldea.png";
 import { PiStarBold } from "react-icons/pi";
+import ModalProduct from "../components/modal/modal_product/ModalProduct";
 
 function Products() {
 	const [products, setProducts] = useState([]);
+	const [productSelected, setProductSelected] = useState(null);
+	const [showModalProductSelected, setShowModalProductSelected] =
+		useState(false);
 
 	useEffect(() => {
 		// Realizar consulta a la base de datos para traer la informacion de productos
@@ -32,28 +36,53 @@ function Products() {
 		console.log("separate: ", separatedProducts);
 	});
 
+	useEffect(() => {
+		if (showModalProductSelected) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "";
+		}
+	}, [showModalProductSelected]);
+
+	const handleProduct = (product) => {
+		setShowModalProductSelected(true);
+		console.log("product from handle ", product);
+		setProductSelected(product);
+	};
+
 	return (
 		<>
 			<NavBar navBarType="NoHome" />
-			<div className="products-body">
+			<div className={`products-body`}>
 				<header className="header-products">
 					<h1>Productos</h1>
-					
 				</header>
 				<main className="products-board">
 					{/* Iterar cada seccion con sus productos */}
 					{Object.entries(separatedProducts).map(([type, productsOfType]) => (
 						<section key={type}>
-							<h2>{type === 'Infantil' ? type.concat('es') : type.concat('s')}</h2>
+							<h2>
+								{type === "Infantil" ? type.concat("es") : type.concat("s")}
+							</h2>
 							<ul>
 								{productsOfType.map((product) => (
-									<li key={product.id} className="li-card-product">
+									<li
+										key={product.id}
+										className="li-card-product"
+										onClick={() => handleProduct(product)}
+									>
 										<div className="box-img-card-product">
 											<img src={aldea} alt="imagen helado" />
 										</div>
 										<div className="box-info-product">
 											<div className="info-product-1">
-												<span className={`${type === "Wafle" ? "p-smaller" : "p-name-product"}`}>{product.name}</span>
+												<span
+													className={`${
+														type === "Wafle" ? "p-smaller" : "p-name-product"
+													}`}
+												>
+													{product.name}
+												</span>
 												<span className="italic-item">
 													{product.productType}
 												</span>
@@ -76,6 +105,12 @@ function Products() {
 							</ul>
 						</section>
 					))}
+					{showModalProductSelected && (
+						<ModalProduct
+							setStateModal={setShowModalProductSelected}
+							product={productSelected}
+						/>
+					)}
 				</main>
 			</div>
 		</>

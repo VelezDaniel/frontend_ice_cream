@@ -168,6 +168,7 @@ function RegisterPage() {
 						</label>
 						<input
 							type="date"
+							id="nacimiento"
 							{...register("birth", {
 								required: {
 									value: true,
@@ -175,11 +176,14 @@ function RegisterPage() {
 								},
 							})}
 						/>
-						{errors.birth && (
-							<p className="notice">{errors.birth.message}</p>
-						)}
-						<label htmlFor="terms">Terminos y condiciones</label>
-						<input type="checkbox" {...register("terms", { required: true })} />
+						{errors.birth && <p className="notice">{errors.birth.message}</p>}
+						<div className="input-border-none">
+							<label htmlFor="terms">Terminos y condiciones</label>
+							<input
+								type="checkbox"
+								{...register("terms", { required: true })}
+							/>
+						</div>
 						{errors.checkbox && (
 							<p className="notice">Debes aceptar los terminos</p>
 						)}

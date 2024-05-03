@@ -44,7 +44,8 @@
 .form-register {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
+    align-items: center;
 }
 
 .btn-volver {
@@ -71,17 +72,23 @@
 .input-group {
     border-bottom: 2px solid var(--font-darkgray);
     margin-bottom: 6px;
-    width: 200px;
+    width: auto;
     display: flex;
     justify-content: start;
     align-items: center;
     gap: 6px;
 }
 
-
 input#nacimiento {
     border-bottom: 2px solid black;
-    margin-bottom: 1em;
+}
+
+.input-border-none {
+    display: flex;
+    gap: 16px;
+    width: auto;
+    justify-content: center;
+    margin-bottom: 12px;
 }
 
 .input-group input, input#nacimiento {
@@ -111,6 +118,7 @@ input#nacimiento {
     font-weight: 500;
     border: none;
     padding: .5em;
+    cursor: pointer;
 }
 
 .btn-enviar:hover {

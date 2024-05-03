@@ -1,7 +1,7 @@
 import "./navbar.css";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-// import UserSettings from "../user_settings/UserSettings";
+import UserSettings from "../user_settings/UserSettings";
 import NoneUserAuthenticated from "../user_settings/NoneUser";
 import {
 	IoMenu,
@@ -54,21 +54,11 @@ function NavBar({ navBarType }) {
 	};
 
 	const openSettingsUser = () => {
-		if (user) {
+		if(user) {
 			setUserSetting(true);
 		} else {
 			setNoneUserSetting(true);
 		}
-	};
-
-	const testting = () => {
-		console.log("boton activandose");
-		// if(user) {
-		// 	setUserSetting(true);
-		// } else {
-		// 	setNoneUserSetting(true);
-		// }
-		setNoneUserSetting(true);
 	};
 
 	const closeSettingsUser = () => {
@@ -120,7 +110,7 @@ function NavBar({ navBarType }) {
 							</a>
 						</li>
 						<li>
-							<a href="/">
+							<a href="/book">
 								<IoBookmarksOutline size={40} className="icon-nav-responsive" />
 								Reservar
 							</a>
@@ -137,7 +127,7 @@ function NavBar({ navBarType }) {
 						<a className="nav-item nav-icon" href="">
 							<i className="bi bi-handbag"></i>
 						</a>
-						<button className="nav-btn-user" onClick={testting}>
+						<button className="nav-btn-user" onClick={openSettingsUser}>
 							<i className="bi bi-person icon-person"></i>
 						</button>
 					</div>
@@ -154,6 +144,9 @@ function NavBar({ navBarType }) {
 			<div className="aside-user">
 				{noneUserSetting && (
 					<NoneUserAuthenticated closeMethod={closeNoneSettingsUser} />
+				)}
+				{userSetting && (
+					<UserSettings closeMethod={closeSettingsUser} />
 				)}
 			</div>
 		</>

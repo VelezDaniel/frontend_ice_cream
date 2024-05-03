@@ -2,7 +2,7 @@ import "./usersettings.css";
 import { LuPencilLine } from "react-icons/lu";
 import { IoClose } from "react-icons/io5";
 import { useAuth } from "../../context/AuthContext";
-import { IoIceCreamOutline } from "react-icons/io5";
+import logoImg from "../../assets/imgs/helarticologo2.png";
 import { updatePersonRequest } from "../../api/users";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
@@ -18,7 +18,6 @@ function UserSettings({ closeMethod }) {
 		reset,
 		formState: { errors },
 	} = useForm();
-	console.log("userInfo: ", user);
 
 	const openModalUpdate = () => {
 		setUpdateModal(true);
@@ -197,7 +196,6 @@ function UserSettings({ closeMethod }) {
 						className="btn-enviar"
 						id="btn-add-user"
 						value="Actualizar"
-						// onClick={onSubmitEdit}
 					/>
 
 					{registerErrors.map((error, i) => (
@@ -223,30 +221,34 @@ function UserSettings({ closeMethod }) {
 					</div>
 					<div className="u-container2">
 						<div className="u-container2-1">
-							<IoIceCreamOutline size={96} />
+							<img className="img-logo-user-settings" src={logoImg} alt="" />
 							<span className="user-sett-item text-highlighted">
 								¡Bienvenid@ de nuevo {user.name}!
 							</span>
-							<span className="user-sett-item text-highlighted">
-								{user.lastName}
-							</span>
-							<span className="user-sett-item text-highlighted">
-								{user.role}
-							</span>
-						</div>
-						<div className="u-container2-2">
-							<span className="user-sett-item text-highlighted">
-								{user.state}
-							</span>
-							<span className="user-sett-item">{user.identity}</span>
-							<span className="user-sett-item">{user.phone}</span>
-							<span className="user-sett-item">{user.email}</span>
-							<span className="user-sett-item text-highlighted">
-								{user.address}
-							</span>
+							<div className="grid-user-settings-info">
+								<div className="column-1-user-settings">
+									<p>Nombre: </p>
+									<p>Rol: </p>
+									<p>Estado: </p>
+									<p>Identidad: </p>
+									<p>Celular: </p>
+									<p>Correo: </p>
+									<p>Dirección: </p>
+								</div>
+
+								<div className="column-2-user-settings">
+									<p>{user.name.concat(` ${user.lastName}`)}</p>
+									<p>{user.role}</p>
+									<p>{user.state}</p>
+									<p>{user.identity}</p>
+									<p>{user.phone}</p>
+									<p>{user.email}</p>
+									<p>{user.address}</p>
+								</div>
+							</div>
 							<button className="btn-edit-u-data" onClick={openModalUpdate}>
 								<LuPencilLine size={22} />
-								Editar
+								Editar mi información
 							</button>
 						</div>
 					</div>

@@ -1,9 +1,25 @@
 @import url("../index.css");
 
+/* body.noneScrollY{
+	overflow: hidden;
+	position: fixed;
+	width: 100%;
+} */
+
 .products-body {
 	margin-top: 100px;
 	background-color: var(--bg-dark);
 }
+
+/* .noneScrollY {
+	overflow: hidden;
+	position: fixed;
+	width: 100%;
+} */
+
+/* .scrollY {
+	overflow-y: auto;
+} */
 
 .header-products {
 	margin: 0;

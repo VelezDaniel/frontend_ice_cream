@@ -4,7 +4,6 @@ import ComponentCarousel from "../components/carousel/Carousel";
 import Footer from "../components/footer/Footer";
 
 function HomePage() {
-
   return (
     <div>
       <NavBar/>
@@ -14,5 +13,4 @@ function HomePage() {
     </div>
   )
 }
-
 export default HomePage;

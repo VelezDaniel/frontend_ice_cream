@@ -1,5 +1,5 @@
 export function togglePasswordVisibility() {
-  var passwordInput = document.getElementById("contraseña");
+  var passwordInput = document.getElementById("contrasena");
   var eyeIcon = document.getElementById("eye-icon");
 
   // Cambiar el tipo de input entre "password" y "text"

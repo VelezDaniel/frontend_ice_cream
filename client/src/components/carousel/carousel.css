@@ -128,3 +128,9 @@ header {
     background-color: var(--btn-dark-green); 
     color: #fff; 
 }
+
+@media (width < 670px) {
+    .carousel-card {
+        width: 220px;
+    }
+}
