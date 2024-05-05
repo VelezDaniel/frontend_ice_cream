@@ -5,21 +5,23 @@ import { useForm } from "react-hook-form";
 import { createBookingRequest } from "../api/bookings";
 
 // primereact
-import { Calendar } from "primereact/calendar";
-import { InputTextarea } from "primereact/inputtextarea";
-import { FloatLabel } from "primereact/floatlabel";
-import { InputText } from "primereact/inputtext";
+// import { Calendar } from "primereact/calendar";
+// import { InputTextarea } from "primereact/inputtextarea";
+// import { FloatLabel } from "primereact/floatlabel";
+// import { InputText } from "primereact/inputtext";
 
-import { Message } from "primereact/message";
+// import { Message } from "primereact/message";
 
 // styles
 import "../css/bookings.css";
 import { LuCalendarClock } from "react-icons/lu";
+import { IoPeopleOutline } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa6";
 import { BsPeople } from "react-icons/bs";
 import { LuBookMarked } from "react-icons/lu";
 import { FaRegAddressCard } from "react-icons/fa";
-import { FiClock } from "react-icons/fi";
+import { FiClock, FiCalendar } from "react-icons/fi";
+import { PiIdentificationCard } from "react-icons/pi";
 
 function Bookings() {
 	const { user } = useAuth();
@@ -48,6 +50,10 @@ function Bookings() {
 		return `${hours}:${minutes}:${seconds}`;
 	};
 
+	const getFormErrMessage = (name) => {
+		return errors[name] && <p className="notice">{errors[name].message}</p>;
+	};
+
 	const handlerClient = (e) => {
 		setClient(e.target.value);
 	};
@@ -64,18 +70,12 @@ function Bookings() {
 	};
 
 	const onSubmit = async (data) => {
-		if (!date || !time) {
-			setCustomErrors((prevErrors) => ({
-				...prevErrors,
-				addDate: "Fecha es requerida",
-			}));
-			return;
-		}
-
 		let info;
 		// e.preventDefault();
 		const dateTime =
-			data && time ? formatDate(date) + " " + formatTime(time) : null;
+			data.dateBook && data.timeBook
+				? formatDate(data.dateBook) + " " + formatTime(data.timeBook)
+				: null;
 		console.log(dateTime); // Imprime la fecha y la hora combinadas
 		console.log(data); // Imprime todos los datos del formulario
 		console.log("user book: ", user);
@@ -118,193 +118,124 @@ function Bookings() {
 					<h2>¡Reserva momentos felices con los tuyos!</h2>
 					<form className="form-bookings" onSubmit={handleSubmit(onSubmit)}>
 						{/* Calendario para reservaciones */}
-						<div className="card flex flex-wrap gap-3 p-fluid div-calendar-book">
-							<LuCalendarClock size={54} />
-							<div className="flex-auto">
-								<label
-									htmlFor="buttondisplay"
-									className="font-bold block mb-2 label-date-book"
-								>
-									Elige la fecha de tu evento
-								</label>
-
-								<Calendar
-									// {...register("addDate", {
-									// 	required: {
-									// 		value: true,
-									// 		message: "Campo requerido",
-									// 	},
-									// })}
-									required
-									className="calendar-book"
-									value={date}
-									onChange={(e) => setDate(e.value)}
-									showIcon
+						<div>
+							<p className="label-date-book">Elige la fecha</p>
+							<div className="div-calendar-book">
+								<FiCalendar size={36} />
+								<input
+									type="date"
+									id=""
+									{...register("dateBook", {
+										required: {
+											value: true,
+											message: "Campo requerido",
+										},
+									})}
 								/>
 							</div>
-							{customErrors && customErrors.addDate && (
-								// <p className="notice">{errors.addDate.message}</p>
-								<div className="card flex justify-content-center">
-									<Message text="Username is required" />
-								</div>
-							)}
-							<div className="flex-auto">
-								<label
-									htmlFor="calendar-timeonly"
-									className="font-bold block mb-2 label-date-book"
-								>
-									Elige la hora de tu evento
-								</label>
+						</div>
 
-								<Calendar
-									// {...register("addTime", {
-									// 	required: {
-									// 		value: true,
-									// 		message: "Campo requerido",
-									// 	},
-									// })}
-									required
-									id="calendar-timeonly"
-									className="font-bold block mb-2 calendar-book"
-									value={time}
-									onChange={(e) => setTime(e.value)}
-									showIcon
-									timeOnly
-									icon={() => <FiClock />}
+						<div>
+							<p className="label-date-book">Elige la hora</p>
+							<div className="div-calendar-book">
+								<FiClock size={36} />
+								<input
+									type="time"
+									{...register("timeBook", {
+										required: {
+											value: true,
+											message: "Campo requerido",
+										},
+									})}
 								/>
 							</div>
-							{/* {errors && errors.addTime && (
-								<p className="notice">{errors.addTime.message}</p>
-							)} */}
 						</div>
-						<div className="card flex justify-content-center div-calendar-book">
-							<LuBookMarked size={54} />
-							<div>
-								<p className="label-date-book">
-									Describe tu evento y cual es tu motivo
-								</p>
-								<FloatLabel>
-									<InputTextarea
-										id="description"
-										// value={valueText}
-										// onChange={(e) => setValueText(e.target.value)}
-										rows={4}
-										cols={40}
-										// name="addDescription"
-										required
-										{...register("addDescription", {
-											required: {
-												value: true,
-												message: "Campo requerido",
-											},
-										})}
-									/>
-									<label className="inside-label-input" htmlFor="description">
-										Descripción
-									</label>
-								</FloatLabel>
-							</div>
-							{errors && errors.addDescription && (
-								<p className="notice">{errors.addDescription.message}</p>
-							)}
-						</div>
-						<div className="div-calendar-book">
-							<BsPeople size={48} />
-							<div>
-								<p className="label-date-book">
-									¿Cuantos participantes habrá en el evento?
-								</p>
-								<div className="card flex justify-content-center div-calendar-book">
-									<InputText
-										keyfilter="int"
-										placeholder="4"
-										className="input-int-form"
-										name="addGuests"
-										required
-										{...register("addGuests", {
-											required: {
-												value: true,
-												message: "Campo requerido",
-											},
-											maxLength: {
-												value: 2,
-												message: "No podemos admitir tantos invitados :(",
-											},
-											validate: {
-												maxGuests: (value) =>
-													parseInt(value) <= 16 ||
-													"No podemos admitir mas de 16 personas",
-											},
-										})}
-									/>
-								</div>
+
+						<div>
+							<p className="label-date-book">Cuantos invitados habrá</p>
+							<div className="div-calendar-book">
+								<IoPeopleOutline size={38} />
+								<input
+									placeholder="Menos de 17"
+									className="input-book-design"
+									type="number"
+									{...register("addGuests", {
+										required: {
+											value: true,
+											message: "Campo requerido",
+										},
+									})}
+								/>
 							</div>
 						</div>
+
+						<div>
+							<div>
+								<p className="label-date-book">Describe tu evento</p>
+								<p className="font-description-type">
+									Describe cual es el motivo de tu evento y detalles adicionales
+									que consideres importantes
+								</p>
+							</div>
+							<div className="div-calendar-book">
+								<LuBookMarked size={38} />
+								<textarea
+									cols={60}
+									rows={3}
+									className="text-area-book"
+									placeholder="Descripcion"
+									type="textarea"
+									{...register("addDescription", {
+										required: {
+											value: true,
+											message: "Campo requerido",
+										},
+									})}
+								/>
+							</div>
+						</div>
+
 						{!user && (
-							<div className="div-container-calendar div-space">
-								<p className="label-date-book title-space-left">
-									Ingresa tus datos para la reservación
-								</p>
-
-								<div className="div-container-calendar">
-									<div className="card flex justify-content-center div-calendar-book">
-										<FaRegUser size={38} />
-										<FloatLabel>
-											<InputText
-												required
-												className="calendar-book"
-												id="client"
-												value={client}
-												onChange={(e) => setClient(e.target.value)}
-												// name="addClient"
-												// {...register("addClient", {
-												// 	required: {
-												// 		value: true,
-												// 		message: "Campo requerido",
-												// 	},
-												// })}
-											/>
-											<label className="inside-label-input" htmlFor="username">
-												Tu Nombre Completo
-											</label>
-										</FloatLabel>
-									</div>
-									{/* {errors && errors.addClient && (
-										<p className="notice">{errors.addClient.message}</p>
-									)} */}
-									<div className="card flex justify-content-center div-calendar-book">
-										<FaRegAddressCard size={38} />
-										<FloatLabel>
-											<InputText
-												required
-												className="calendar-book"
-												id="userIdentity"
-												value={ident}
-												onChange={(e) => setIdent(e.target.value)}
-												// name="userIdentity"
-												// {...register("addIdentity", {
-												// 	required: {
-												// 		value: true,
-												// 		message: "Campo requerido",
-												// 	},
-												// 	minLength: {
-												// 		value: 6,
-												// 		message: "No es una identificación válida",
-												// 	},
-												// })}
-											/>
-											<label className="inside-label-input" htmlFor="username">
-												Número de Identificacion
-											</label>
-										</FloatLabel>
+							<>
+								<div>
+									<p className="label-date-book">Describe tu evento</p>
+									<div className="div-calendar-book">
+									<FaRegUser size={38} />
+										<input
+											className="calendar-book input-book-design"
+											placeholder="Nombre"
+											type="text"
+											{...register("addClient", {
+												required: {
+													value: true,
+													message: "Campo requerido",
+												},
+											})}
+										/>
 									</div>
 								</div>
-								{/* {errors && errors.userIdentity && (
-									<p className="notice">{errors.addIdentity.message}</p>
-								)} */}
-							</div>
+
+								<div>
+									<p className="label-date-book">Describe tu evento</p>
+									<div className="div-calendar-book">
+									<PiIdentificationCard size={38} />
+										<input
+											className="calendar-book input-book-design"
+											placeholder="Identificación"
+											type="text"
+											{...register("addIdentity", {
+												required: {
+													value: true,
+													message: "Campo requerido",
+												},
+											})}
+										/>
+									</div>
+								</div>
+							</>
 						)}
-						<div className="container-btn">
+
+						<div className="container-btn btn-space-around">
 							<button className="btn btn-portfolio" type="submit">
 								Reservar
 							</button>
