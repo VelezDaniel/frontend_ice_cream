@@ -7,8 +7,10 @@ import { updatePersonRequest } from "../../api/users";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function UserSettings({ closeMethod }) {
+	const navigate = useNavigate();
 	const [updateModal, setUpdateModal] = useState(false);
 	const { user, errors: registerErrors, logout } = useAuth();
 	const {
@@ -21,6 +23,11 @@ function UserSettings({ closeMethod }) {
 
 	const openModalUpdate = () => {
 		setUpdateModal(true);
+	};
+
+	const handlerLogout = () => {
+		logout();
+		navigate("/");
 	};
 
 	useEffect(() => {
@@ -253,7 +260,7 @@ function UserSettings({ closeMethod }) {
 						</div>
 					</div>
 				</div>
-				<button className="btn-cerrarsesion" onClick={logout}>
+				<button className="btn-cerrarsesion" onClick={handlerLogout}>
 					<i className="bi bi-box-arrow-right"></i>
 					Cerrar Sesión
 				</button>

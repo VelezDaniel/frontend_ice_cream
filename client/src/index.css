@@ -141,6 +141,16 @@
 	justify-content: center;
 }
 
+/* SPACES */
+
+.space-left {
+	margin-left: 36px;
+}
+
+.title-space-left {
+	margin-left: 84px;
+}
+
 .btn-alert-modal {
 	width: 112px;
 	background-color: none;
@@ -159,3 +169,14 @@
 	color: var(--lightTitles);
 }
 
+/* input */
+.inside-label-input {
+	color: var(--grayFonts);
+	font-size: 14px;
+}
+
+.input-int-form {
+	width: 76px;
+	height: 36px;
+	text-align: center;
+}

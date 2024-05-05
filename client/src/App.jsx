@@ -1,7 +1,5 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./index.css";
-
 import RegisterPage from "./components/register/RegisterPage";
 import LoginPage from "./components/login/LoginPage";
 import HomePage from "./pages/HomePage";
@@ -11,6 +9,9 @@ import Bookings from "./pages/Bookings";
 import { AuthProvider } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
+// Styles
+import "./index.css";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
 
 function App() {
 	return (

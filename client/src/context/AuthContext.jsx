@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { registerRequest, loginRequest, verifyTokenRequest } from "../api/auth";
 import Cookies from "js-cookie";
 
+
 export const AuthContext = createContext();
 
 export const useAuth = () => {
