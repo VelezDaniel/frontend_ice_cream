@@ -1,16 +1,11 @@
 import NavBar from "../components/navbar/NavBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useForm } from "react-hook-form";
-import { createBookingRequest } from "../api/bookings";
+import { createBookingRequest, showUserBookingsRequest } from "../api/bookings";
 
-// primereact
-// import { Calendar } from "primereact/calendar";
-// import { InputTextarea } from "primereact/inputtextarea";
-// import { FloatLabel } from "primereact/floatlabel";
-// import { InputText } from "primereact/inputtext";
-
-// import { Message } from "primereact/message";
+// Prime React
+import { Message } from "primereact/message";
 
 // styles
 import "../css/bookings.css";
@@ -30,68 +25,55 @@ function Bookings() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
-	const [date, setDate] = useState(null);
-	const [time, setTime] = useState(null);
-	const [client, setClient] = useState("");
-	const [ident, setIdent] = useState("");
-	const [customErrors, setCustomErrors] = useState({});
+	const [showBooks, setShowBooks] = useState(false);
+	const [bookForm, setBookForm] = useState(true);
+	const [userBooks, setUserBooks] = useState([]);
 
-	const formatDate = (date) => {
-		const year = date.getFullYear();
-		const month = (date.getMonth() + 1).toString().padStart(2, "0");
-		const day = date.getDate().toString().padStart(2, "0");
-		return `${year}-${month}-${day}`;
-	};
-
-	const formatTime = (time) => {
-		const hours = time.getHours().toString().padStart(2, "0");
-		const minutes = time.getMinutes().toString().padStart(2, "0");
-		const seconds = time.getSeconds().toString().padStart(2, "0");
-		return `${hours}:${minutes}:${seconds}`;
-	};
-
-	const getFormErrMessage = (name) => {
-		return errors[name] && <p className="notice">{errors[name].message}</p>;
-	};
-
-	const handlerClient = (e) => {
-		setClient(e.target.value);
-	};
-
-	const handlerIdent = (e) => {
-		setIdent(e.target.value);
-	};
-
-	const clientValid = () => {
-		if (!client || !ident) {
-			return false;
+	useEffect(() => {
+		if (user) {
+			const handleShowBooks = async () => {
+				try {
+					const items = await showUserBookingsRequest(user);
+					// Establecer usuarios en estado
+					console.log(items);
+					setUserBooks(items.data.body);
+				} catch (error) {
+					console.log("Error in useEffect books: ", error);
+				}
+			};
+			handleShowBooks();
 		}
-		return true;
+	}, []);
+
+	const handleForm = () => {
+		setShowBooks(false);
+		setBookForm(true);
+	};
+
+	const handleBooks = () => {
+		setShowBooks(true);
+		setBookForm(false);
 	};
 
 	const onSubmit = async (data) => {
 		let info;
-		// e.preventDefault();
-		const dateTime =
-			data.dateBook && data.timeBook
-				? formatDate(data.dateBook) + " " + formatTime(data.timeBook)
-				: null;
-		console.log(dateTime); // Imprime la fecha y la hora combinadas
 		console.log(data); // Imprime todos los datos del formulario
 		console.log("user book: ", user);
 		if (!user) {
 			info = {
 				id: 0,
-				dateBook: dateTime,
+				dateBook: data.dateBook,
+				timeBook: data.timeBook,
 				description: data.addDescription,
 				attendees: data.addGuests,
-				hiddenDescription: `Identificación: ${ident} | Nombre: ${client}`,
+				hiddenDescription: `Identificación: ${data.addIdentity} | Nombre: ${data.addClient}`,
 			};
 		}
 		if (user) {
 			info = {
 				id: 0,
-				dateBook: dateTime,
+				dateBook: data.dateBook,
+				timeBook: data.timeBook,
 				description: data.addDescription,
 				attendees: data.addGuests,
 				idClient: user.id,
@@ -116,131 +98,191 @@ function Bookings() {
 
 				<div className="main-sect-booking">
 					<h2>¡Reserva momentos felices con los tuyos!</h2>
-					<form className="form-bookings" onSubmit={handleSubmit(onSubmit)}>
-						{/* Calendario para reservaciones */}
-						<div>
-							<p className="label-date-book">Elige la fecha</p>
-							<div className="div-calendar-book">
-								<FiCalendar size={36} />
-								<input
-									type="date"
-									id=""
-									{...register("dateBook", {
-										required: {
-											value: true,
-											message: "Campo requerido",
-										},
-									})}
-								/>
+					{user && (
+						<div className="div-calendar-book">
+							<div className="container-btn btn-custom-book">
+								<button className="btn btn-portfolio" onClick={handleForm}>
+									Reservar
+								</button>
+							</div>
+							<div className="container-btn btn-custom-book">
+								<button className="btn btn-portfolio" onClick={handleBooks}>
+									Mis reservas
+								</button>
 							</div>
 						</div>
-
-						<div>
-							<p className="label-date-book">Elige la hora</p>
-							<div className="div-calendar-book">
-								<FiClock size={36} />
-								<input
-									type="time"
-									{...register("timeBook", {
-										required: {
-											value: true,
-											message: "Campo requerido",
-										},
-									})}
-								/>
-							</div>
-						</div>
-
-						<div>
-							<p className="label-date-book">Cuantos invitados habrá</p>
-							<div className="div-calendar-book">
-								<IoPeopleOutline size={38} />
-								<input
-									placeholder="Menos de 17"
-									className="input-book-design"
-									type="number"
-									{...register("addGuests", {
-										required: {
-											value: true,
-											message: "Campo requerido",
-										},
-									})}
-								/>
-							</div>
-						</div>
-
-						<div>
+					)}
+					{bookForm && (
+						<form className="form-bookings" onSubmit={handleSubmit(onSubmit)}>
+							{/* Calendario para reservaciones */}
 							<div>
-								<p className="label-date-book">Describe tu evento</p>
-								<p className="font-description-type">
-									Describe cual es el motivo de tu evento y detalles adicionales
-									que consideres importantes
-								</p>
+								<p className="label-date-book">Elige la fecha</p>
+								<div className="div-calendar-book">
+									<FiCalendar size={36} />
+									<input
+										type="date"
+										{...register("dateBook", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
+									/>
+								</div>
+								{errors && errors.dateBook && (
+									<Message
+										severity="error"
+										className="message-prime-react"
+										text={errors.dateBook.message}
+									/>
+								)}
 							</div>
-							<div className="div-calendar-book">
-								<LuBookMarked size={38} />
-								<textarea
-									cols={60}
-									rows={3}
-									className="text-area-book"
-									placeholder="Descripcion"
-									type="textarea"
-									{...register("addDescription", {
-										required: {
-											value: true,
-											message: "Campo requerido",
-										},
-									})}
-								/>
-							</div>
-						</div>
 
-						{!user && (
-							<>
+							<div>
+								<p className="label-date-book">Elige la hora</p>
+								<div className="div-calendar-book">
+									<FiClock size={36} />
+									<input
+										type="time"
+										{...register("timeBook", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
+									/>
+								</div>
+								{errors && errors.timeBook && (
+									<Message
+										severity="error"
+										className="message-prime-react"
+										text={errors.timeBook.message}
+									/>
+								)}
+							</div>
+
+							<div>
+								<p className="label-date-book">Cuantos invitados habrá</p>
+								<div className="div-calendar-book">
+									<IoPeopleOutline size={38} />
+									<input
+										placeholder="Menos de 17"
+										className="input-book-design"
+										type="number"
+										{...register("addGuests", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
+									/>
+								</div>
+								{errors && errors.addGuests && (
+									<Message
+										severity="error"
+										className="message-prime-react"
+										text={errors.addGuests.message}
+									/>
+								)}
+							</div>
+
+							<div>
 								<div>
 									<p className="label-date-book">Describe tu evento</p>
-									<div className="div-calendar-book">
-									<FaRegUser size={38} />
-										<input
-											className="calendar-book input-book-design"
-											placeholder="Nombre"
-											type="text"
-											{...register("addClient", {
-												required: {
-													value: true,
-													message: "Campo requerido",
-												},
-											})}
-										/>
-									</div>
+									<p className="font-description-type">
+										Describe cual es el motivo de tu evento y detalles
+										adicionales que consideres importantes
+									</p>
 								</div>
-
-								<div>
-									<p className="label-date-book">Describe tu evento</p>
-									<div className="div-calendar-book">
-									<PiIdentificationCard size={38} />
-										<input
-											className="calendar-book input-book-design"
-											placeholder="Identificación"
-											type="text"
-											{...register("addIdentity", {
-												required: {
-													value: true,
-													message: "Campo requerido",
-												},
-											})}
-										/>
-									</div>
+								<div className="div-calendar-book">
+									<LuBookMarked size={38} />
+									<textarea
+										cols={60}
+										rows={3}
+										className="text-area-book"
+										placeholder="Descripcion"
+										type="textarea"
+										{...register("addDescription", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
+									/>
 								</div>
-							</>
-						)}
+								{errors && errors.addDescription && (
+									<Message
+										severity="error"
+										className="message-prime-react"
+										text={errors.addDescription.message}
+									/>
+								)}
+							</div>
 
-						<div className="container-btn btn-space-around">
-							<button className="btn btn-portfolio" type="submit">
-								Reservar
-							</button>
-						</div>
-					</form>
+							{!user && (
+								<>
+									<div>
+										<p className="label-date-book">Describe tu evento</p>
+										<div className="div-calendar-book">
+											<FaRegUser size={38} />
+											<input
+												className="calendar-book input-book-design"
+												placeholder="Nombre"
+												type="text"
+												{...register("addClient", {
+													required: {
+														value: true,
+														message: "Campo requerido",
+													},
+												})}
+											/>
+										</div>
+										{errors && errors.addClient && (
+											<Message
+												severity="error"
+												className="message-prime-react"
+												text={errors.addClient.message}
+											/>
+										)}
+									</div>
+
+									<div>
+										<p className="label-date-book">Describe tu evento</p>
+										<div className="div-calendar-book">
+											<PiIdentificationCard size={38} />
+											<input
+												className="calendar-book input-book-design"
+												placeholder="Identificación"
+												type="text"
+												{...register("addIdentity", {
+													required: {
+														value: true,
+														message: "Campo requerido",
+													},
+												})}
+											/>
+										</div>
+										{errors && errors.addIdentity && (
+											<Message
+												severity="error"
+												className="message-prime-react"
+												text={errors.addIdentity.message}
+											/>
+										)}
+									</div>
+								</>
+							)}
+
+							<div className="container-btn btn-space-around">
+								<button className="btn btn-portfolio" type="submit">
+									Confirmar
+								</button>
+							</div>
+						</form>
+					)}
+					{showBooks && (
+						<div>Hola jiji</div>
+					)}
 				</div>
 			</div>
 		</>

@@ -210,3 +210,10 @@ input[type="date"] {
 	font-weight: 500;
 	color: var(--grayFonts);
 }
+
+/* advertise */
+.message-prime-react {
+	margin-top: 6px;
+	padding: 4px 10px;
+	gap: 6px;
+}
