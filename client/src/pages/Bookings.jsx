@@ -7,6 +7,17 @@ import { createBookingRequest, showUserBookingsRequest } from "../api/bookings";
 // Prime React
 import { Message } from "primereact/message";
 
+// Material UI
+import Alert from "@mui/material/Alert";
+
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+
 // styles
 import "../css/bookings.css";
 import { LuCalendarClock } from "react-icons/lu";
@@ -17,6 +28,7 @@ import { LuBookMarked } from "react-icons/lu";
 import { FaRegAddressCard } from "react-icons/fa";
 import { FiClock, FiCalendar } from "react-icons/fi";
 import { PiIdentificationCard } from "react-icons/pi";
+import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 
 function Bookings() {
 	const { user } = useAuth();
@@ -29,21 +41,20 @@ function Bookings() {
 	const [bookForm, setBookForm] = useState(true);
 	const [userBooks, setUserBooks] = useState([]);
 
-	useEffect(() => {
-		if (user) {
-			const handleShowBooks = async () => {
-				try {
-					const items = await showUserBookingsRequest(user);
-					// Establecer usuarios en estado
-					console.log(items);
-					setUserBooks(items.data.body);
-				} catch (error) {
-					console.log("Error in useEffect books: ", error);
-				}
-			};
-			handleShowBooks();
+	const handleShowBooks = async () => {
+		try {
+			if (user != null) {
+				const items = await showUserBookingsRequest(user);
+				// Establecer usuarios en estado
+				console.log(items);
+				setUserBooks(items.data.body);
+			} else {
+				console.log("user null", user);
+			}
+		} catch (error) {
+			console.log("Error in useEffect books: ", error);
 		}
-	}, []);
+	};
 
 	const handleForm = () => {
 		setShowBooks(false);
@@ -51,6 +62,7 @@ function Bookings() {
 	};
 
 	const handleBooks = () => {
+		handleShowBooks();
 		setShowBooks(true);
 		setBookForm(false);
 	};
@@ -281,7 +293,50 @@ function Bookings() {
 						</form>
 					)}
 					{showBooks && (
-						<div>Hola jiji</div>
+						<TableContainer component={Paper}>
+							<Table sx={{ minWidth: 450 }} aria-label="simple table">
+								<TableHead>
+									<TableRow>
+										<TableCell>Fecha </TableCell>
+										<TableCell align="right">Hora</TableCell>
+										<TableCell align="right">Invitados</TableCell>
+										<TableCell align="right">Descripción</TableCell>
+										<TableCell align="right">Acciones</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{userBooks.map((book) => (
+										<TableRow
+											key={book.id}
+											sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+										>
+											<TableCell component="th" scope="row">
+												{book.dateBook}
+											</TableCell>
+											<TableCell align="right" className="table-item">{book.timeBook}</TableCell>
+											<TableCell align="right">{book.attendees}</TableCell>
+											<TableCell align="right">{book.description}</TableCell>
+											<TableCell align="right">
+												<div className="dash-container-btns">
+													<button
+														className="dash-btn-edit"
+														onClick={() => openModalEdit(book.id)}
+													>
+														<HiOutlinePencilAlt size={38} />
+													</button>
+													<button
+														className="dash-btn-delete"
+														onClick={() => openModalDelete(book.id)}
+													>
+														<HiOutlineTrash size={38} />
+													</button>
+												</div>
+											</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
+						</TableContainer>
 					)}
 				</div>
 			</div>

@@ -102,3 +102,12 @@
 	color: var(--grayFonts);
 	padding: 4px;
 }
+
+/* Table */
+.description-field-table {
+	width: 80px;
+}
+
+.table-item {
+	font-weight: 600;
+}

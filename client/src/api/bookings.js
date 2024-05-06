@@ -6,7 +6,7 @@ export const showBookingsRequest = async () => axios.get(`/bookings`);
 // export const showUserBookingsRequest = async () => axios.get(`/userBooks`);
 export const showUserBookingsRequest = async (user) => {
   try {
-    const result = await axios.get(`/userBooks/${user.id}`, user);
+    const result = await axios.get(`/bookings/userbooks/${user.id}`, user);
     console.log('result bookings user: ', result)
     return result;
   } catch (error) {
