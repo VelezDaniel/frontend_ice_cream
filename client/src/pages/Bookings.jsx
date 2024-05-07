@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import {
 	createBookingRequest,
 	showUserBookingsRequest,
-	updateBookingRequest,
 	deleteBookingRequest,
 } from "../api/bookings";
 import ModalTemplate from "../components/modal/ModalTemplate";
@@ -48,7 +47,7 @@ function Bookings() {
 	const [bookData, setBookData] = useState(null);
 	const [editModal, setEditModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
-	// const [getIndex, setGetIndex] = useState(null);
+	const [getIndex, setGetIndex] = useState(null);
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
 	useEffect(() => {
 		if (bookData) {
@@ -119,6 +118,7 @@ function Bookings() {
 	const openModalEdit = (index) => {
 		console.log(index);
 		setEditModal(true);
+		setGetIndex(index);
 		setselectedObjectIndex(index);
 		setBookData(userBooks[index]);
 	};
@@ -126,6 +126,8 @@ function Bookings() {
 	const openModalDelete = (index) => {
 		setDeleteModal(true);
 		setselectedObjectIndex(index);
+		setGetIndex(index);
+		setBookData(userBooks[index]);
 	};
 
 	const onSubmitEdit = handleSubmit(async (values) => {
@@ -139,8 +141,9 @@ function Bookings() {
 				description: values.editDescription,
 				idClient: user.id,
 			};
-			const result = await updateBookingRequest(infoBook);
+			const result = await createBookingRequest(infoBook);
 			console.log(result);
+			window.location.reload();
 		} catch (error) {
 			console.log("error in onsubmitEdit ", error);
 		}
@@ -440,174 +443,74 @@ function Bookings() {
 								</TableHead>
 								<TableBody sx={{ borderRadius: 8 }}>
 									{userBooks.map((book, index) => (
-										<>
-											<TableRow key={index} sx={{ boxShadow: 1, pb: 2 }}>
-												<TableCell
-													component="th"
-													scope="row"
-													sx={{
-														fontFamily: "Montserrat",
-														fontWeight: 600,
-														fontSize: 14,
-														color: "#494949",
-													}}
-												>
-													{book.dateBook}
-												</TableCell>
-												<TableCell
-													align="right"
-													sx={{
-														fontFamily: "Montserrat",
-														fontWeight: 600,
-														fontSize: 14,
-														color: "#494949",
-													}}
-												>
-													{book.timeBook}
-												</TableCell>
-												<TableCell
-													align="right"
-													sx={{
-														fontFamily: "Montserrat",
-														fontWeight: 600,
-														fontSize: 14,
-														color: "#494949",
-														textAlign: "center",
-													}}
-												>
-													{book.attendees}
-												</TableCell>
-												<TableCell
-													align="right"
-													sx={{
-														fontFamily: "Montserrat",
-														fontWeight: 600,
-														fontSize: 14,
-														color: "#494949",
-														maxWidth: 120,
-													}}
-												>
-													{book.description}
-												</TableCell>
-												<TableCell
-													align="right"
-													sx={{ display: "flex", justifyContent: "end" }}
-												>
-													<div className="dash-container-btns">
-														<button
-															className="dash-btn-edit"
-															onClick={() => openModalEdit(index)}
-														>
-															<HiOutlinePencilAlt size={38} />
-														</button>
-														<button
-															className="dash-btn-delete"
-															onClick={() => openModalDelete(index)}
-														>
-															<HiOutlineTrash size={38} />
-														</button>
-													</div>
-												</TableCell>
-											</TableRow>
-											{editModal && selectedObjectIndex === index && (
-												<ModalTemplate
-													setStateModal={setEditModal}
-													title="Editar Reservación"
-													showHeader={true}
-													designClass={""}
-												>
-													<form onSubmit={onSubmitEdit}>
-														<input
-															type="hidden"
-															value={bookData.id}
-															{...register("id")}
-														/>
-														<span className="span-edit-form">Fecha</span>
-														<div>
-															<input
-																type="date"
-																{...register("editDateBook", {
-																	required: {
-																		value: true,
-																		message: "Campo requerido",
-																	},
-																})}
-																defaultValue={bookData.dateBook}
-															/>
-														</div>
-														{errors.editDateBook && (
-															<p className="notice">
-																{errors.editDateBook.message}
-															</p>
-														)}
-														<span className="span-edit-form">Hora</span>
-														<div>
-															<input
-																type="time"
-																{...register("editTimeBook", {
-																	required: {
-																		value: true,
-																		message: "Campo requerido",
-																	},
-																})}
-																defaultValue={bookData.timeBook}
-															/>
-														</div>
-														{errors.editTimeBook && (
-															<p className="notice">
-																{errors.editTimeBook.message}
-															</p>
-														)}
-														<span className="span-edit-form">Invitados</span>
-														<div className="div-input-edit-modal">
-															<input
-																className="input-edit-modal"
-																type="number"
-																{...register("editGuests", {
-																	required: {
-																		value: true,
-																		message: "Campo requerido",
-																	},
-																})}
-																defaultValue={bookData.attendees}
-															/>
-														</div>
-														{errors.editGuests && (
-															<p className="notice">
-																{errors.editGuests.message}
-															</p>
-														)}
-														<span className="span-edit-form">Descripción</span>
-														<div>
-															<textarea
-																className="textarea-modal-edit"
-																{...register("editDescription", {
-																	required: {
-																		value: true,
-																		message: "Campo requerido",
-																	},
-																})}
-																defaultValue={bookData.description}
-															/>
-														</div>
-														{errors.editDescription && (
-															<p className="notice">
-																{errors.editDescription.message}
-															</p>
-														)}
-														<div className="div-button-edit-modal">
-															<input
-																type="submit"
-																className="btn-enviar fill-btn"
-																id="btn-add-user"
-																value="Actualizar"
-																// onClick={onSubmitEdit}
-															/>
-														</div>
-													</form>
-												</ModalTemplate>
-											)}
-										</>
+										<TableRow key={index} sx={{ boxShadow: 1, pb: 2 }}>
+											<TableCell
+												component="th"
+												scope="row"
+												sx={{
+													fontFamily: "Montserrat",
+													fontWeight: 600,
+													fontSize: 14,
+													color: "#494949",
+												}}
+											>
+												{book.dateBook}
+											</TableCell>
+											<TableCell
+												align="right"
+												sx={{
+													fontFamily: "Montserrat",
+													fontWeight: 600,
+													fontSize: 14,
+													color: "#494949",
+												}}
+											>
+												{book.timeBook}
+											</TableCell>
+											<TableCell
+												align="right"
+												sx={{
+													fontFamily: "Montserrat",
+													fontWeight: 600,
+													fontSize: 14,
+													color: "#494949",
+													textAlign: "center",
+												}}
+											>
+												{book.attendees}
+											</TableCell>
+											<TableCell
+												align="right"
+												sx={{
+													fontFamily: "Montserrat",
+													fontWeight: 600,
+													fontSize: 14,
+													color: "#494949",
+													maxWidth: 120,
+												}}
+											>
+												{book.description}
+											</TableCell>
+											<TableCell
+												align="right"
+												sx={{ display: "flex", justifyContent: "end" }}
+											>
+												<div className="dash-container-btns">
+													<button
+														className="dash-btn-edit"
+														onClick={() => openModalEdit(index)}
+													>
+														<HiOutlinePencilAlt size={38} />
+													</button>
+													<button
+														className="dash-btn-delete"
+														onClick={() => openModalDelete(index)}
+													>
+														<HiOutlineTrash size={38} />
+													</button>
+												</div>
+											</TableCell>
+										</TableRow>
 									))}
 								</TableBody>
 							</Table>
@@ -615,12 +518,97 @@ function Bookings() {
 					)}
 
 					{/* Edit modal */}
-
+					{editModal && selectedObjectIndex === getIndex && (
+						<ModalTemplate
+							setStateModal={setEditModal}
+							title="Editar Reservación"
+							showHeader={true}
+							designClass={""}
+						>
+							<form onSubmit={onSubmitEdit}>
+								<input type="hidden" value={bookData.id} {...register("id")} />
+								<span className="span-edit-form">Fecha</span>
+								<div>
+									<input
+										type="date"
+										{...register("editDateBook", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
+										defaultValue={bookData.dateBook}
+									/>
+								</div>
+								{errors.editDateBook && (
+									<p className="notice">{errors.editDateBook.message}</p>
+								)}
+								<span className="span-edit-form">Hora</span>
+								<div>
+									<input
+										type="time"
+										{...register("editTimeBook", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
+										defaultValue={bookData.timeBook}
+									/>
+								</div>
+								{errors.editTimeBook && (
+									<p className="notice">{errors.editTimeBook.message}</p>
+								)}
+								<span className="span-edit-form">Invitados</span>
+								<div className="div-input-edit-modal">
+									<input
+										className="input-edit-modal"
+										type="number"
+										{...register("editGuests", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
+										defaultValue={bookData.attendees}
+									/>
+								</div>
+								{errors.editGuests && (
+									<p className="notice">{errors.editGuests.message}</p>
+								)}
+								<span className="span-edit-form">Descripción</span>
+								<div>
+									<textarea
+										className="textarea-modal-edit"
+										{...register("editDescription", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
+										defaultValue={bookData.description}
+									/>
+								</div>
+								{errors.editDescription && (
+									<p className="notice">{errors.editDescription.message}</p>
+								)}
+								<div className="div-button-edit-modal">
+									<input
+										type="submit"
+										className="btn-enviar fill-btn"
+										id="btn-add-user"
+										value="Actualizar"
+										// onClick={onSubmitEdit}
+									/>
+								</div>
+							</form>
+						</ModalTemplate>
+					)}
 					{/* Mostrar Eliminar */}
-					{/* {deleteModal && selectedObjectIndex === index && (
+					{deleteModal && selectedObjectIndex === getIndex && (
 						<ModalTemplate
 							setStateModal={setDeleteModal}
-							title={" Eliminar Usuario "}
+							title={" Eliminar Reservación"}
 							showHeader={true}
 							designClass={"alert"}
 						>
@@ -640,13 +628,13 @@ function Bookings() {
 							<div className="container-btn-alert-modal">
 								<button
 									className="btn-alert-modal"
-									onClick={() => deleteUser(bookData)}
+									onClick={() => deleteBook(bookData)}
 								>
 									Aceptar
 								</button>
 							</div>
 						</ModalTemplate>
-					)} */}
+					)}
 				</div>
 			</div>
 		</>
