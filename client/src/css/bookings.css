@@ -111,3 +111,31 @@
 .table-item {
 	font-weight: 600;
 }
+
+/* MODALS */
+.textarea-modal-edit {
+	border-radius: 4px;
+	width: 300px;
+	height: 64px;
+	padding: 4px;
+	border: 1px solid var(--border-gray);
+}
+
+.div-input-edit-modal{
+	border-radius: 4px;
+}
+
+.input-edit-modal {
+	border-radius: 4px;
+	border: 1px solid var(--border-gray);
+	text-align: center;
+	width: 50px;
+	height: 36px;
+}
+
+.div-button-edit-modal {
+	width: auto;
+	display: flex;
+	justify-content: center;
+	padding: 8px 2px 4px 2px;
+}

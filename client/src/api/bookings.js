@@ -16,6 +16,8 @@ export const showUserBookingsRequest = async (user) => {
 
 export const createBookingRequest = async (booking) => axios.post('/bookings', booking);
 
+export const updateBookingRequest = async (booking) => axios.patch('/bookings', booking);
+
 export const deleteBookingRequest = async (booking) => {
   try {
     const response =  await axios.delete(`/bookings/${booking.id}`, booking);

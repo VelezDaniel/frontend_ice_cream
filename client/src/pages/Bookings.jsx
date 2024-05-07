@@ -2,14 +2,18 @@ import NavBar from "../components/navbar/NavBar";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useForm } from "react-hook-form";
-import { createBookingRequest, showUserBookingsRequest } from "../api/bookings";
+import {
+	createBookingRequest,
+	showUserBookingsRequest,
+	updateBookingRequest,
+	deleteBookingRequest,
+} from "../api/bookings";
+import ModalTemplate from "../components/modal/ModalTemplate";
 
 // Prime React
 import { Message } from "primereact/message";
 
 // Material UI
-import Alert from "@mui/material/Alert";
-
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -35,12 +39,27 @@ function Bookings() {
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm();
 	const [showBooks, setShowBooks] = useState(false);
 	const [bookForm, setBookForm] = useState(true);
 	const [userBooks, setUserBooks] = useState([]);
+	const [bookData, setBookData] = useState(null);
+	const [editModal, setEditModal] = useState(false);
+	const [deleteModal, setDeleteModal] = useState(false);
+	// const [getIndex, setGetIndex] = useState(null);
+	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
+	useEffect(() => {
+		if (bookData) {
+			setValue("editDateBook", bookData.dateBook);
+			setValue("editTimeBook", bookData.timeBook);
+			setValue("editGuests", bookData.attendees);
+			setValue("editDescription", bookData.description);
+		}
+	}, [bookData]);
 
+	console.log(bookData);
 	const handleShowBooks = async () => {
 		try {
 			if (user != null) {
@@ -97,6 +116,49 @@ function Bookings() {
 		// location.reload();
 	};
 
+	const openModalEdit = (index) => {
+		console.log(index);
+		setEditModal(true);
+		setselectedObjectIndex(index);
+		setBookData(userBooks[index]);
+	};
+
+	const openModalDelete = (index) => {
+		setDeleteModal(true);
+		setselectedObjectIndex(index);
+	};
+
+	const onSubmitEdit = handleSubmit(async (values) => {
+		console.log("values for edit: ", values);
+		try {
+			const infoBook = {
+				id: values.id,
+				dateBook: values.editDateBook,
+				timeBook: values.editTimeBook,
+				attendees: values.editGuests,
+				description: values.editDescription,
+				idClient: user.id,
+			};
+			const result = await updateBookingRequest(infoBook);
+			console.log(result);
+		} catch (error) {
+			console.log("error in onsubmitEdit ", error);
+		}
+	});
+
+	const deleteBook = async (bookData) => {
+		try {
+			const result = await deleteBookingRequest(bookData);
+			if (result) {
+				setDeleteModal(false);
+				console.log("Registro eliminado: ", result);
+				window.location.reload();
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<>
 			<NavBar navBarType="NoHome" />
@@ -113,12 +175,18 @@ function Bookings() {
 					{user && (
 						<div className="div-calendar-book">
 							<div className="container-btn btn-custom-book">
-								<button className="btn btn-portfolio" onClick={handleForm}>
+								<button
+									className="btn btn-portfolio"
+									onClick={() => handleForm()}
+								>
 									Reservar
 								</button>
 							</div>
 							<div className="container-btn btn-custom-book">
-								<button className="btn btn-portfolio" onClick={handleBooks}>
+								<button
+									className="btn btn-portfolio"
+									onClick={() => handleBooks()}
+								>
 									Mis reservas
 								</button>
 							</div>
@@ -234,7 +302,9 @@ function Bookings() {
 							{!user && (
 								<>
 									<div>
-										<p className="label-date-book">Describe tu evento</p>
+										<p className="label-date-book">
+											Ingresa tu Nombre completo
+										</p>
 										<div className="div-calendar-book">
 											<FaRegUser size={38} />
 											<input
@@ -259,7 +329,7 @@ function Bookings() {
 									</div>
 
 									<div>
-										<p className="label-date-book">Describe tu evento</p>
+										<p className="label-date-book">Ingresa tu identificación</p>
 										<div className="div-calendar-book">
 											<PiIdentificationCard size={38} />
 											<input
@@ -292,52 +362,291 @@ function Bookings() {
 							</div>
 						</form>
 					)}
+					{/* Tabla  */}
 					{showBooks && (
 						<TableContainer component={Paper}>
-							<Table sx={{ minWidth: 450 }} aria-label="simple table">
+							<Table
+								sx={{
+									fontFamily: "Montserrat",
+									minWidth: 450,
+									boxShadow: 1,
+									color: "primary.main",
+								}}
+								aria-label="simple table"
+							>
 								<TableHead>
 									<TableRow>
-										<TableCell>Fecha </TableCell>
-										<TableCell align="right">Hora</TableCell>
-										<TableCell align="right">Invitados</TableCell>
-										<TableCell align="right">Descripción</TableCell>
-										<TableCell align="right">Acciones</TableCell>
+										<TableCell
+											sx={{
+												fontFamily: "Montserrat",
+												fontWeight: 700,
+												fontSize: 16,
+												minWidth: 70,
+												color: "secondary.contrastText",
+												bgcolor: "primary.light",
+											}}
+										>
+											Fecha
+										</TableCell>
+										<TableCell
+											align="right"
+											sx={{
+												fontFamily: "Montserrat",
+												fontWeight: 700,
+												fontSize: 16,
+												color: "secondary.contrastText",
+												bgcolor: "primary.light",
+											}}
+										>
+											Hora
+										</TableCell>
+										<TableCell
+											align="right"
+											sx={{
+												fontFamily: "Montserrat",
+												fontWeight: 700,
+												fontSize: 16,
+												color: "secondary.contrastText",
+												bgcolor: "primary.light",
+											}}
+										>
+											Invitados
+										</TableCell>
+										<TableCell
+											align="right"
+											sx={{
+												fontFamily: "Montserrat",
+												fontWeight: 700,
+												fontSize: 16,
+												color: "secondary.contrastText",
+												bgcolor: "primary.light",
+											}}
+										>
+											Descripción
+										</TableCell>
+										<TableCell
+											align="right"
+											sx={{
+												fontFamily: "Montserrat",
+												fontWeight: 700,
+												fontSize: 16,
+												color: "secondary.contrastText",
+												bgcolor: "primary.light",
+											}}
+										>
+											Acciones
+										</TableCell>
 									</TableRow>
 								</TableHead>
-								<TableBody>
-									{userBooks.map((book) => (
-										<TableRow
-											key={book.id}
-											sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-										>
-											<TableCell component="th" scope="row">
-												{book.dateBook}
-											</TableCell>
-											<TableCell align="right" className="table-item">{book.timeBook}</TableCell>
-											<TableCell align="right">{book.attendees}</TableCell>
-											<TableCell align="right">{book.description}</TableCell>
-											<TableCell align="right">
-												<div className="dash-container-btns">
-													<button
-														className="dash-btn-edit"
-														onClick={() => openModalEdit(book.id)}
-													>
-														<HiOutlinePencilAlt size={38} />
-													</button>
-													<button
-														className="dash-btn-delete"
-														onClick={() => openModalDelete(book.id)}
-													>
-														<HiOutlineTrash size={38} />
-													</button>
-												</div>
-											</TableCell>
-										</TableRow>
+								<TableBody sx={{ borderRadius: 8 }}>
+									{userBooks.map((book, index) => (
+										<>
+											<TableRow key={index} sx={{ boxShadow: 1, pb: 2 }}>
+												<TableCell
+													component="th"
+													scope="row"
+													sx={{
+														fontFamily: "Montserrat",
+														fontWeight: 600,
+														fontSize: 14,
+														color: "#494949",
+													}}
+												>
+													{book.dateBook}
+												</TableCell>
+												<TableCell
+													align="right"
+													sx={{
+														fontFamily: "Montserrat",
+														fontWeight: 600,
+														fontSize: 14,
+														color: "#494949",
+													}}
+												>
+													{book.timeBook}
+												</TableCell>
+												<TableCell
+													align="right"
+													sx={{
+														fontFamily: "Montserrat",
+														fontWeight: 600,
+														fontSize: 14,
+														color: "#494949",
+														textAlign: "center",
+													}}
+												>
+													{book.attendees}
+												</TableCell>
+												<TableCell
+													align="right"
+													sx={{
+														fontFamily: "Montserrat",
+														fontWeight: 600,
+														fontSize: 14,
+														color: "#494949",
+														maxWidth: 120,
+													}}
+												>
+													{book.description}
+												</TableCell>
+												<TableCell
+													align="right"
+													sx={{ display: "flex", justifyContent: "end" }}
+												>
+													<div className="dash-container-btns">
+														<button
+															className="dash-btn-edit"
+															onClick={() => openModalEdit(index)}
+														>
+															<HiOutlinePencilAlt size={38} />
+														</button>
+														<button
+															className="dash-btn-delete"
+															onClick={() => openModalDelete(index)}
+														>
+															<HiOutlineTrash size={38} />
+														</button>
+													</div>
+												</TableCell>
+											</TableRow>
+											{editModal && selectedObjectIndex === index && (
+												<ModalTemplate
+													setStateModal={setEditModal}
+													title="Editar Reservación"
+													showHeader={true}
+													designClass={""}
+												>
+													<form onSubmit={onSubmitEdit}>
+														<input
+															type="hidden"
+															value={bookData.id}
+															{...register("id")}
+														/>
+														<span className="span-edit-form">Fecha</span>
+														<div>
+															<input
+																type="date"
+																{...register("editDateBook", {
+																	required: {
+																		value: true,
+																		message: "Campo requerido",
+																	},
+																})}
+																defaultValue={bookData.dateBook}
+															/>
+														</div>
+														{errors.editDateBook && (
+															<p className="notice">
+																{errors.editDateBook.message}
+															</p>
+														)}
+														<span className="span-edit-form">Hora</span>
+														<div>
+															<input
+																type="time"
+																{...register("editTimeBook", {
+																	required: {
+																		value: true,
+																		message: "Campo requerido",
+																	},
+																})}
+																defaultValue={bookData.timeBook}
+															/>
+														</div>
+														{errors.editTimeBook && (
+															<p className="notice">
+																{errors.editTimeBook.message}
+															</p>
+														)}
+														<span className="span-edit-form">Invitados</span>
+														<div className="div-input-edit-modal">
+															<input
+																className="input-edit-modal"
+																type="number"
+																{...register("editGuests", {
+																	required: {
+																		value: true,
+																		message: "Campo requerido",
+																	},
+																})}
+																defaultValue={bookData.attendees}
+															/>
+														</div>
+														{errors.editGuests && (
+															<p className="notice">
+																{errors.editGuests.message}
+															</p>
+														)}
+														<span className="span-edit-form">Descripción</span>
+														<div>
+															<textarea
+																className="textarea-modal-edit"
+																{...register("editDescription", {
+																	required: {
+																		value: true,
+																		message: "Campo requerido",
+																	},
+																})}
+																defaultValue={bookData.description}
+															/>
+														</div>
+														{errors.editDescription && (
+															<p className="notice">
+																{errors.editDescription.message}
+															</p>
+														)}
+														<div className="div-button-edit-modal">
+															<input
+																type="submit"
+																className="btn-enviar fill-btn"
+																id="btn-add-user"
+																value="Actualizar"
+																// onClick={onSubmitEdit}
+															/>
+														</div>
+													</form>
+												</ModalTemplate>
+											)}
+										</>
 									))}
 								</TableBody>
 							</Table>
 						</TableContainer>
 					)}
+
+					{/* Edit modal */}
+
+					{/* Mostrar Eliminar */}
+					{/* {deleteModal && selectedObjectIndex === index && (
+						<ModalTemplate
+							setStateModal={setDeleteModal}
+							title={" Eliminar Usuario "}
+							showHeader={true}
+							designClass={"alert"}
+						>
+							<div className="modal-content-body">
+								<span className="modal-subtitle">
+									Seguro que deseas eliminar la reservación:
+								</span>
+								<span className="modal-info">Fecha: {bookData.dateBook}</span>
+								<span className="modal-info">Hora: {bookData.timeBook}</span>
+								<span className="modal-info">
+									Invitados: {bookData.attendees}
+								</span>
+								<span className="modal-info">
+									Descripción: {bookData.description}
+								</span>
+							</div>
+							<div className="container-btn-alert-modal">
+								<button
+									className="btn-alert-modal"
+									onClick={() => deleteUser(bookData)}
+								>
+									Aceptar
+								</button>
+							</div>
+						</ModalTemplate>
+					)} */}
 				</div>
 			</div>
 		</>
