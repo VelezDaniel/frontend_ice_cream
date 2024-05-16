@@ -12,6 +12,7 @@ import {
 } from "../../api/products";
 
 import photo from "../../assets/imgs/main_products_imgs/irlandez.png";
+import malteadasensacion from "../../assets/imgs/main_products_imgs/malteadasensacion.png";
 
 function DashPortfolio() {
 	const [productsData, setProductsData] = useState([]);
@@ -58,6 +59,21 @@ function DashPortfolio() {
 		}
 	}, [productInfo]);
 
+	// Select Image product
+	const selectProductImg = (imgName) => {
+		let returnImg;
+		if (imgName === "MALTEADA SENSACION") {
+			returnImg = malteadasensacion;
+		}
+		return (
+			<img
+				src={returnImg}
+				alt="imagen producto"
+				className="dash-card-img-product"
+			/>
+		);
+	};
+
 	const openModalEdit = (index) => {
 		setEditModal(true);
 		setselectedObjectIndex(index);
@@ -82,7 +98,7 @@ function DashPortfolio() {
 
 	const onSubmitEdit = handleSubmit(async (values) => {
 		console.log("values for edit: ", values);
-		console.log('mekams: ', productInfo);
+		console.log("mekams: ", productInfo);
 		const editProduct = {
 			id: productInfo.id,
 			nameProduct: values.editNameProduct,
@@ -90,18 +106,18 @@ function DashPortfolio() {
 			price: values.editPrice,
 			state: values.editState,
 			rank: values.editRank,
-			productSize:values.editProductSize,
+			productSize: values.editProductSize,
 			productType: values.editProductType,
-		}
+		};
 
 		try {
 			const editResult = await createProductRequest(editProduct);
-			console.log('editResult in dashportfolio: ', editResult);
+			console.log("editResult in dashportfolio: ", editResult);
 			setEditModal(false);
 			reset();
 			// window.location.reload();
 		} catch (error) {
-			console.log('error in onsubmitEdit ',error)
+			console.log("error in onsubmitEdit ", error);
 		}
 	});
 
@@ -160,8 +176,10 @@ function DashPortfolio() {
 								<span className="notice">{errors.nameProduct.message}</span>
 							)}
 							<div className="input-group">
-								<input
-									type="text"
+								<textarea
+									cols={8}
+									rows={4}
+									className="textarea-form"
 									{...register("description", {
 										required: {
 											value: true,
@@ -193,7 +211,8 @@ function DashPortfolio() {
 										},
 										pattern: {
 											value: /^\d{3,}\.\d{2}$/, // Al menos 3 enteros y 2 decimales
-											message: 'Precio debe tener al menos 3 enteros y 2 decimales',
+											message:
+												"Precio debe tener al menos 3 enteros y 2 decimales",
 										},
 									})}
 									placeholder="Precio unitario"
@@ -220,6 +239,7 @@ function DashPortfolio() {
 							{errors.rank && <p className="notice">{errors.rank.message}</p>}
 							<div className="form-group-select">
 								<select
+									className="form-control"
 									type="text"
 									{...register("productSize", { required: true })}
 									placeholder="Tamaño"
@@ -265,18 +285,14 @@ function DashPortfolio() {
 							{errors.productType && (
 								<p className="notice">{errors.productType.message}</p>
 							)}
-							{/* <label htmlFor="imgProduct" className="span-edit-form">
-								Imagen del producto
-							</label>
-							<div className="input-group">
-								<input type="file" {...register("file")} />
-							</div> */}
-							<input
-								className="btn-enviar"
-								id="btn-add-user"
-								type="submit"
-								value="Continuar"
-							></input>
+							<div className="wrap-input-submit">
+								<input
+									className="btn-enviar"
+									id="btn-add-user"
+									type="submit"
+									value="Continuar"
+								></input>
+							</div>
 						</form>
 					</div>
 				</ModalTemplate>
@@ -287,11 +303,20 @@ function DashPortfolio() {
 					<div className="dash-container-card" key={index}>
 						<div className="dash-card-user">
 							<div className="colum-one">
-								<img
+								{productData.name === "MALTEADA SENSACION" &&
+									selectProductImg(productData.name)}
+								{productData.name != "MALTEADA SENSACION" && (
+									<img
+										src={photo}
+										alt="imagen del helado"
+										className="dash-card-img-product"
+									/>
+								)}
+								{/* <img
 									src={photo}
 									alt="imagen del helado"
 									className="dash-card-img-product"
-								/>
+								/> */}
 							</div>
 							<div className="colum-two">
 								<div>
@@ -352,10 +377,7 @@ function DashPortfolio() {
 							>
 								<div className="modal-content-body">
 									<h5>Actualiza los datos del producto</h5>
-									<form
-										className="dashboard-form"
-										onSubmit={onSubmitEdit}
-									>
+									<form className="dashboard-form" onSubmit={onSubmitEdit}>
 										<span>id: {productData.id}</span>
 										<span className="span-edit-form">Nombre</span>
 										<div className="input-group">
@@ -375,8 +397,10 @@ function DashPortfolio() {
 										)}
 										<span className="span-edit-form">Descripcion</span>
 										<div className="input-group">
-											<input
-												type="text"
+											<textarea
+												className="textarea-form"
+												cols={4}
+												rows={3}
 												{...register("editDescription", {
 													required: {
 														value: true,
@@ -409,7 +433,8 @@ function DashPortfolio() {
 													},
 													pattern: {
 														value: /^\d{3,}\.\d{2}$/, // Al menos 3 enteros y 2 decimales
-														message: 'Precio debe tener al menos 3 enteros y 2 decimales',
+														message:
+															"Precio debe tener al menos 3 enteros y 2 decimales",
 													},
 												})}
 												defaultValue={productData.price}

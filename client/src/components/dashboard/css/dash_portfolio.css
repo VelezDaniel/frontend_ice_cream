@@ -9,6 +9,22 @@
   text-align: end;
 }
 
+.textarea-form  {
+  width: 100%;
+  border-radius: 6px;
+  border: none;
+  background-color: var(--extraLight-color);
+  color: var(--color-text);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.wrap-input-submit {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 @media (width < 1024px) {
   .dash-card-img-product {
     width: 84px;

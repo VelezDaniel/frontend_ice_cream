@@ -1,5 +1,5 @@
 // import "./css/dash_portfolio.css";
-import { LuBookPlus } from "react-icons/lu";
+import { LuBookPlus, LuBookMarked } from "react-icons/lu";
 import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -108,7 +108,7 @@ function DashBookings() {
 			reset();
 			// window.location.reload();
 		} catch (error) {
-			console.log('Error in add dash_booking', error)
+			console.log("Error in add dash_booking", error);
 		}
 	});
 
@@ -188,21 +188,6 @@ function DashBookings() {
 					<div className="modal-content-body">
 						<h4>Ingresa la información de la reservacion</h4>
 						<form className="dashboard-form" onSubmit={onSubmit}>
-							<div className="input-group">
-								<input
-									type="number"
-									{...register("attendees", {
-										required: {
-											value: true,
-											message: "Este cambo es requerido",
-										},
-									})}
-									placeholder="Numero asistentes"
-								/>
-							</div>
-							{errors.attendees && (
-								<span className="notice">{errors.attendees.message}</span>
-							)}
 							<label htmlFor="date">
 								<i className="bi bi-calendar3"></i> Fecha del evento
 							</label>
@@ -216,6 +201,7 @@ function DashBookings() {
 								})}
 							/>
 							{errors.date && <p className="notice">{errors.date.message}</p>}
+
 							<label htmlFor="start">
 								<i class="bi bi-clock"></i> Hora de inicio
 							</label>
@@ -229,41 +215,93 @@ function DashBookings() {
 								})}
 							/>
 							{errors.start && <p className="notice">{errors.start.message}</p>}
-							<label htmlFor="start">
-								<i class="bi bi-clock"></i> Hora fin
-							</label>
-							<input
-								type="time"
-								{...register("end", {
-									required: {
-										value: true,
-										message: "Este campo es requerido",
-									},
-								})}
-							/>
-							{errors.end && <p className="notice">{errors.end.message}</p>}
-							<div className="input-group">
-								<label htmlFor="identityClient">
-									<i className="bi bi-person-vcard"></i>
-								</label>
-								<input
-									type="text"
-									{...register("identityClient", {
+
+							<div>
+								<label>Número invitados</label>
+								<div className="div-calendar-book">
+									<input
+										placeholder="Menos de 17"
+										className="input-book-design"
+										type="number"
+										{...register("addGuests", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
+									/>
+								</div>
+							</div>
+							{errors.addGuests && (
+								<span className="notice">{errors.addGuests.message}</span>
+							)}
+
+							<div className="div-calendar-book">
+								{/* <LuBookMarked size={38} /> */}
+								<textarea
+									cols={60}
+									rows={3}
+									className="text-area-book"
+									placeholder="Añade una descripción al evento"
+									type="textarea"
+									{...register("addDescription", {
 										required: {
 											value: true,
-											message: "Identificacion requerida",
+											message: "Campo requerido",
 										},
-										// minLength: {
-										// 	value: 6,
-										// 	message: "No es una identificacion válida",
-										// },
 									})}
-									placeholder="Documento"
 								/>
 							</div>
-							{errors.identityClient && (
-								<p className="notice">{errors.identityClient.message}</p>
-							)}
+
+
+							<div>
+								<label>Nombre completo</label>
+								<div className="div-calendar-book">
+									<input
+										className="calendar-book input-book-design"
+										placeholder="Nombre"
+										type="text"
+										{...register("addClient", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
+									/>
+								</div>
+								{errors && errors.addClient && (
+									<Message
+										severity="error"
+										className="message-prime-react"
+										text={errors.addClient.message}
+									/>
+								)}
+							</div>
+
+							<div>
+								<label>Identificación</label>
+								<div className="div-calendar-book">
+									<input
+										className="calendar-book input-book-design"
+										placeholder="Identificación"
+										type="text"
+										{...register("addIdentity", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
+									/>
+								</div>
+								{errors && errors.addIdentity && (
+									<Message
+										severity="error"
+										className="message-prime-react"
+										text={errors.addIdentity.message}
+									/>
+								)}
+							</div>
+
 							<input
 								className="btn-enviar"
 								id="btn-add-user"

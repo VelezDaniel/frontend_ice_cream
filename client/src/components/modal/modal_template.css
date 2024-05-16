@@ -16,10 +16,12 @@
 .container-modal {
   min-width: 380px;
   min-height: 240px;
+  max-height: 86vh;
   position: absolute;
   background-color: var(--extraLight-color);
   box-shadow: rgba(100, 100, 111, 0.719) 2px 4px 8px 0px;
   border-radius: 8px;
+  overflow: auto;
 }
 
 .modal-header {
@@ -43,7 +45,6 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 6px;
-
 }
 
 .btn-close-modal {
