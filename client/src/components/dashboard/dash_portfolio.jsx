@@ -4,6 +4,7 @@ import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
+import imgBuilder from "../../utils/imgBuilder";
 // import { useAuth } from "../../context/AuthContext";
 import {
 	showProductsRequest,
@@ -11,8 +12,7 @@ import {
 	deleteProductRequest,
 } from "../../api/products";
 
-import photo from "../../assets/imgs/main_products_imgs/irlandez.png";
-import malteadasensacion from "../../assets/imgs/main_products_imgs/malteadasensacion.png";
+
 
 function DashPortfolio() {
 	const [productsData, setProductsData] = useState([]);
@@ -58,21 +58,6 @@ function DashPortfolio() {
 			setValue("editProductType", productInfo.productType);
 		}
 	}, [productInfo]);
-
-	// Select Image product
-	const selectProductImg = (imgName) => {
-		let returnImg;
-		if (imgName === "MALTEADA SENSACION") {
-			returnImg = malteadasensacion;
-		}
-		return (
-			<img
-				src={returnImg}
-				alt="imagen producto"
-				className="dash-card-img-product"
-			/>
-		);
-	};
 
 	const openModalEdit = (index) => {
 		setEditModal(true);
@@ -134,6 +119,10 @@ function DashPortfolio() {
 			console.log(error);
 		}
 	};
+
+	// const handlerImgBuilder = (imgName) => {
+	// 	let name = 
+	// }
 
 	return (
 		<div className="pannel-container">
@@ -303,20 +292,10 @@ function DashPortfolio() {
 					<div className="dash-container-card" key={index}>
 						<div className="dash-card-user">
 							<div className="colum-one">
-								{productData.name === "MALTEADA SENSACION" &&
-									selectProductImg(productData.name)}
-								{productData.name != "MALTEADA SENSACION" && (
-									<img
-										src={photo}
-										alt="imagen del helado"
-										className="dash-card-img-product"
-									/>
+								{productData.name && (
+									<imgBuilder imgName={productData.name.toLowerCase()}></imgBuilder>
 								)}
-								{/* <img
-									src={photo}
-									alt="imagen del helado"
-									className="dash-card-img-product"
-								/> */}
+								
 							</div>
 							<div className="colum-two">
 								<div>

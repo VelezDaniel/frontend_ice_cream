@@ -140,15 +140,9 @@
 	margin-bottom: 14px;
 }
 
-.btn-cerrarsesion i {
-	font-size: 28px;
-	margin-right: 8px;
-}
-
 .btn-cerrarsesion:hover {
 	color: var(--mainColor);
 	border-color: var(--mainColor);
-
 }
 
 .settings-user-hidden {
@@ -192,10 +186,6 @@
 		padding-left: 6px;
 		padding: 6px 32px;
 		margin-bottom: 14px;
-	}
-
-	.btn-cerrarsesion i {
-		font-size: 24px;
 	}
 
 	.img-logo-user-settings {

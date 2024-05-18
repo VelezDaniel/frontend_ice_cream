@@ -1,5 +1,6 @@
 import "./usersettings.css";
 import { LuPencilLine } from "react-icons/lu";
+import { IoExitOutline } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import { useAuth } from "../../context/AuthContext";
 import logoImg from "../../assets/imgs/helarticologo2.png";
@@ -261,7 +262,7 @@ function UserSettings({ closeMethod }) {
 					</div>
 				</div>
 				<button className="btn-cerrarsesion" onClick={handlerLogout}>
-					<i className="bi bi-box-arrow-right"></i>
+					{/* <IoExitOutline size={24} /> */}
 					Cerrar Sesión
 				</button>
 			</div>

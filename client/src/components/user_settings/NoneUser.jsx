@@ -42,12 +42,12 @@ function NoneUserAuthenticated({ closeMethod }) {
 				</div>
 				<div className="container-btns-user-settings">
 					<button className="btn-cerrarsesion" onClick={handleLogin}>
-						<i className="bi bi-box-arrow-right"></i>
+						{/* <i className="bi bi-box-arrow-right"></i> */}
 						Ingresar
 					</button>
 
 					<button className="btn-cerrarsesion" onClick={handleRegister}>
-						<i className="bi bi-box-arrow-right"></i>
+						{/* <i className="bi bi-box-arrow-right"></i> */}
 						Registrarse
 					</button>
 				</div>
