@@ -1,7 +1,7 @@
 import Carousel from "react-multi-carousel";
 import "./carousel.css";
 import "react-multi-carousel/lib/styles.css";
-import aldea from "../../assets/imgs/main_products_imgs/aldea.png";
+import ProductImgBuilder from "../../utils/ProductImgBuilder";
 import { PiStarBold } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { showProductsRequest } from "../../api/products";
@@ -56,7 +56,7 @@ const ComponentCarousel = () => {
 				{products.map((product) => (
 					<div className="carousel-card" key={product.id}>
 						<div className="box-img-carousel-product">
-							<img src={aldea} alt="imagen helado" />
+							<img src={ProductImgBuilder(product.name.toLowerCase())} alt="imagen helado" />
 						</div>
 						<div className="carousel-card-product-content">
 							<div className="carousel-card-p-subcontent">

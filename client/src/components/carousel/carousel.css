@@ -57,8 +57,10 @@ header {
 }
 
 .box-img-carousel-product img {
-    width: 210px;
+    width: 200px;
+    height: 184px;
 }
+
 
 .carousel-card-product-content{
     width: 100%;
@@ -105,7 +107,7 @@ header {
 .carousel-p-name {
     font-weight: 600;
     font-size: 16px;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.1px;
 }
 
 .carousel-p-size {
@@ -119,7 +121,7 @@ header {
     border-radius: 25px;
     color:  var(--btn-dark-green);
     text-decoration: none;
-    margin-top: 50px;
+    margin-top: auto;
     font-size: 16px;
     font-weight: 700;
 }

@@ -1,16 +1,15 @@
-// import "./css/dash_portfolio.css";
-import { LuBookPlus, LuBookMarked } from "react-icons/lu";
+import { LuBookPlus } from "react-icons/lu";
 import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
-// import { useAuth } from "../../context/AuthContext";
 import {
 	showBookingsRequest,
 	createBookingRequest,
 	deleteBookingRequest,
 } from "../../api/bookings";
 import { showUserRequest } from "../../api/users";
+import "./css/dash_bookings.css";
 
 function DashBookings() {
 	const [bookingsData, setBookingsData] = useState([]);
@@ -19,25 +18,26 @@ function DashBookings() {
 	const [addModal, setAddModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
-	// const [productTypes, setProductsType] = useState(null);
 
 	const {
-		register,
-		handleSubmit,
-		watch,
-		setValue,
-		reset,
-		formState: { errors },
+		register: registerAdd,
+		handleSubmit: handleSubmitAdd,
+		reset: resetAdd,
+		formState: { errors: errorsAdd },
 	} = useForm();
 
-	// Use effect para traer todos los productos
+	const {
+		register: registerEdit,
+		handleSubmit: handleSubmitEdit,
+		setValue,
+		reset: resetEdit,
+		formState: { errors: errorsEdit },
+	} = useForm();
+
 	useEffect(() => {
-		// Realizar consulta a la base de datos para traer la informacion
 		const handleShowBookings = async () => {
 			try {
 				const items = await showBookingsRequest();
-				// Establecer usuarios en estado
-				console.log(items);
 				setBookingsData(items.data.body);
 			} catch (error) {
 				console.log("Error in bookings_portfolio: ", error);
@@ -49,12 +49,13 @@ function DashBookings() {
 	useEffect(() => {
 		if (bookingInfo) {
 			setValue("editAttendes", bookingInfo.attendees);
-			setValue("editDate", bookingInfo.date);
-			setValue("editStart", bookingInfo.start);
-			setValue("editEnd", bookingInfo.end);
-			setValue("editIdentityClient", bookingInfo.identityClient);
+			setValue("editDate", bookingInfo.dateBook);
+			setValue("editDateTime", bookingInfo.datetime);
+			setValue("editDescription", bookingInfo.description);
+			setValue("editHiddenDescription", bookingInfo.hiddenDescription);
+			// setValue("editIdentityClient", bookingInfo.identityClient);
 		}
-	}, [bookingInfo]);
+	}, [bookingInfo, setValue]);
 
 	const openModalEdit = (index) => {
 		setEditModal(true);
@@ -65,14 +66,14 @@ function DashBookings() {
 	const openModalDelete = (index) => {
 		setDeleteModal(true);
 		setselectedObjectIndex(index);
+		setBookingInfo(bookingsData[index]);
 	};
 
-	// Add new booking
-	const onSubmit = handleSubmit(async (values) => {
-		console.log(values);
+	const onSubmitAdd = handleSubmitAdd(async (values) => {
+		console.log("values in onSubmitAdd", values);
 		try {
 			const client = {
-				id: values.identityClient,
+				id: values.addIdentity,
 			};
 			const clientExist = await showUserRequest(client);
 			console.log("clientExist: ", clientExist);
@@ -85,65 +86,73 @@ function DashBookings() {
 				const objectClientExist = clientExist.data.body;
 				const addBooking = {
 					id: 0,
-					attendees: values.attendees,
-					date: values.date,
-					start: values.start,
-					end: values.end,
+					attendees: values.addGuests,
+					dateBook: values.date,
+					timeBook: values.start,
+					description: values.addDescription,
 					idClient: objectClientExist.id,
 				};
 
 				const createResult = await createBookingRequest(addBooking);
-				console.log("editResult in dashBookings: ", createResult);
-				setEditModal(false);
-				reset();
-				// window.location.reload();
-			} else {
-				return console.log("DEBE REGISTRARSE O COMPRAR");
-			}
+				console.log("add book in dashBookings: ", createResult);
+				setAddModal(false);
+				resetAdd();
+			} else if (values.addIdentity && values.addClient) {
+				const addBooking = {
+					id: 0,
+					attendees: values.addGuests,
+					dateBook: values.date,
+					timeBook: values.start,
+					description: values.addDescription,
+					hiddenDescription: `Identificación: ${values.addIdentity} Nombre: ${values.addClient}`,
+				};
 
-			values.id = 0;
-			const result = await createBookingRequest(values);
-			console.log("result from dash_booking: ", result);
-			setAddModal(false);
-			reset();
-			// window.location.reload();
+				const createResult = await createBookingRequest(addBooking);
+				console.log("editResult in dashBookings: ", createResult);
+				setAddModal(false);
+				resetAdd();
+				window.location.reload();
+			} else {
+				return new Error("Algo salió mal");
+			}
 		} catch (error) {
 			console.log("Error in add dash_booking", error);
 		}
 	});
 
-	const onSubmitEdit = handleSubmit(async (values) => {
+	const onSubmitEdit = handleSubmitEdit(async (values) => {
 		console.log("values for edit: ", values);
 		console.log("mekams: ", bookingInfo);
 		try {
-			const client = {
-				id: values.editIdentityClient,
-			};
-			const clientExist = await showUserRequest(client);
-			console.log("clientExist: ", clientExist);
-
-			if (
-				clientExist &&
-				clientExist.data.body &&
-				Object.keys(clientExist.data.body).length > 0
-			) {
-				const objectClientExist = clientExist.data.body;
+			if (values.editHiddenDescription != "N/A") {
 				const editBooking = {
 					id: bookingInfo.id,
-					attendees: values.editAttendees,
-					date: values.editDate,
-					start: values.editStart,
-					end: values.editEnd,
-					idClient: objectClientExist.id,
+					attendees: values.editAttendes,
+					dateBook: values.editDate,
+					timeBook: values.editDateTime,
+					description: values.editDescription,
+					hiddenDescription: values.hiddenDescription,
 				};
+				console.log("edit with client", editBooking);
 
 				const editResult = await createBookingRequest(editBooking);
 				console.log("editResult in dashBookings: ", editResult);
 				setEditModal(false);
-				reset();
-				// window.location.reload();
+				window.location.reload();
 			} else {
-				return console.log("DEBE REGISTRARSE O COMPRAR");
+				const editBooking = {
+					id: bookingInfo.id,
+					attendees: values.editAttendes,
+					dateBook: values.editDate,
+					timeBook: values.editDateTime,
+					description: values.editDescription,
+					idClient: bookingInfo.idClient,
+				};
+				console.log("edit with user", editBooking);
+				const editResult = await createBookingRequest(editBooking);
+				console.log("editResult in dashBookings: ", editResult);
+				setEditModal(false);
+				window.location.reload();
 			}
 		} catch (error) {
 			console.log("error in onsubmitEdit ", error);
@@ -178,7 +187,6 @@ function DashBookings() {
 					Agregar
 				</button>
 			</div>
-			{/* MODAL AÑADIR USUARIO */}
 			{addModal && (
 				<ModalTemplate
 					setStateModal={setAddModal}
@@ -187,34 +195,38 @@ function DashBookings() {
 				>
 					<div className="modal-content-body">
 						<h4>Ingresa la información de la reservacion</h4>
-						<form className="dashboard-form" onSubmit={onSubmit}>
+						<form className="dashboard-form" onSubmit={onSubmitAdd}>
 							<label htmlFor="date">
 								<i className="bi bi-calendar3"></i> Fecha del evento
 							</label>
 							<input
 								type="date"
-								{...register("date", {
+								{...registerAdd("date", {
 									required: {
 										value: true,
 										message: "Este campo es requerido",
 									},
 								})}
 							/>
-							{errors.date && <p className="notice">{errors.date.message}</p>}
+							{errorsAdd.date && (
+								<p className="notice">{errorsAdd.date.message}</p>
+							)}
 
 							<label htmlFor="start">
-								<i class="bi bi-clock"></i> Hora de inicio
+								<i className="bi bi-clock"></i> Hora de inicio
 							</label>
 							<input
 								type="time"
-								{...register("start", {
+								{...registerAdd("start", {
 									required: {
 										value: true,
 										message: "Este campo es requerido",
 									},
 								})}
 							/>
-							{errors.start && <p className="notice">{errors.start.message}</p>}
+							{errorsAdd.start && (
+								<p className="notice">{errorsAdd.start.message}</p>
+							)}
 
 							<div>
 								<label>Número invitados</label>
@@ -223,7 +235,7 @@ function DashBookings() {
 										placeholder="Menos de 17"
 										className="input-book-design"
 										type="number"
-										{...register("addGuests", {
+										{...registerAdd("addGuests", {
 											required: {
 												value: true,
 												message: "Campo requerido",
@@ -232,60 +244,112 @@ function DashBookings() {
 									/>
 								</div>
 							</div>
-							{errors.addGuests && (
-								<span className="notice">{errors.addGuests.message}</span>
+							{errorsAdd.addGuests && (
+								<span className="notice">{errorsAdd.addGuests.message}</span>
 							)}
 
-							<div className="div-calendar-book">
-								{/* <LuBookMarked size={38} /> */}
-								<textarea
-									cols={60}
-									rows={3}
-									className="text-area-book"
-									placeholder="Añade una descripción al evento"
-									type="textarea"
-									{...register("addDescription", {
-										required: {
-											value: true,
-											message: "Campo requerido",
-										},
-									})}
-								/>
+							<div>
+								<label>Descripción</label>
+								<div className="div-calendar-book">
+									<textarea
+										cols={60}
+										rows={3}
+										className="text-area-book"
+										placeholder="Añade una descripción al evento"
+										{...registerAdd("addDescription", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
+									/>
+								</div>
 							</div>
-
 
 							<div>
 								<label>Nombre completo</label>
 								<div className="div-calendar-book">
 									<input
-										className="calendar-book input-book-design"
-										placeholder="Nombre"
+										placeholder="Ingrese nombre del cliente"
+										className="input-book-design"
 										type="text"
-										{...register("addClient", {
-											required: {
-												value: true,
-												message: "Campo requerido",
-											},
-										})}
+										{...registerAdd("addClient")}
 									/>
 								</div>
-								{errors && errors.addClient && (
-									<Message
-										severity="error"
-										className="message-prime-react"
-										text={errors.addClient.message}
-									/>
-								)}
 							</div>
 
 							<div>
 								<label>Identificación</label>
 								<div className="div-calendar-book">
 									<input
-										className="calendar-book input-book-design"
-										placeholder="Identificación"
-										type="text"
-										{...register("addIdentity", {
+										placeholder="Ingrese Identificación del cliente"
+										className="input-book-design"
+										type="number"
+										{...registerAdd("addIdentity")}
+									/>
+								</div>
+							</div>
+							<div className="box-btn-center">
+								<input
+									className="btn-enviar"
+									id="btn-add-user"
+									type="submit"
+									value="Continuar"
+								></input>
+							</div>
+						</form>
+					</div>
+				</ModalTemplate>
+			)}
+
+			{editModal && (
+				<ModalTemplate
+					setStateModal={setEditModal}
+					title="Editar Reservación"
+					showHeader={true}
+				>
+					<div className="modal-content-body">
+						<form className="dashboard-form" onSubmit={onSubmitEdit}>
+							<label htmlFor="date">
+								<i className="bi bi-calendar3"></i> Fecha del evento
+							</label>
+							<input
+								type="date"
+								{...registerEdit("editDate", {
+									required: {
+										value: true,
+										message: "Este campo es requerido",
+									},
+								})}
+							/>
+							{errorsEdit.editDate && (
+								<p className="notice">{errorsEdit.editDate.message}</p>
+							)}
+
+							<label htmlFor="start">
+								<i className="bi bi-clock"></i> Hora de inicio
+							</label>
+							<input
+								type="time"
+								{...registerEdit("editDateTime", {
+									required: {
+										value: true,
+										message: "Este campo es requerido",
+									},
+								})}
+							/>
+							{errorsEdit.editStart && (
+								<p className="notice">{errorsEdit.editStart.message}</p>
+							)}
+
+							<div>
+								<label>Número invitados</label>
+								<div className="div-calendar-book">
+									<input
+										placeholder="Menos de 17"
+										className="input-book-design"
+										type="number"
+										{...registerEdit("editAttendes", {
 											required: {
 												value: true,
 												message: "Campo requerido",
@@ -293,222 +357,143 @@ function DashBookings() {
 										})}
 									/>
 								</div>
-								{errors && errors.addIdentity && (
-									<Message
-										severity="error"
-										className="message-prime-react"
-										text={errors.addIdentity.message}
+							</div>
+							{errorsEdit.editAttendees && (
+								<span className="notice">
+									{errorsEdit.editAttendees.message}
+								</span>
+							)}
+
+							<div>
+								<label>Descripción</label>
+								<div className="div-calendar-book">
+									<textarea
+										cols={60}
+										rows={3}
+										className="text-area-book"
+										placeholder="Añade una descripción al evento"
+										{...registerEdit("editDescription", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
 									/>
-								)}
+								</div>
 							</div>
 
-							<input
-								className="btn-enviar"
-								id="btn-add-user"
-								type="submit"
-								value="Continuar"
-							></input>
+							<div>
+								<label>Descripción (No registrados)</label>
+								<div className="div-calendar-book">
+									<textarea
+										cols={60}
+										rows={3}
+										className="text-area-book"
+										placeholder="Añade una descripción al evento"
+										{...registerEdit("editHiddenDescription", {
+											required: {
+												value: true,
+												message: "Campo requerido",
+											},
+										})}
+									/>
+								</div>
+							</div>
+
+							<div className="box-btn-center">
+								<input
+									className="btn-enviar"
+									id="btn-add-user"
+									type="submit"
+									value="Editar"
+								></input>
+							</div>
 						</form>
 					</div>
 				</ModalTemplate>
 			)}
-			{/* main content */}
-			<div className="dash-container-cards">
-				{bookingsData.map((bookingData, index) => (
-					<div className="dash-container-card" key={index}>
-						<div className="dash-card-user">
-							{/* <div className="colum-one">
-								<img
-									src={photo}
-									alt="imagen del helado"
-									className="dash-card-img-product"
-								/>
-							</div> */}
-							<div className="colum-two">
-								<div>
-									<span>Identificación</span>
-									<span>{bookingData.identityClient}</span>
-								</div>
-								<div>
-									<span> Nombre Cliente</span>
-									<span>{bookingData.nameClient}</span>
-								</div>
-								<div>
-									<span>Invitados</span>
-									<span>{bookingData.attendees}</span>
-								</div>
-								<div>
-									<span>Fecha del evento</span>
-									<span>{bookingData.date}</span>
-								</div>
-								<div>
-									<span>Hora de Inicio</span>
-									<span>{bookingData.start}</span>
-								</div>
-								<div>
-									<span>Hora de finalización</span>
-									<span>{bookingData.end}</span>
-								</div>
-							</div>
-						</div>
 
-						<div className="dash-container-btns">
-							<button
-								className="dash-btn-edit"
-								onClick={() => openModalEdit(index)}
-							>
-								<HiOutlinePencilAlt size={38} />
-							</button>
-							<button
-								className="dash-btn-delete"
-								onClick={() => openModalDelete(index)}
-							>
-								<HiOutlineTrash size={38} />
-							</button>
-						</div>
-
-						{/* mostrar modal editar */}
-						{editModal && selectedObjectIndex === index && (
-							<ModalTemplate
-								setStateModal={setEditModal}
-								title="Editar Reservación"
-								showHeader={true}
-								designClass={""}
-							>
-								<div className="modal-content-body">
-									<h5>Actualiza los datos de la Reservación</h5>
-									<form className="dashboard-form" onSubmit={onSubmitEdit}>
-										<span>id: {bookingData.id}</span>
-										<span>id cliente {bookingData.idClient}</span>
-										<span className="span-edit-form">
-											Identificación Cliente
-										</span>
-										<div className="input-group">
-											<input
-												type="number"
-												{...register("editIdentityClient", {
-													required: {
-														value: true,
-														message: "Este cambo es requerido",
-													},
-												})}
-												defaultValue={bookingData.identityClients}
-											/>
-										</div>
-										{errors.editIdentityClient && (
-											<span>{errors.editIdentityClient.message}</span>
-										)}
-										<span className="span-edit-form">Asistentes</span>
-										<div className="input-group">
-											<input
-												type="number"
-												{...register("editAttendees", {
-													required: {
-														value: true,
-														message: "Este cambo es requerido",
-													},
-												})}
-												defaultValue={bookingData.attendees}
-											/>
-										</div>
-										{errors.editAttendees && (
-											<span>{errors.editAttendees.message}</span>
-										)}
-										<span className="span-edit-form">Fecha del evento</span>
-										<div className="input-group">
-											<input
-												type="date"
-												{...register("editDate", {
-													required: {
-														value: true,
-														message: "Este cambo es requerido",
-													},
-												})}
-												defaultValue={bookingData.date}
-											/>
-										</div>
-										{errors.editDate && <span>{errors.editDate.message}</span>}
-										<span className="span-edit-form">Hora de inicio</span>
-										<div className="input-group">
-											<input
-												type="time"
-												{...register("editStart", {
-													required: {
-														value: true,
-														message: "Este cambo es requerido",
-													},
-												})}
-												defaultValue={bookingData.start}
-											/>
-										</div>
-										{errors.editStart && (
-											<span>{errors.editStart.message}</span>
-										)}
-										<span className="span-edit-form">Hora finalización</span>
-										<div className="input-group">
-											<input
-												type="time"
-												{...register("editEnd", {
-													required: {
-														value: true,
-														message: "Este cambo es requerido",
-													},
-												})}
-												defaultValue={bookingData.end}
-											/>
-										</div>
-										{errors.editEnd && <span>{errors.editEnd.message}</span>}
-										<input
-											type="submit"
-											className="btn-enviar"
-											id="btn-add-user"
-											value="Actualizar"
-										/>
-									</form>
-								</div>
-							</ModalTemplate>
+			{deleteModal && (
+				<ModalTemplate
+					setStateModal={setDeleteModal}
+					title="Eliminar Registro"
+					showHeader={true}
+					designClass={"alert"}
+				>
+					<div className="modal-content-body">
+						<h2 className="modal-subtitle">
+							Estas seguro de eliminar la reservación
+						</h2>
+						{bookingInfo.hiddenDescription != "N/A" && (
+							<span className="modal-info">
+								{bookingInfo.hiddenDescription}
+							</span>
 						)}
-						{/* Mostrar modal eliminar */}
-						{deleteModal && selectedObjectIndex === index && (
-							<ModalTemplate
-								setStateModal={setDeleteModal}
-								title={" Eliminar Reservación "}
-								showHeader={true}
-								designClass={"alert"}
-							>
-								<div className="modal-content-body">
-									<span className="modal-subtitle">
-										Seguro que deseas eliminar la Reservación:
-									</span>
-									<span className="modal-info">
-										Id Cliente: {bookingData.identityClient}
-									</span>
-									<span className="modal-info">
-										Nombre: {bookingData.nameClient}
-									</span>
-									<span className="modal-info">
-										Asistentes: {bookingData.attendees}
-									</span>
-									<span className="modal-info">Fecha: {bookingData.date}</span>
-									<span className="modal-info">
-										Hora de Inicio: {bookingData.start}
-									</span>
-									<span className="modal-info">
-										Hora Fin: {bookingData.end}
-									</span>
-								</div>
-								<div className="container-btn-alert-modal">
-									<button
-										className="btn-alert-modal"
-										onClick={() => deleteBooking(bookingData)}
-									>
-										Aceptar
-									</button>
-								</div>
-							</ModalTemplate>
+						{bookingInfo.hiddenDescription === "N/A" && (
+							<>
+								<span className="modal-info">
+									Identificación: {bookingInfo.identityClient}
+								</span>
+								<span className="modal-info">
+									Nombre: {bookingInfo.nameClient}
+								</span>
+							</>
 						)}
+						<span className="modal-info">
+							Asistentes: {bookingInfo.attendees}
+						</span>
+						<span className="modal-info">Fecha: {bookingInfo.dateBook}</span>
+						<span className="modal-info">
+							Hora de Inicio: {bookingInfo.datetime}
+						</span>
+						<button
+							className="btn-alert-modal"
+							onClick={() => deleteBooking(bookingsData[selectedObjectIndex])}
+						>
+							Eliminar
+						</button>
 					</div>
-				))}
+				</ModalTemplate>
+			)}
+
+			<div className="main-list-bookings">
+				<table>
+					<thead>
+						<tr>
+							{/* <th>N°</th> */}
+							<th>Nombre</th>
+							<th>Invitados</th>
+							<th>Fecha</th>
+							<th>Hora</th>
+							<th>Descripción</th>
+							<th>Descripción (No registrados)</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						{bookingsData.map((booking, index) => (
+							<tr key={index}>
+								{/* <td>{booking.id}</td> */}
+								<td>{booking.nameClient}</td>
+								<td>{booking.attendees}</td>
+								<td>{booking.dateBook}</td>
+								<td>{booking.datetime}</td>
+								<td>{booking.description}</td>
+								<td>{booking.hiddenDescription}</td>
+								<td>
+									<div className="table-button-container">
+										<button onClick={() => openModalEdit(index)}>
+											<HiOutlinePencilAlt size={24} />
+										</button>
+										<button onClick={() => openModalDelete(index)}>
+											<HiOutlineTrash size={24} />
+										</button>
+									</div>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
 			</div>
 		</div>
 	);

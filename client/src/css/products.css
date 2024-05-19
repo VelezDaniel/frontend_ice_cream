@@ -37,7 +37,7 @@
 	display: grid;
   /* gap: 10px; */
   grid-auto-flow: dense;
-  grid-auto-rows: 18rem;
+  grid-auto-rows: auto;
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   justify-items: center;
 }
@@ -48,10 +48,10 @@
 	margin: 10px 8px;
 	padding: 8px 2px 16px 2px;
 	width: 218px;
-	height: 268px;
+	height: auto;
 	display: flex;
 	flex-direction: column;
-	/* justify-content: space-between; */
+	justify-content: space-between;
 	align-items: center;
 	border-radius: 10px;
   cursor: pointer;
@@ -73,10 +73,12 @@
 .box-img-card-product {
 	display: flex;
 	justify-content: center;
+	height: 143px;
 }
 
 .box-img-card-product img {
   width: 152px;
+	height: auto;
 }
 
 .info-product-1 {

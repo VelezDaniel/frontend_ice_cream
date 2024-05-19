@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { showProductsRequest } from "../api/products";
 import NavBar from "../components/navbar/NavBar";
 import "../css/products.css";
-import aldea from "../assets/imgs/main_products_imgs/aldea.png";
 import { PiStarBold } from "react-icons/pi";
 import ModalProduct from "../components/modal/modal_product/ModalProduct";
+import ProductImgBuilder from "../utils/ProductImgBuilder";
 
 function Products() {
 	const [products, setProducts] = useState([]);
@@ -72,7 +72,7 @@ function Products() {
 										onClick={() => handleProduct(product)}
 									>
 										<div className="box-img-card-product">
-											<img src={aldea} alt="imagen helado" />
+											<img src={ProductImgBuilder(product.name.toLowerCase())} alt="imagen helado" className="img-card-portfolio" />
 										</div>
 										<div className="box-info-product">
 											<div className="info-product-1">
