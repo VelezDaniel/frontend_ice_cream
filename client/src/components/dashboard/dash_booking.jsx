@@ -11,7 +11,41 @@ import {
 import { showUserRequest } from "../../api/users";
 import "./css/dash_bookings.css";
 
+// IMPORTS MATERIAL UI
+import {
+	Paper,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TablePagination,
+	TableRow,
+} from "@mui/material";
+const columns = [
+	{ id: "nameClient", label: "Nombre", minWidth: 100 },
+	{ id: "attendees", label: "Invitados", minWidth: 100 },
+	{ id: "dateBook", label: "Fecha", minWidth: 100 },
+	{ id: "dateTime", label: "Hora", minWidth: 100 },
+	{ id: "description", label: "Descripción", minWidth: 100 },
+	{ id: "hiddenDescription", label: "No Registrados", minWidth: 100 },
+];
+
 function DashBookings() {
+	// ? Configuration Table Material UI ----------
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(10);
+
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (event) => {
+		setRowsPerPage(+event.target.value);
+		setPage(0);
+	};
+	// ? End of configuration --------------------
+
 	const [bookingsData, setBookingsData] = useState([]);
 	const [bookingInfo, setBookingInfo] = useState([]);
 	const [editModal, setEditModal] = useState(false);
@@ -456,45 +490,59 @@ function DashBookings() {
 				</ModalTemplate>
 			)}
 
-			<div className="main-list-bookings">
-				<table>
-					<thead>
-						<tr>
-							{/* <th>N°</th> */}
-							<th>Nombre</th>
-							<th>Invitados</th>
-							<th>Fecha</th>
-							<th>Hora</th>
-							<th>Descripción</th>
-							<th>Descripción (No registrados)</th>
-							<th>Acciones</th>
-						</tr>
-					</thead>
-					<tbody>
-						{bookingsData.map((booking, index) => (
-							<tr key={index}>
-								{/* <td>{booking.id}</td> */}
-								<td>{booking.nameClient}</td>
-								<td>{booking.attendees}</td>
-								<td>{booking.dateBook}</td>
-								<td>{booking.datetime}</td>
-								<td>{booking.description}</td>
-								<td>{booking.hiddenDescription}</td>
-								<td>
-									<div className="table-button-container">
-										<button onClick={() => openModalEdit(index)}>
-											<HiOutlinePencilAlt size={24} />
-										</button>
-										<button onClick={() => openModalDelete(index)}>
-											<HiOutlineTrash size={24} />
-										</button>
-									</div>
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</div>
+			<Paper sx={{ width: "100%", overflow: "hidden" }}>
+				<TableContainer sx={{ maxHeight: 440 }}>
+					<Table stickyHeader aria-label="sticky table">
+						<TableHead>
+							<TableRow>
+								{columns.map((column) => (
+									<TableCell
+										key={column.id}
+										align={column.align}
+										style={{ minWidth: column.minWidth }}
+									>
+										{column.label}
+									</TableCell>
+								))}
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{bookingsData
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map((book) => {
+									return (
+										<TableRow
+											hover
+											role="checkbox"
+											tabIndex={-1}
+											key={book.code}
+										>
+											{columns.map((column) => {
+												const value = book[column.id];
+												return (
+													<TableCell key={column.id} align={column.align}>
+														{column.format && typeof value === "number"
+															? column.format(value)
+															: value}
+													</TableCell>
+												);
+											})}
+										</TableRow>
+									);
+								})}
+						</TableBody>
+					</Table>
+				</TableContainer>
+				<TablePagination
+					rowsPerPageOptions={[10, 25, 100]}
+					component="div"
+					count={bookingsData.length}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					onPageChange={handleChangePage}
+					onRowsPerPageChange={handleChangeRowsPerPage}
+				/>
+			</Paper>
 		</div>
 	);
 }
