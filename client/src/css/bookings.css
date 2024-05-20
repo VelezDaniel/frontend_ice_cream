@@ -98,8 +98,8 @@
 .text-area-book {
 	border-radius: 6px;
 	border: 2px solid #ccc;
-	font-weight: 600;
-	color: var(--grayFonts);
+	font-weight: 700;
+	color: var(--font-darkgray);
 	padding: 4px;
 }
 

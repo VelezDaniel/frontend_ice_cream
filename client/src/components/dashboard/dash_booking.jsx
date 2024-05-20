@@ -1,5 +1,4 @@
 import { LuBookPlus } from "react-icons/lu";
-import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
@@ -21,18 +20,27 @@ import {
 	TableHead,
 	TablePagination,
 	TableRow,
+	IconButton,
+	Button,
+	Stack,
 } from "@mui/material";
-const columns = [
-	{ id: "nameClient", label: "Nombre", minWidth: 100 },
-	{ id: "attendees", label: "Invitados", minWidth: 100 },
-	{ id: "dateBook", label: "Fecha", minWidth: 100 },
-	{ id: "dateTime", label: "Hora", minWidth: 100 },
-	{ id: "description", label: "Descripción", minWidth: 100 },
-	{ id: "hiddenDescription", label: "No Registrados", minWidth: 100 },
-];
+
+// icons
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
 function DashBookings() {
 	// ? Configuration Table Material UI ----------
+	const columns = [
+		{ id: "nameClient", label: "Nombre", minWidth: 100 },
+		{ id: "attendees", label: "Invitados", minWidth: 100, align: "center" },
+		{ id: "dateBook", label: "Fecha", minWidth: 100 },
+		{ id: "datetime", label: "Hora", minWidth: 100 },
+		{ id: "description", label: "Descripción", minWidth: 100 },
+		{ id: "hiddenDescription", label: "No Registrados", minWidth: 100 },
+		{ id: "actions", label: "Acciones", minWidth: 90, align: "center" },
+	];
+
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -490,8 +498,22 @@ function DashBookings() {
 				</ModalTemplate>
 			)}
 
-			<Paper sx={{ width: "100%", overflow: "hidden" }}>
-				<TableContainer sx={{ maxHeight: 440 }}>
+			<Paper
+				sx={{
+					width: "100%",
+					overflow: "hidden",
+					marginBottom: 10,
+					marginTop: 2,
+					marginX: 2,
+				}}
+			>
+				<TableContainer
+					sx={{
+						maxHeight: 440,
+						fontFamily: "Montserrat",
+						boxShadow: 1,
+					}}
+				>
 					<Table stickyHeader aria-label="sticky table">
 						<TableHead>
 							<TableRow>
@@ -500,32 +522,72 @@ function DashBookings() {
 										key={column.id}
 										align={column.align}
 										style={{ minWidth: column.minWidth }}
+										sx={{
+											fontWeight: 600,
+											color: "secondary.contrastText",
+											fontSize: 16,
+											fontFamily: 'Montserrat',
+											backgroundColor: "primary.bgMediumLight",
+										}}
 									>
 										{column.label}
 									</TableCell>
 								))}
 							</TableRow>
 						</TableHead>
-						<TableBody>
+						<TableBody sx={{ backgroundColor: "primary.bgLight", fontFamily: 'Montserrat' }}>
 							{bookingsData
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map((book) => {
+								.map((book, bookIndex) => {
 									return (
-										<TableRow
-											hover
-											role="checkbox"
-											tabIndex={-1}
-											key={book.code}
-										>
-											{columns.map((column) => {
+										<TableRow hover role="checkbox" tabIndex={-1} key={book.id}>
+											{columns.map((column, columnIndex) => {
 												const value = book[column.id];
-												return (
-													<TableCell key={column.id} align={column.align}>
-														{column.format && typeof value === "number"
-															? column.format(value)
-															: value}
-													</TableCell>
-												);
+												if (column.id === "actions") {
+													return (
+														<TableCell key={columnIndex} align={column.align}>
+															<Stack
+																className="flex justify-center"
+																direction="row"
+																spacing={1}
+															>
+																<IconButton
+																	onClick={() => openModalEdit(bookIndex)}
+																	color="info"
+																	size="large"
+																	aria-label="edit"
+																>
+																	<ModeEditOutlinedIcon fontSize="inherit" />
+																</IconButton>
+																<IconButton
+																	onClick={() => openModalDelete(bookIndex)}
+																	color="error"
+																	size="large"
+																	aria-label="delete"
+																>
+																	<DeleteOutlinedIcon fontSize="inherit" />
+																</IconButton>
+															</Stack>
+														</TableCell>
+													);
+												} else {
+													return (
+														<TableCell
+															key={column.id}
+															align={column.align}
+															sx={{
+																fontWeight: 500,
+																fontSize: 15,
+																fontFamily: 'Montserrat',
+																color: "secondary.contrastText",
+															}}
+														>
+															{column.format && typeof value === "number"
+																? column.format(value)
+																: value}
+														</TableCell>
+													);
+												}
 											})}
 										</TableRow>
 									);
@@ -534,6 +596,7 @@ function DashBookings() {
 					</Table>
 				</TableContainer>
 				<TablePagination
+					sx={{ backgroundColor: "primary.bgMediumLight", fontWeight: 600, fontFamily: 'Montserrat' }}
 					rowsPerPageOptions={[10, 25, 100]}
 					component="div"
 					count={bookingsData.length}
