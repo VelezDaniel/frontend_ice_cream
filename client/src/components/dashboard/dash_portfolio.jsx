@@ -4,11 +4,9 @@ import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
-<<<<<<< HEAD
-import imgBuilder from "../../utils/imgBuilder";
-=======
+
 import ProductImgBuilder from "../../utils/ProductImgBuilder";
->>>>>>> 6eef264 (interface bookings in dashboard updated (it needs more design))
+
 // import { useAuth } from "../../context/AuthContext";
 import {
 	showProductsRequest,
@@ -16,12 +14,8 @@ import {
 	deleteProductRequest,
 } from "../../api/products";
 
-<<<<<<< HEAD
-
-=======
 // import photo from "../../assets/imgs/main_products_imgs/irlandez.png";
 import malteadasensacion from "../../assets/imgs/main_products_imgs/malteadasensacion.png";
->>>>>>> 6eef264 (interface bookings in dashboard updated (it needs more design))
 
 function DashPortfolio() {
 	const [productsData, setProductsData] = useState([]);
@@ -302,15 +296,11 @@ function DashPortfolio() {
 						<div className="dash-card-user">
 							<div className="colum-one">
 								{productData.name && (
-<<<<<<< HEAD
-									<imgBuilder imgName={productData.name.toLowerCase()}></imgBuilder>
-=======
 									<img
 										src={ProductImgBuilder(productData.name.toLowerCase())}
 										alt="imagen del producto"
 										className="dash-card-img-product"
 									/>
->>>>>>> 6eef264 (interface bookings in dashboard updated (it needs more design))
 								)}
 								
 							</div>
