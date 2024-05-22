@@ -46,10 +46,64 @@ import waflemariposa from "../assets/imgs/main_products_imgs/waflemariposa.png";
 import waflesencillo from "../assets/imgs/main_products_imgs/waflesencillo.png";
 import waflesentimientomora from "../assets/imgs/main_products_imgs/waflesentimientomora.png";
 import wafletradicional from "../assets/imgs/main_products_imgs/wafletradicional.png";
+import sabortropical from "../assets/imgs/main_products_imgs/sabortropical.png";
+import superconcha from "../assets/imgs/main_products_imgs/superconcha.png";
+import bahia from "../assets/imgs/main_products_imgs/bahia.png";
+import miniwafer from "../assets/imgs/main_products_imgs/miniwafer.png";
+import melocotonfresascrema from "../assets/imgs/main_products_imgs/melocotonfresascrema.png";
+import dalmata from "../assets/imgs/main_products_imgs/dalmata.png";
+import golochips from "../assets/imgs/main_products_imgs/golochips.png";
+import milofrio from "../assets/imgs/main_products_imgs/milofrio.png";
+import cervezamichelada from "../assets/imgs/main_products_imgs/cervezamichelada.png";
+import sodalimon from "../assets/imgs/main_products_imgs/sodalimon.png";
+import jugomangoleche from "../assets/imgs/main_products_imgs/jugomangoleche.png";
+// dos veces c/u ya es uno es en leche y el otro en agua
+import jugoguanabana from "../assets/imgs/main_products_imgs/jugoguanabana.png";
+
+
 
 const ProductImgBuilder = (imgName) => {
   let returnImg;
   switch (imgName) {
+		case "jugo de guanabana en leche":
+			returnImg = jugoguanabana;
+			break;
+		case "jugo de guanabana en agua":
+			returnImg = jugoguanabana;
+			break;
+		case "jugo de mango en leche":
+			returnImg = jugomangoleche;
+			break;
+		case "refrescante limón soda":
+			returnImg = sodalimon;
+			break;
+		case "cerveza michelada":
+			returnImg = cervezamichelada;
+			break;
+		case "milo frio":
+			returnImg = milofrio;
+			break;
+		case "golochips":
+			returnImg = golochips;
+			break;
+		case "dalmata":
+			returnImg = dalmata;
+			break;
+		case "melocoton y fresas con crema":
+			returnImg = melocotonfresascrema;
+			break;
+		case "mini wafer":
+			returnImg = miniwafer;
+			break;
+		case "bahia":
+			returnImg = bahia;
+			break;
+		case "superconcha":
+			returnImg = superconcha;
+			break;
+		case "sabor tropical":
+			returnImg = sabortropical;
+			break;
 		case "himalaya":
 			returnImg = himalaya;
 			break;
@@ -74,7 +128,7 @@ const ProductImgBuilder = (imgName) => {
 		case "azucarada":
 			returnImg = azucarada;
 			break;
-		case "delicias de fresa":
+		case "delicias de fresas":
 			returnImg = deliciafresas;
 			break;
 		case "don juan":
@@ -92,7 +146,7 @@ const ProductImgBuilder = (imgName) => {
 		case "waffle mariposa":
 			returnImg = waflemariposa;
 			break;
-		case "waffle explosion":
+		case "waffle explosión":
 			returnImg = wafleexplosion;
 			break;
 		case "waffle sentimiento de mora":
@@ -170,7 +224,7 @@ const ProductImgBuilder = (imgName) => {
 		case "osito":
 			returnImg = osito;
 			break;
-		case "malteada sensación":
+		case "malteada sensacion":
 			returnImg = malteadasensacion;
 			break;
 		case "cholao caleño":
