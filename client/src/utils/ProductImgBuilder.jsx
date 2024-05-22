@@ -36,6 +36,7 @@ import osito from "../assets/imgs/main_products_imgs/osito.png";
 import payasito from "../assets/imgs/main_products_imgs/payasito.png";
 import primavera from "../assets/imgs/main_products_imgs/primavera.png";
 import salpiconespecial from "../assets/imgs/main_products_imgs/salpiconespecial.png";
+import salpiconhelado from "../assets/imgs/main_products_imgs/salpiconhelado.png";
 import siropedebrownie from "../assets/imgs/main_products_imgs/siropedebrownie.png";
 import suspiro from "../assets/imgs/main_products_imgs/suspiro.png";
 import tentacionoreo from "../assets/imgs/main_products_imgs/tentacionoreo.png";
@@ -59,12 +60,40 @@ import sodalimon from "../assets/imgs/main_products_imgs/sodalimon.png";
 import jugomangoleche from "../assets/imgs/main_products_imgs/jugomangoleche.png";
 // dos veces c/u ya es uno es en leche y el otro en agua
 import jugoguanabana from "../assets/imgs/main_products_imgs/jugoguanabana.png";
-
-
+import jugomangoagua from "../assets/imgs/main_products_imgs/jugomangoagua.png";
+import jugoluloagua from "../assets/imgs/main_products_imgs/jugoluloagua.png";
+import jugoluloleche from "../assets/imgs/main_products_imgs/jugoluloleche.png";
+import jugomaracuyaagua from "../assets/imgs/main_products_imgs/jugomaracuyaagua.png";
+import jugomaracuyaleche from "../assets/imgs/main_products_imgs/jugomaracuyaleche.png";
+import jugomoraleche from "../assets/imgs/main_products_imgs/jugomoraleche.png";
 
 const ProductImgBuilder = (imgName) => {
-  let returnImg;
-  switch (imgName) {
+	let returnImg;
+	switch (imgName) {
+		case "jugo de mora en agua":
+			returnImg = jugomoraleche;
+			break;
+		case "jugo de mora en leche":
+			returnImg = jugomoraleche;
+			break;
+		case "jugo de maracuya en leche":
+			returnImg = jugomaracuyaleche;
+			break;
+		case "jugo de maracuya en agua":
+			returnImg = jugomaracuyaagua;
+			break;
+		case "jugo de lulo en leche":
+			returnImg = jugoluloleche;
+			break;
+		case "jugo de lulo en agua":
+			returnImg = jugoluloagua;
+			break;
+		case "jugo de borojó en leche":
+			returnImg = logo;
+			break;
+		case "jugo de borojó en agua":
+			returnImg = logo;
+			break;
 		case "jugo de guanabana en leche":
 			returnImg = jugoguanabana;
 			break;
@@ -73,6 +102,9 @@ const ProductImgBuilder = (imgName) => {
 			break;
 		case "jugo de mango en leche":
 			returnImg = jugomangoleche;
+			break;
+		case "jugo de mango en agua":
+			returnImg = jugomangoagua;
 			break;
 		case "refrescante limón soda":
 			returnImg = sodalimon;
@@ -194,6 +226,9 @@ const ProductImgBuilder = (imgName) => {
 		case "mega split":
 			returnImg = megasplit;
 			break;
+			case "salpicon con helado":
+			returnImg = salpiconhelado;
+			break;
 		case "salpicon especial":
 			returnImg = salpiconespecial;
 			break;
@@ -249,6 +284,6 @@ const ProductImgBuilder = (imgName) => {
 			returnImg = logo;
 	}
 	return returnImg;
-}
+};
 
-export default ProductImgBuilder
+export default ProductImgBuilder;
