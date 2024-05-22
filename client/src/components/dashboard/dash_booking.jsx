@@ -504,7 +504,7 @@ function DashBookings() {
 					overflow: "hidden",
 					marginBottom: 10,
 					marginTop: 2,
-					marginX: 2,
+					paddingRight: 2,
 				}}
 			>
 				<TableContainer

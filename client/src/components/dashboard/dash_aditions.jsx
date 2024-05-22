@@ -546,7 +546,7 @@ const DashAditions = () => {
 							</div> */}
 							<div className="colum-two">
 							<div>
-									<span>Nombre</span>
+									<span>Número adición</span>
 									<span>{aditionData.id}</span>
 								</div>
 								<div>
@@ -629,7 +629,7 @@ const DashAditions = () => {
 							</div> */}
 							<div className="colum-two">
 							<div>
-									<span>Nombre</span>
+									<span>Número sabor</span>
 									<span>{flavorData.id}</span>
 								</div>
 								<div>
