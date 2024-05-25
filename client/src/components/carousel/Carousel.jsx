@@ -5,9 +5,13 @@ import ProductImgBuilder from "../../utils/ProductImgBuilder";
 import { PiStarBold } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { showProductsRequest } from "../../api/products";
+import ModalProduct from "../modal/modal_product/ModalProduct";
 
 const ComponentCarousel = () => {
 	const [products, setProducts] = useState([]);
+	const [showModalProductSelected, setShowModalProductSelected] = useState(false);
+	const [productSelected, setProductSelected] = useState(null);
+
 
 	useEffect(() => {
 		// Realizar consulta a la base de datos para traer la informacion
@@ -23,6 +27,12 @@ const ComponentCarousel = () => {
 		};
 		handleShowProducts();
 	}, []);
+
+	const handleProduct = (product) => {
+		setShowModalProductSelected(true);
+		console.log("product from handle ", product);
+		setProductSelected(product);
+	};
 
 	const responsive = {
 		superLargeDesktop: {
@@ -72,12 +82,18 @@ const ComponentCarousel = () => {
 								<p className="carousel-p-description">{product.description}</p>
 							</div>
 						</div>
-						<a href="#" className="btn-carousel-card-product">
+						<button className="btn-carousel-card-product" onClick={() => handleProduct(product)}>
 							Comprar
-						</a>
+						</button>
 					</div>
 				))}
 			</Carousel>
+			{showModalProductSelected && (
+				<ModalProduct
+				setStateModal={setShowModalProductSelected}
+				product={productSelected}
+			/>
+			)}
 		</div>
 	);
 };

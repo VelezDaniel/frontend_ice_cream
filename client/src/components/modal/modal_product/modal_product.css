@@ -18,6 +18,11 @@
   
 }
 
+/* .container-select-flavors {
+  z-index: 10000 !important;
+  position: relative;
+} */
+
 .form-sect-detail-product{
   width: 60%;
 }

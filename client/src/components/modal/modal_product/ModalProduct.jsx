@@ -4,7 +4,17 @@ import "./modal_product.css";
 import { useEffect, useState } from "react";
 import { showFlavorsRequest } from "../../../api/flavors";
 import { showAditionsRequest } from "../../../api/aditions";
-import aldea from "../../../assets/imgs/main_products_imgs/aldea.png";
+import ProductImgBuilder from "../../../utils/ProductImgBuilder";
+
+// ** MATERIAL UI IMPORTS ** //
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Chip from "@mui/material/Chip";
 
 function ModalProduct({ product, setStateModal }) {
 	const {
@@ -15,12 +25,65 @@ function ModalProduct({ product, setStateModal }) {
 	} = useForm();
 	// const aditionChecked = watch("adition");
 
+	const [flavorsData, setFlavorsData] = useState([]);
+	const [selectedFlavor, setSelectedFlavor] = useState([]);
+	const [flavorsNames, setFlavorsNames] = useState([]);
 	const [aditionsData, setAditionsData] = useState([]);
 	const [aditionChecked, setAditionChecked] = useState(false);
 	const [selectedAditions, setSelectedAditions] = useState([]);
 	const [aditionQuantities, setAditionQuantities] = useState({});
 	const [sauceChecked, setSauceChecked] = useState(false);
 	const [sauceSelected, setSauceSelected] = useState({});
+	// ? Material UI
+	const theme = useTheme();
+	const [personName, setPersonName] = useState([]);
+	// const [flavorName, setFlavorName] = useState([]);
+
+	const handleChange = (amountBalls) => (event) => {
+		const {
+			target: { value },
+		} = event;
+		if (value.length <= amountBalls) {
+			setPersonName(typeof value === "string" ? value.split(",") : value);
+		}
+	};
+
+	// ! !///////////////////////////////////////////////
+	const ITEM_HEIGHT = 48;
+	const ITEM_PADDING_TOP = 8;
+	const MenuProps = {
+		PaperProps: {
+			style: {
+				maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+				width: 250,
+			},
+		},
+		container: document.querySelector("#modal-container"),
+	};
+
+	const names = [
+		"Oliver Hansen",
+		"Van Henry",
+		"April Tucker",
+		"Ralph Hubbard",
+		"Omar Alexander",
+		"Carlos Abbott",
+		"Miriam Wagner",
+		"Bradley Wilkerson",
+		"Virginia Andrews",
+		"Kelly Snyder",
+	];
+
+	function getStyles(name, personName, theme) {
+		return {
+			fontWeight:
+				personName.indexOf(name) === -1
+					? theme.typography.fontWeightRegular
+					: theme.typography.fontWeightMedium,
+		};
+	}
+	// ! -------------------------------------------
+
 	const sauces = [
 		{
 			id: 1,
@@ -98,12 +161,20 @@ function ModalProduct({ product, setStateModal }) {
 		setSauceSelected(sauce);
 	};
 
+	const SaveProductInformation = () => {
+		// consulta a base de datos
+	};
+
+	const onSubmit = handleSubmit((data) => {
+		console.log("information of product: ", data);
+	});
+
 	// ? use effect para traer adiciones
 	useEffect(() => {
 		const getAditions = async () => {
 			try {
 				const aditions = await showAditionsRequest();
-				// Establecer usuarios en estado
+				// Establecer adiciones en estado
 				console.log(aditions);
 				setAditionsData(aditions.data.body);
 			} catch (error) {
@@ -113,12 +184,29 @@ function ModalProduct({ product, setStateModal }) {
 		getAditions();
 	}, []);
 
-	const SaveProductInformation = () => {
-		// consulta a base de datos
-	}
+	// ? use effect para traer Sabores
+	useEffect(() => {
+		const getFlavors = async () => {
+			try {
+				const flavors = await showFlavorsRequest();
+				// Establecer sabores en estado
+				console.log(flavors);
+				setFlavorsData(flavors.data.body);
+			} catch (error) {
+				console.log("Error in dash_portfolio: ", error);
+			}
+		};
+		getFlavors();
+	}, []);
 
-	const onSubmit = handleSubmit((data) => {
-		console.log("information of product: ", data);
+	useEffect(() => {
+		if (flavorsData != []) {
+			// ? Filtrar los sabores que estan disponibles
+			const availableFlavors = flavorsData.filter(
+				(flavor) => flavor.stateFlavor === "DISPONIBLE"
+			);
+			setFlavorsNames(availableFlavors.map((flavor) => flavor.nameFlavor));
+		}
 	});
 
 	return (
@@ -137,13 +225,17 @@ function ModalProduct({ product, setStateModal }) {
 				{/* Modal body */}
 				<div className="scroll-base-modal">
 					<div className="box-img-card-product">
-						<img src={aldea} alt="imagen helado" />
+						<img
+							src={ProductImgBuilder(product.name.toLowerCase())}
+							alt="imagen helado"
+						/>
 					</div>
 					<div className="box-desc-product-modal">
 						<h4>{product.name}</h4>
 						<p className="subtitle-gray">{product.productType}</p>
 						<p className="subtitle-gray">Tamaño: {product.productSize}</p>
 						<p className="desc-product-modal">{product.description}</p>
+						<p className="desc-product-modal">${product.price}</p>
 					</div>
 					<form className="form-detail-product" onSubmit={onSubmit}>
 						{/* CANTIDAD */}
@@ -171,10 +263,46 @@ function ModalProduct({ product, setStateModal }) {
 						{errors.quantity && <span>{errors.quantity.message}</span>}
 
 						{/* Seleccion sabores */}
-						<div className="check-box-input">
-							<label className="font-detail-product" htmlFor="flavors">
-								Elige los sabores de helado
-							</label>
+						<div>
+							<div className="check-box-input">
+								<label className="font-detail-product" htmlFor="flavors">
+									Elige los sabores de helado
+								</label>
+							</div>
+							<span className="subtitle-gray">Puedes elegir {product.amountBalls}</span>
+						</div>
+						<div>
+							<FormControl sx={{ m: 1, width: 300 }}>
+								<InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+								<Select
+									labelId="demo-multiple-chip-label"
+									id="demo-multiple-chip"
+									multiple
+									value={personName}
+									onChange={handleChange(product.amountBalls)}
+									input={
+										<OutlinedInput id="select-multiple-chip" label="Chip" />
+									}
+									renderValue={(selected) => (
+										<Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+											{selected.map((value) => (
+												<Chip key={value} label={value} />
+											))}
+										</Box>
+									)}
+									MenuProps={MenuProps}
+								>
+									{names.map((name) => (
+										<MenuItem
+											key={name}
+											value={name}
+											style={getStyles(name, personName, theme)}
+										>
+											{name}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
 						</div>
 
 						{/* Opcion cubiertos */}
@@ -229,23 +357,6 @@ function ModalProduct({ product, setStateModal }) {
 							)}
 						</div>
 
-						{/* Seleccion adicion */}
-						{/* <div className="check-box-input">
-							<label className="font-detail-product" htmlFor="adition">
-								<input type="checkbox" {...register("adition")} />
-								¿Deseas alguna adición?
-							</label>
-
-							{aditionChecked && (
-								<input
-									type="checkbox"
-									// ! HACER CONSULTA DE LAS ADICIONES PARA CONTINUAR
-									checked={selectedAditions.includes(adition.id)}
-									onChange={checkBoxHandler}
-								/>
-							)}
-						</div> */}
-
 						{/* SALSAS */}
 						<div className="check-box-input">
 							<label className="font-detail-product" htmlFor="sausage">
@@ -258,7 +369,13 @@ function ModalProduct({ product, setStateModal }) {
 									<select
 										className="form-control"
 										defaultValue={sauces[0].sauceName}
-										onChange={(e) => handlerSaveSauce(sauces.find(sauce => sauce.sauceName === e.target.value))}
+										onChange={(e) =>
+											handlerSaveSauce(
+												sauces.find(
+													(sauce) => sauce.sauceName === e.target.value
+												)
+											)
+										}
 									>
 										{sauces.map((sauce) => (
 											<option key={sauce.id} value={sauce.sauceName}>
@@ -293,6 +410,7 @@ function ModalProduct({ product, setStateModal }) {
 					</form>
 				</div>
 			</div>
+			<div id="modal-container"></div>
 		</div>
 	);
 }
