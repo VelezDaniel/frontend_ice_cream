@@ -36,15 +36,14 @@ function ModalProduct({ product, setStateModal }) {
 	const [sauceSelected, setSauceSelected] = useState({});
 	// ? Material UI
 	const theme = useTheme();
-	const [personName, setPersonName] = useState([]);
-	// const [flavorName, setFlavorName] = useState([]);
+	const [flavorName, setFlavorName] = useState([]);
 
 	const handleChange = (amountBalls) => (event) => {
 		const {
 			target: { value },
 		} = event;
 		if (value.length <= amountBalls) {
-			setPersonName(typeof value === "string" ? value.split(",") : value);
+			setFlavorName(typeof value === "string" ? value.split(",") : value);
 		}
 	};
 
@@ -61,28 +60,14 @@ function ModalProduct({ product, setStateModal }) {
 		container: document.querySelector("#modal-container"),
 	};
 
-	const names = [
-		"Oliver Hansen",
-		"Van Henry",
-		"April Tucker",
-		"Ralph Hubbard",
-		"Omar Alexander",
-		"Carlos Abbott",
-		"Miriam Wagner",
-		"Bradley Wilkerson",
-		"Virginia Andrews",
-		"Kelly Snyder",
-	];
-
 	function getStyles(name, personName, theme) {
 		return {
 			fontWeight:
-				personName.indexOf(name) === -1
+				flavorName.indexOf(name) === -1
 					? theme.typography.fontWeightRegular
 					: theme.typography.fontWeightMedium,
 		};
 	}
-	// ! -------------------------------------------
 
 	const sauces = [
 		{
@@ -166,6 +151,9 @@ function ModalProduct({ product, setStateModal }) {
 	};
 
 	const onSubmit = handleSubmit((data) => {
+		data.aditions = selectedAditions;
+		data.aditionQuantity = aditionQuantities;
+		data.sauce = sauceSelected;
 		console.log("information of product: ", data);
 	});
 
@@ -269,19 +257,25 @@ function ModalProduct({ product, setStateModal }) {
 									Elige los sabores de helado
 								</label>
 							</div>
-							<span className="subtitle-gray">Puedes elegir {product.amountBalls}</span>
+							<span className="subtitle-gray">
+								Puedes elegir {product.amountBalls}
+							</span>
 						</div>
 						<div>
 							<FormControl sx={{ m: 1, width: 300 }}>
-								<InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+								<InputLabel id="demo-multiple-chip-label">Sabores</InputLabel>
 								<Select
+									{...register("flavors", {
+										required: true,
+										message: "Debes seleccionar al menos un sabor",
+									})}
 									labelId="demo-multiple-chip-label"
 									id="demo-multiple-chip"
 									multiple
-									value={personName}
+									value={flavorName}
 									onChange={handleChange(product.amountBalls)}
 									input={
-										<OutlinedInput id="select-multiple-chip" label="Chip" />
+										<OutlinedInput id="select-multiple-chip" label="Sabores" />
 									}
 									renderValue={(selected) => (
 										<Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
@@ -292,13 +286,13 @@ function ModalProduct({ product, setStateModal }) {
 									)}
 									MenuProps={MenuProps}
 								>
-									{names.map((name) => (
+									{flavorsNames.map((flavor) => (
 										<MenuItem
-											key={name}
-											value={name}
-											style={getStyles(name, personName, theme)}
+											key={flavor}
+											value={flavor}
+											style={getStyles(flavor, flavorName, theme)}
 										>
-											{name}
+											{flavor}
 										</MenuItem>
 									))}
 								</Select>
