@@ -1,0 +1,75 @@
+@import url("../../index.css");
+
+.car-container {
+	height: 100%;
+	width: 26%;
+	background-color: var(--bg-cards);
+	display: flex;
+	flex-direction: column;
+	padding: 18px 14px 36px 14px;
+	justify-content: space-between;
+	align-items: center;
+	gap: 18px;
+	position: fixed;
+	right: 0;
+	top: 0;
+	/* transform: translateX(0); */
+	transition: transform 0.5s ease-in-out;
+}
+
+.car-title {
+	font-size: 26px;
+	color: var(--color-text);
+}
+
+.wrap-subtitle {
+	width: 100%;
+	display: flex;
+	justify-content: start;
+}
+
+.car-subtitle {
+	font-size: 22px;
+	color: var(--color-text);
+}
+
+.u-container1-1 {
+	width: 100%;
+}
+
+.btn-shopping-car {
+	cursor: pointer;
+	width: 90%;
+	height: 46px;
+	font-size: 20px;
+	font-weight: 600;
+	border-radius: 8px;
+  color: var(--lightTitles);
+	border: 3px solid var(--mainColor);
+	background-color: var(--mainColor);
+	letter-spacing: 0.4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+  transition: all 0.3s ease;
+  margin-bottom: 26px;
+}
+
+.btn-shopping-car:hover {
+  color: var(--lightTitles);
+  text-shadow: 0 0 10px var(--lightTitles), 0 0 20px var(--lightTitles), 0 0 40px var(--lightTitles);
+  background-color: var(--btn-blue);
+	border: 3px solid var(--btn-blue);
+}
+
+@media (width < 1250px) {
+  .car-container {
+    width: 44%;
+  }
+}
+
+@media (width < 820px){
+  .car-container {
+    width: 78%;
+  }
+}

@@ -7,13 +7,6 @@ export const AuthContext = createContext();
 
 export const useAuth = () => {
 	const context = useContext(AuthContext);
-	// try {
-	// 	if (context) {
-	// 		return context;
-	// 	}
-	// } catch (error) {
-	// 	throw new Error(error);
-	// }
 	if (!context) {
 		throw new Error("useAuth debe ser usado dentro de un provider");
 	}

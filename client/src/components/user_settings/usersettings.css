@@ -48,7 +48,9 @@
 }
 
 .wrap-btn {
-	width: 100%;
+	width: 94%;
+	display: flex;
+	justify-content: end;
 }
 
 .btn-back {
@@ -120,7 +122,8 @@
 
 .btn-edit-u-data:hover {
 	color: var(--lightTitles);
-	background-color: var(--mainColor);
+  background-color: var(--mainColor);
+	border: 3px solid var(--mainColor);
 }
 
 .btn-cerrarsesion {
@@ -138,11 +141,13 @@
 	padding-left: 6px;
 	padding: 6px 32px;
 	margin-bottom: 14px;
+	transition: all 0.3s ease;
 }
 
 .btn-cerrarsesion:hover {
-	color: var(--mainColor);
-	border-color: var(--mainColor);
+	color: var(--lightTitles);
+  background-color: var(--mainColor);
+	border: 3px solid var(--mainColor);
 }
 
 .settings-user-hidden {
@@ -206,7 +211,7 @@
 @media (width < 1080px) {
 	.user-container {
 		height: 100%;
-		width: 36%;
+		width: 44%;
 		padding: 18px 14px 46px 14px;
 	}
 }
@@ -214,6 +219,6 @@
 @media (width < 710px) {
 	.user-container {
 		height: 100%;
-		width: 46%;
+		width: 68%;
 	}
 }

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import UserSettings from "../user_settings/UserSettings";
 import NoneUserAuthenticated from "../user_settings/NoneUser";
+import ShoppingCar from "../shopping_car/ShoppingCar";
 import {
 	IoMenu,
 	IoClose,
@@ -19,6 +20,7 @@ function NavBar({ navBarType }) {
 	const [menuVisible, setMenuVisible] = useState(false);
 	const [userSetting, setUserSetting] = useState(false);
 	const [noneUserSetting, setNoneUserSetting] = useState(false);
+	const [shoppingCar, setShoppingCar] = useState(false);
 
 	const { isAuthenticated, user } = useAuth();
 
@@ -68,6 +70,15 @@ function NavBar({ navBarType }) {
 	const closeNoneSettingsUser = () => {
 		setNoneUserSetting(false);
 	};
+
+	// Shopping car
+	const openShoppingCar = () => {
+		setShoppingCar(true);
+	}
+
+	const closeShoppingCar = () => {
+		setShoppingCar(false);
+	}
 
 	useEffect(() => {
 		const $mainMenu = document.querySelector(".main-menu");
@@ -124,9 +135,11 @@ function NavBar({ navBarType }) {
 					</div>
 
 					<div className="icons h-content">
-						<a className="nav-item nav-icon" href="">
+						{/* BOTON DEL CARRITO DE COMPRAS */}
+						<button className="nav-btn-user" onClick={openShoppingCar}>
 							<i className="bi bi-handbag"></i>
-						</a>
+						</button>
+						{/* BOTON DE INFORMACION DE USUARIO */}
 						<button className="nav-btn-user" onClick={openSettingsUser}>
 							<i className="bi bi-person icon-person"></i>
 						</button>
@@ -137,16 +150,17 @@ function NavBar({ navBarType }) {
 						onClick={closeMenu}
 					></div>
 				</nav>
-				{/* {userSetting && (
-				<UserSettings closeMethod={closeSettingsUser} />
-			)} */}
+				
 			</div>
-			<div className="aside-user">
+			<div className="aside-component">
 				{noneUserSetting && (
 					<NoneUserAuthenticated closeMethod={closeNoneSettingsUser} />
 				)}
 				{userSetting && (
 					<UserSettings closeMethod={closeSettingsUser} />
+				)}
+				{shoppingCar && (
+					<ShoppingCar closeMethod={closeShoppingCar} />
 				)}
 			</div>
 		</>

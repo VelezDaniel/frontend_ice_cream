@@ -1,6 +1,6 @@
 @import url('../../index.css');
 
-.aside-user {
+.aside-component {
 	position: absolute;
 	z-index: 100000;
 }

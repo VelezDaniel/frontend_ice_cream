@@ -1,6 +1,6 @@
 import "./usersettings.css";
 import { LuPencilLine } from "react-icons/lu";
-import { IoExitOutline } from "react-icons/io5";
+// import { IoExitOutline } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import { useAuth } from "../../context/AuthContext";
 import logoImg from "../../assets/imgs/helarticologo2.png";
