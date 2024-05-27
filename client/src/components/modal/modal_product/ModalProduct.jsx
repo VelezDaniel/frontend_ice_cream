@@ -60,7 +60,7 @@ function ModalProduct({ product, setStateModal }) {
 		container: document.querySelector("#modal-container"),
 	};
 
-	function getStyles(name, personName, theme) {
+	function getStyles(name, flavorName, theme) {
 		return {
 			fontWeight:
 				flavorName.indexOf(name) === -1
@@ -150,12 +150,73 @@ function ModalProduct({ product, setStateModal }) {
 		// consulta a base de datos
 	};
 
+
+	// ****************** ----- *******************//
+	// ** ENVIO DEL PRODUCTO INICIO ** //
+	// ****************** ----- *******************//
+
+	// ? ENVIAR AL CARRITO EL PRODUCTO Y SUS CARACTERISTICAS
 	const onSubmit = handleSubmit((data) => {
+		// Enviar el objeto del producto completo:
+		data.productInfo = product;
+
+		// Elecciones del cliente:
 		data.aditions = selectedAditions;
 		data.aditionQuantity = aditionQuantities;
-		data.sauce = sauceSelected;
+
+		// ? adicionar informacion de la adicion seleccionada
+		if (data.aditions) {
+			const result = data.aditions.map((adition) => {
+				const aditionObj = aditionsData.find(
+					(aditionId) => aditionId.id === adition
+				);
+
+				if (aditionObj) {
+					return {
+						id: aditionObj.id,
+						nameAdition: aditionObj.nameAdition,
+						priceAdition: aditionObj.priceAdition,
+					};
+				} else {
+					console.log("Adicion no encontrada");
+					return null;
+				}
+			});
+			data.aditions = result;
+		}
+
+		// ? aidcionar informacion de los sabores seleccionados
+		if (data.flavors) {
+			const result = data.flavors.map((flav) => {
+				const flavorObj = flavorsData.find(
+					(flavor) => flavor.nameFlavor === flav
+				);
+
+				if (flavorObj) {
+					return {
+						id: flavorObj.id,
+						nameFlavor: flavorObj.nameFlavor,
+					};
+				} else {
+					console.log("sabor no ENCONTRADO!!!!");
+					return null;
+				}
+			});
+			data.flavors = result;
+		}
+
+		if (sauceSelected != {}) {
+			data.sauce = sauceSelected;
+			data.description = `Descripción: ${data.description}.  SALSA: ${sauceSelected.sauceName}`;
+		}
+		
 		console.log("information of product: ", data);
+		setStateModal(false);
 	});
+
+	// ****************** ----- *******************//
+	// ** ENVIO DEL PRODUCTO FINAL ** //
+	// ****************** ----- *******************//
 
 	// ? use effect para traer adiciones
 	useEffect(() => {
@@ -226,30 +287,6 @@ function ModalProduct({ product, setStateModal }) {
 						<p className="desc-product-modal">${product.price}</p>
 					</div>
 					<form className="form-detail-product" onSubmit={onSubmit}>
-						{/* CANTIDAD */}
-						<div className="form-sect-detail-product">
-							<label className="font-detail-product" htmlFor="quantity">
-								¿Cuantos deseas llevar?
-							</label>
-							<div className="input-group input-detail-product">
-								<input
-									type="number"
-									defaultValue={1}
-									{...register("quantity", {
-										required: {
-											value: true,
-											message: "Este campo es requerido",
-										},
-										min: {
-											value: 1,
-											message: "Selecciona al menos 1",
-										},
-									})}
-								/>
-							</div>
-						</div>
-						{errors.quantity && <span>{errors.quantity.message}</span>}
-
 						{/* Seleccion sabores */}
 						<div>
 							<div className="check-box-input">
@@ -399,7 +436,7 @@ function ModalProduct({ product, setStateModal }) {
 						{errors.description && <span>{errors.description.message}</span>}
 
 						<div className="container-btn cont-btn-product">
-							<button className="btn btn-portfolio">Agregar</button>
+							<button onClick={onSubmit} className="btn btn-portfolio">Agregar</button>
 						</div>
 					</form>
 				</div>

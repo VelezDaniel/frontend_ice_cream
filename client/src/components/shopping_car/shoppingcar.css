@@ -62,6 +62,15 @@
 	border: 3px solid var(--btn-blue);
 }
 
+
+/* ** DISEÑO PARA CADA PRODUCTO DEL CARRITO ** */
+
+
+
+
+
+/* MEDIA QUERYS */
+
 @media (width < 1250px) {
   .car-container {
     width: 44%;

@@ -158,6 +158,7 @@ function NavBar({ navBarType }) {
 					<div className="icons h-content">
 						{/* BOTON DEL CARRITO DE COMPRAS */}
 						<IconButton
+							onClick={openShoppingCar}
 							aria-label="cart"
 							sx={{
 								width: 48,
@@ -170,7 +171,6 @@ function NavBar({ navBarType }) {
 						>
 							<StyledBadge
 								badgeContent={countBadge}
-								onClick={openShoppingCar}
 								sx={{
 									width: 46,
 									height: 46,

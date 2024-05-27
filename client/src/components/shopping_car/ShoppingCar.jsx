@@ -1,11 +1,19 @@
 import { IoClose } from "react-icons/io5";
 import "./shoppingcar.css";
+import { CartContext } from "../../context/ShoppingCartContext";
+import { useContext } from "react";
 
+function ShoppingCar({ closeMethod }) {
+	const [cart, setCart] = useContext(CartContext);
 
+	const quantity = cart.reduce((accumulator, current) => {
+		return accumulator + current.quantity;
+	}, 0);
 
-function ShoppingCar({closeMethod}) {
-
-	
+	const totalPrice = cart.reduce(
+		(accumulator, current) => accumulator + current.quantity * current.price,
+		0
+	);
 
 	return (
 		<div className="car-container">
@@ -17,19 +25,22 @@ function ShoppingCar({closeMethod}) {
 						</i>
 					</button>
 				</div>
-        <div>
-          <h3 className="car-title">Tu pedido</h3>
-        </div>
-        <div className="u-container1-1"> 
-         <div className="wrap-subtitle">
-         <h4 className="car-subtitle">Lista de productos</h4>
-         </div>
-          <div>
-            
-          </div>
-        </div>
+				<div>
+					<h3 className="car-title">Tu pedido</h3>
+				</div>
+				<div className="u-container1-1">
+					<div className="wrap-subtitle">
+						<h4 className="car-subtitle">Lista de productos</h4>
+					</div>
+					<div>
+						<div>Items in car: {quantity}</div>
+						<div>Total: ${totalPrice}</div>
+					</div>
+				</div>
 			</div>
-      <button className="btn-shopping-car">Pagar</button>
+			<button onClick={() => console.log(cart)} className="btn-shopping-car">
+				Pagar
+			</button>
 		</div>
 	);
 }
