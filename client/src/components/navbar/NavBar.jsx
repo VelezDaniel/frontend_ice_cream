@@ -13,8 +13,29 @@ import {
 import { HiOutlineHome } from "react-icons/hi";
 // import { useNavigate } from "react-router-dom";
 // import { Link } from 'react-router-dom';
+// IMPORTS MATERIAL UI
+import Badge from "@mui/material/Badge";
+import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 function NavBar({ navBarType }) {
+	// States for material ui component
+	const [countBadge, setCountBadge] = useState(4);
+	const [invisible, setInvisible] = useState(false);
+
+	const handleBadgeVisibility = () => {
+		setInvisible(!invisible);
+	};
+
+	const StyledBadge = styled(Badge)(({ theme }) => ({
+		"& .MuiBadge-badge": {
+			right: 4,
+			top: 6,
+			padding: "0 4px",
+		},
+	}));
+
 	// const navigate = useNavigate();
 	const [scroll, setScroll] = useState(false);
 	const [menuVisible, setMenuVisible] = useState(false);
@@ -56,7 +77,7 @@ function NavBar({ navBarType }) {
 	};
 
 	const openSettingsUser = () => {
-		if(user) {
+		if (user) {
 			setUserSetting(true);
 		} else {
 			setNoneUserSetting(true);
@@ -74,11 +95,11 @@ function NavBar({ navBarType }) {
 	// Shopping car
 	const openShoppingCar = () => {
 		setShoppingCar(true);
-	}
+	};
 
 	const closeShoppingCar = () => {
 		setShoppingCar(false);
-	}
+	};
 
 	useEffect(() => {
 		const $mainMenu = document.querySelector(".main-menu");
@@ -136,9 +157,34 @@ function NavBar({ navBarType }) {
 
 					<div className="icons h-content">
 						{/* BOTON DEL CARRITO DE COMPRAS */}
-						<button className="nav-btn-user" onClick={openShoppingCar}>
-							<i className="bi bi-handbag"></i>
-						</button>
+						<IconButton
+							aria-label="cart"
+							sx={{
+								width: 48,
+								height: 48,
+								borderRadius: "12px",
+								":hover": {
+									backgroundColor: "primary.btnHomeHover",
+								},
+							}}
+						>
+							<StyledBadge
+								badgeContent={countBadge}
+								onClick={openShoppingCar}
+								sx={{
+									width: 46,
+									height: 46,
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "center",
+								}}
+								color="secondary"
+							>
+								<ShoppingCartOutlinedIcon
+									sx={{ width: 34, height: 34, color: "primary.contrastText" }}
+								/>
+							</StyledBadge>
+						</IconButton>
 						{/* BOTON DE INFORMACION DE USUARIO */}
 						<button className="nav-btn-user" onClick={openSettingsUser}>
 							<i className="bi bi-person icon-person"></i>
@@ -150,18 +196,13 @@ function NavBar({ navBarType }) {
 						onClick={closeMenu}
 					></div>
 				</nav>
-				
 			</div>
 			<div className="aside-component">
 				{noneUserSetting && (
 					<NoneUserAuthenticated closeMethod={closeNoneSettingsUser} />
 				)}
-				{userSetting && (
-					<UserSettings closeMethod={closeSettingsUser} />
-				)}
-				{shoppingCar && (
-					<ShoppingCar closeMethod={closeShoppingCar} />
-				)}
+				{userSetting && <UserSettings closeMethod={closeSettingsUser} />}
+				{shoppingCar && <ShoppingCar closeMethod={closeShoppingCar} />}
 			</div>
 		</>
 	);

@@ -1,7 +1,12 @@
 import { IoClose } from "react-icons/io5";
 import "./shoppingcar.css";
 
+
+
 function ShoppingCar({closeMethod}) {
+
+	
+
 	return (
 		<div className="car-container">
 			<div className="u-container1">
