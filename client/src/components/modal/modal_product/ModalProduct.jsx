@@ -1,10 +1,13 @@
 import { IoIosClose } from "react-icons/io";
 import { useForm } from "react-hook-form";
 import "./modal_product.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { showFlavorsRequest } from "../../../api/flavors";
 import { showAditionsRequest } from "../../../api/aditions";
 import ProductImgBuilder from "../../../utils/ProductImgBuilder";
+import { randomString } from "../../../utils/random.js";
+// CONTEXT
+import { CartContext } from "../../../context/ShoppingCartContext";
 
 // ** MATERIAL UI IMPORTS ** //
 import { useTheme } from "@mui/material/styles";
@@ -24,6 +27,9 @@ function ModalProduct({ product, setStateModal }) {
 		formState: { errors },
 	} = useForm();
 	// const aditionChecked = watch("adition");
+
+	// CONTEXT
+	const [cart, setCart] = useContext(CartContext);
 
 	const [flavorsData, setFlavorsData] = useState([]);
 	const [selectedFlavor, setSelectedFlavor] = useState([]);
@@ -150,16 +156,34 @@ function ModalProduct({ product, setStateModal }) {
 		// consulta a base de datos
 	};
 
-
 	// ****************** ----- *******************//
 	// ** ENVIO DEL PRODUCTO INICIO ** //
 	// ****************** ----- *******************//
 
+	// ? FUNCIONES PREVIAS NECESARIAS PARA EL CARRITO
+	const addToCart = (id, price, productObj) => {
+		setCart((currentItems) => {
+			const isItemsFound = currentItems.find((item) => item.id === id);
+			if (isItemsFound) {
+				return currentItems.map((item) => {
+					if (item.id === id) {
+						return { ...item, quantity: item.quantity + 1 };
+					} else {
+						return item;
+					}
+				});
+			} else {
+				return [...currentItems, { id, quantity: 1, price, productObj }];
+			}
+		});
+	};
+
 	// ? ENVIAR AL CARRITO EL PRODUCTO Y SUS CARACTERISTICAS
 	const onSubmit = handleSubmit((data) => {
+		let priceCartItem = 0;
 		// Enviar el objeto del producto completo:
 		data.productInfo = product;
-
+		data.id = product.id.toString().concat(randomString(8));
 		// Elecciones del cliente:
 		data.aditions = selectedAditions;
 		data.aditionQuantity = aditionQuantities;
@@ -172,6 +196,7 @@ function ModalProduct({ product, setStateModal }) {
 				);
 
 				if (aditionObj) {
+					priceCartItem = priceCartItem + parseInt(aditionObj.priceAdition);
 					return {
 						id: aditionObj.id,
 						nameAdition: aditionObj.nameAdition,
@@ -209,8 +234,10 @@ function ModalProduct({ product, setStateModal }) {
 			data.sauce = sauceSelected;
 			data.description = `Descripción: ${data.description}.  SALSA: ${sauceSelected.sauceName}`;
 		}
-		
+
 		console.log("information of product: ", data);
+		const parcialOrderPrice = priceCartItem + parseInt(product.price);
+		addToCart(data.id, parcialOrderPrice, product);
 		setStateModal(false);
 	});
 
@@ -249,14 +276,14 @@ function ModalProduct({ product, setStateModal }) {
 	}, []);
 
 	useEffect(() => {
-		if (flavorsData != []) {
+		if (flavorsData.length > 0) {
 			// ? Filtrar los sabores que estan disponibles
 			const availableFlavors = flavorsData.filter(
 				(flavor) => flavor.stateFlavor === "DISPONIBLE"
 			);
 			setFlavorsNames(availableFlavors.map((flavor) => flavor.nameFlavor));
 		}
-	});
+	}, [flavorsData]);
 
 	return (
 		<div className="cover-modal">
@@ -288,53 +315,65 @@ function ModalProduct({ product, setStateModal }) {
 					</div>
 					<form className="form-detail-product" onSubmit={onSubmit}>
 						{/* Seleccion sabores */}
-						<div>
-							<div className="check-box-input">
-								<label className="font-detail-product" htmlFor="flavors">
-									Elige los sabores de helado
-								</label>
-							</div>
-							<span className="subtitle-gray">
-								Puedes elegir {product.amountBalls}
-							</span>
-						</div>
-						<div>
-							<FormControl sx={{ m: 1, width: 300 }}>
-								<InputLabel id="demo-multiple-chip-label">Sabores</InputLabel>
-								<Select
-									{...register("flavors", {
-										required: true,
-										message: "Debes seleccionar al menos un sabor",
-									})}
-									labelId="demo-multiple-chip-label"
-									id="demo-multiple-chip"
-									multiple
-									value={flavorName}
-									onChange={handleChange(product.amountBalls)}
-									input={
-										<OutlinedInput id="select-multiple-chip" label="Sabores" />
-									}
-									renderValue={(selected) => (
-										<Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-											{selected.map((value) => (
-												<Chip key={value} label={value} />
-											))}
-										</Box>
-									)}
-									MenuProps={MenuProps}
-								>
-									{flavorsNames.map((flavor) => (
-										<MenuItem
-											key={flavor}
-											value={flavor}
-											style={getStyles(flavor, flavorName, theme)}
-										>
-											{flavor}
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
-						</div>
+						<>
+							{product.amountBalls && product.amountBalls > 0 ? (
+								<>
+									<div>
+										<div className="check-box-input">
+											<label className="font-detail-product" htmlFor="flavors">
+												Elige los sabores de helado
+											</label>
+										</div>
+										<span className="subtitle-gray">
+											Puedes elegir {product.amountBalls}
+										</span>
+									</div>
+									<div>
+										<FormControl sx={{ m: 1, width: 300 }}>
+											<InputLabel id="demo-multiple-chip-label">
+												Sabores
+											</InputLabel>
+											<Select
+												{...register("flavors")}
+												labelId="demo-multiple-chip-label"
+												id="demo-multiple-chip"
+												multiple
+												value={flavorName}
+												onChange={handleChange(product.amountBalls)}
+												input={
+													<OutlinedInput
+														id="select-multiple-chip"
+														label="Sabores"
+													/>
+												}
+												renderValue={(selected) => (
+													<Box
+														sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+													>
+														{selected.map((value) => (
+															<Chip key={value} label={value} />
+														))}
+													</Box>
+												)}
+												MenuProps={MenuProps}
+											>
+												{flavorsNames.map((flavor) => (
+													<MenuItem
+														key={flavor}
+														value={flavor}
+														style={getStyles(flavor, flavorName, theme)}
+													>
+														{flavor}
+													</MenuItem>
+												))}
+											</Select>
+										</FormControl>
+									</div>
+								</>
+							) : (
+								<p className="subtitle-gray">El producto que elegiste no tiene helado</p>
+							)}
+						</>
 
 						{/* Opcion cubiertos */}
 						<div className="check-box-input">
@@ -436,7 +475,9 @@ function ModalProduct({ product, setStateModal }) {
 						{errors.description && <span>{errors.description.message}</span>}
 
 						<div className="container-btn cont-btn-product">
-							<button onClick={onSubmit} className="btn btn-portfolio">Agregar</button>
+							<button onClick={onSubmit} className="btn btn-portfolio">
+								Agregar
+							</button>
 						</div>
 					</form>
 				</div>

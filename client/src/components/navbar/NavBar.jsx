@@ -1,9 +1,10 @@
 import "./navbar.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useAuth } from "../../context/AuthContext";
 import UserSettings from "../user_settings/UserSettings";
 import NoneUserAuthenticated from "../user_settings/NoneUser";
 import ShoppingCar from "../shopping_car/ShoppingCar";
+import { CartContext } from "../../context/ShoppingCartContext";
 import {
 	IoMenu,
 	IoClose,
@@ -13,7 +14,7 @@ import {
 import { HiOutlineHome } from "react-icons/hi";
 // import { useNavigate } from "react-router-dom";
 // import { Link } from 'react-router-dom';
-// IMPORTS MATERIAL UI
+//  ** IMPORTS MATERIAL UI
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
@@ -21,8 +22,13 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 function NavBar({ navBarType }) {
 	// States for material ui component
-	const [countBadge, setCountBadge] = useState(4);
+	// const [countBadge, setCountBadge] = useState(4);
 	const [invisible, setInvisible] = useState(false);
+	const [cart, setCart] = useContext(CartContext);
+
+	const quantity = cart.reduce((accumulator, current) => {
+		return accumulator + current.quantity;
+	}, 0);
 
 	const handleBadgeVisibility = () => {
 		setInvisible(!invisible);
@@ -170,7 +176,7 @@ function NavBar({ navBarType }) {
 							}}
 						>
 							<StyledBadge
-								badgeContent={countBadge}
+								badgeContent={quantity}
 								sx={{
 									width: 46,
 									height: 46,
