@@ -8,7 +8,7 @@ function ShoppingCar({ closeMethod }) {
 	const [cart, setCart] = useContext(CartContext);
 
 	const quantity = cart.reduce((accumulator, current) => {
-		console.log('CART: ',cart);
+		console.log("CART: ", cart);
 		return accumulator + current.quantity;
 	}, 0);
 
@@ -19,7 +19,7 @@ function ShoppingCar({ closeMethod }) {
 
 	return (
 		<div className="car-container">
-			<div className="u-container1">
+			<div className="u-container1 add-container-heigh">
 				<div className="wrap-btn">
 					<button className="btn-back" onClick={closeMethod}>
 						<i>
@@ -30,26 +30,59 @@ function ShoppingCar({ closeMethod }) {
 				<div>
 					<h3 className="car-title">Tu pedido</h3>
 				</div>
-				<div className="u-container1-1">
+				<div className="u-container1-1 add-container-heigh">
 					<div className="wrap-subtitle">
 						<h4 className="car-subtitle">Lista de productos</h4>
 					</div>
-					<div>
-						{cart.map((product) => {
-							<div>
-								<div>
-									{/* <img src={ProductImgBuilder(product.name.toLowerCase())} /> */}
+					<div className="divider">
+						<div>
+							{cart.map((order) => (
+								<div className="small-card-cart" key={order.id}>
+									<div className="box-img-card-product">
+										<img
+											src={ProductImgBuilder(
+												order.orderBody.productInfo.name.toLowerCase()
+											)}
+										/>
+									</div>
+									<div className="container-cart-order-info">
+										<p className="subtitle-gray">
+											{order.orderBody.productInfo.name}
+										</p>
+										<p className="product-size-cart">
+											{order.orderBody.productInfo.productSize}
+										</p>
+										<div className="cart-sect-horiontal bottom-space">
+											<p>Precio</p>
+											<p className="subtitle-gray">
+												${order.orderBody.productInfo.price}
+											</p>
+										</div>
+										{order.orderBody.aditions ? (
+											<>
+												<p className="product-size-cart">Adiciones</p>
+												{order.orderBody.aditions.map((adition) => (
+													<div className="cart-sect-horiontal" key={adition.id}>
+														<p>{adition.nameAdition}</p>
+														<p>${adition.priceAdition}</p>
+													</div>
+												))}
+											</>
+										) : (
+											<p className="product-size-cart">Sin adiciones</p>
+										)}
+										<div className="cart-sect-horiontal top-space-smallest">
+											<p>Total Producto</p>
+											<p className="total-product-order">${order.price}</p>
+										</div>
+									</div>
 								</div>
-								<div>
-									<p>{product.name}</p>
-									<p>{product.price}</p>
-								</div>
-							</div>
-						})}
-					</div>
-					<div>
-						<div>Items in car: {quantity}</div>
-						<div>Total: ${totalPrice}</div>
+							))}
+						</div>
+						<div>
+							<div>Items in car: {quantity}</div>
+							<div>Total: ${totalPrice}</div>
+						</div>
 					</div>
 				</div>
 			</div>

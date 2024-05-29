@@ -14,9 +14,6 @@ import {
 	deleteProductRequest,
 } from "../../api/products";
 
-// import photo from "../../assets/imgs/main_products_imgs/irlandez.png";
-import malteadasensacion from "../../assets/imgs/main_products_imgs/malteadasensacion.png";
-
 function DashPortfolio() {
 	const [productsData, setProductsData] = useState([]);
 	const [productInfo, setProductInfo] = useState([]);

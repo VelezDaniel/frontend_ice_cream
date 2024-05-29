@@ -161,7 +161,7 @@ function ModalProduct({ product, setStateModal }) {
 	// ****************** ----- *******************//
 
 	// ? FUNCIONES PREVIAS NECESARIAS PARA EL CARRITO
-	const addToCart = (id, price, productObj) => {
+	const addToCart = (id, orderBody, price) => {
 		setCart((currentItems) => {
 			const isItemsFound = currentItems.find((item) => item.id === id);
 			if (isItemsFound) {
@@ -173,7 +173,7 @@ function ModalProduct({ product, setStateModal }) {
 					}
 				});
 			} else {
-				return [...currentItems, { id, quantity: 1, price, productObj }];
+				return [...currentItems, { id, quantity: 1, price, orderBody }];
 			}
 		});
 	};
@@ -237,7 +237,7 @@ function ModalProduct({ product, setStateModal }) {
 
 		console.log("information of product: ", data);
 		const parcialOrderPrice = priceCartItem + parseInt(product.price);
-		addToCart(data.id, parcialOrderPrice, product);
+		addToCart(data.id, data, parcialOrderPrice);
 		setStateModal(false);
 	});
 

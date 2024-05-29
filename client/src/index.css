@@ -148,6 +148,14 @@
 	margin-left: 36px;
 }
 
+.bottom-space {
+	margin-bottom: 4px;
+}
+
+.top-space-smallest {
+	margin-top: 4px;
+}
+
 .title-space-left {
 	margin-left: 84px;
 }
