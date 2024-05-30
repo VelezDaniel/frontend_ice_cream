@@ -30,10 +30,6 @@ function NavBar({ navBarType }) {
 		return accumulator + current.quantity;
 	}, 0);
 
-	const handleBadgeVisibility = () => {
-		setInvisible(!invisible);
-	};
-
 	const StyledBadge = styled(Badge)(({ theme }) => ({
 		"& .MuiBadge-badge": {
 			right: 4,

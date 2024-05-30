@@ -42,24 +42,6 @@ function ShoppingCar({ closeMethod }) {
 		});
 	};
 
-	// // ? Añadir al carrito un producto
-	// const addToCart = () => {
-	// 	setCart((currentItems) => {
-	// 		const isItemsFound = currentItems.find((item) => item.id === id);
-	// 		if (isItemsFound) {
-	// 			return currentItems.map((item) => {
-	// 				if (item.id === id) {
-	// 					return { ...item, quantity: item.quantity + 1 };
-	// 				} else {
-	// 					return item;
-	// 				}
-	// 			});
-	// 		} else {
-	// 			return [...currentItems, { id, quantity: 1, price }];
-	// 		}
-	// 	});
-	// };
-
 	// ? Eliminar un producto del carrito (uno por uno)
 	const removeItemCart = (id) => {
 		setCart((currentItems) => {
