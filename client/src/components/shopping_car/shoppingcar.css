@@ -26,6 +26,7 @@
 	width: 100%;
 	display: flex;
 	justify-content: start;
+	margin-bottom: 14px;
 }
 
 .car-subtitle {
@@ -67,12 +68,31 @@
 	border: 3px solid var(--btn-blue);
 }
 
+.container-products-cart-price {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin: 10px 4px 36px 4px;
+}
+
+.container-products-cart-price p {
+	font-weight: 700;
+	color: var(--font-darkgray);
+	font-size: 20px;
+}
+
+.container-prodcuts {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
 /* ** DISEÑO PARA CADA PRODUCTO DEL CARRITO ** */
 
 .small-card-cart {
 	display: flex;
 	/* width: 200px; */
-	background-color: var(--bg-cover);
+	background-color: var(--lightTitles);
 	border-radius: 10px;
 	padding: 6px 2px 0 2px;
 }
@@ -121,6 +141,19 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+}
+
+.amount-product {
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--font-darkgray);
+}
+
+.container-icons-product-cart {
+	margin: 6px 0 2px 0;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 }
 
 /* MEDIA QUERYS */
