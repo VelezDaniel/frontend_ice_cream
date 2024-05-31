@@ -1,6 +1,7 @@
 import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import logoImg from "../../assets/imgs/helarticologo2.png";
+import './usersettings.css';
 
 function NoneUserAuthenticated({ closeMethod }) {
 	const navigate = useNavigate();

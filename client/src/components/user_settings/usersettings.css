@@ -95,14 +95,15 @@
 	align-items: center;
 }
 
-/* .user-sett-item {
+.user-sett-item {
 	font-weight: 600;
-	color: var(--color-text);
-} */
+	color: var(--font-darkgray);
+}
 
 .text-highlighted {
 	font-weight: 700;
 	font-size: 18px;
+	color: var(--font-darkgray);
 }
 
 .btn-edit-u-data {

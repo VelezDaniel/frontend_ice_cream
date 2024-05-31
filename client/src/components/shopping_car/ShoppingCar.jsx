@@ -210,7 +210,7 @@ function ShoppingCar({ closeMethod }) {
 					Pagar
 				</button>
 			) : (
-				<p>Helartico</p>
+				<div></div>
 			)}
 		</div>
 	);
