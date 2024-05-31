@@ -20,21 +20,26 @@ function HomePage() {
 					</p>
 				</div>
 				<div className="poster-container-description">
-					<p className="subtext-description">Nuestros productos estan disponibles en todo el valle de aburrá</p>
+					<p className="subtext-description">Nuestros productos estan disponibles en los municipios</p>
+					<div className="box-places">
+						<p>Itagüí</p>
+						<p>Sabaneta</p>
+						<p>Envigado</p>
+					</div>
 					<p className="small-letter">El precio del domicilio depende de tu ubicación</p>
 				</div>
 			</div>
 			<div className="container-poster">
 				<div className="poster-container-description-two">
-					<h4>Contamos con servicio de Domicilios</h4>
-					<p>
+					<h4 className="subtext-description">Contamos con servicio de Domicilios</h4>
+					<p className="description-small">
 						Desde la comodidad de tu casa puedes pedir tus productos favoritos
 						sin tener que acercarte a nuestro local físico
 					</p>
-					<p>Disfrutar un delicioso helado en familia nunca fue tan comodo</p>
+					<p className="description-small">Disfrutar un delicioso helado en familia nunca fue tan comodo</p>
 				</div>
 				<div className="poster-styled-one">
-					<p>Los mejores helados en la puerta de tu casa</p>
+					<p className="poster-text-2">Los mejores helados en la puerta de tu casa</p>
 				</div>
 			</div>
       </div>

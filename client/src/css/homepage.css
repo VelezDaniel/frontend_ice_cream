@@ -6,6 +6,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 38px;
 }
 
 .container-poster {
@@ -78,8 +79,33 @@
 }
 
 .poster-container-description-two {
+  width: 60%;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
+.box-places{
+  display: flex;
+  gap: 28px;
+}
+
+.box-places p {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--Rose-one);
+}
+
+.description-small {
+  font-size: 18px;
+  color: var(--grayFonts);
+  font-weight: 500;
+  font-style: italic;
+}
+
+.poster-text-2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--font-darkgray);
+  font-style: italic;
+}
