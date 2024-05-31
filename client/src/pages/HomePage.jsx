@@ -6,7 +6,7 @@ import "../css/homepage.css";
 
 function HomePage() {
 	return (
-		<div>
+		<div className="body-home">
 			<NavBar />
 			<Banner />
 			<ComponentCarousel />

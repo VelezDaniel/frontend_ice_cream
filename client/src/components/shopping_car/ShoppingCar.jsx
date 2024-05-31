@@ -1,4 +1,5 @@
 import { IoClose } from "react-icons/io5";
+import { LiaIceCreamSolid } from "react-icons/lia";
 import "./shoppingcar.css";
 import { CartContext } from "../../context/ShoppingCartContext";
 import { useContext } from "react";
@@ -78,113 +79,139 @@ function ShoppingCar({ closeMethod }) {
 				<div>
 					<h3 className="car-title">Tu pedido</h3>
 				</div>
-				<div className="u-container1-1 add-container-heigh">
-					<div className="wrap-subtitle">
-						<h4 className="car-subtitle">Lista de productos</h4>
-					</div>
-					<div className="divider">
-						<div className="container-prodcuts">
-							{cart.map((order) => (
-								<div className="small-card-cart" key={order.id}>
-									<div className="box-img-card-product">
-										<img
-											src={ProductImgBuilder(
-												order.orderBody.productInfo.name.toLowerCase()
-											)}
-										/>
-									</div>
-									<div className="container-cart-order-info">
-										<p className="subtitle-gray">
-											{order.orderBody.productInfo.name}
-										</p>
-										<p className="product-size-cart">
-											{order.orderBody.productInfo.productSize}
-										</p>
-										<div className="cart-sect-horiontal bottom-space">
-											<p>Precio</p>
+				{cart && cart.length > 0 ? (
+					<div className="u-container1-1 add-container-heigh">
+						<div className="wrap-subtitle">
+							<h4 className="car-subtitle">Lista de productos</h4>
+						</div>
+						<div className="divider">
+							<div className="container-products">
+								{cart.map((order) => (
+									<div className="small-card-cart" key={order.id}>
+										<div className="box-img-card-product">
+											<img
+												src={ProductImgBuilder(
+													order.orderBody.productInfo.name.toLowerCase()
+												)}
+											/>
+										</div>
+										<div className="container-cart-order-info">
 											<p className="subtitle-gray">
-												${order.orderBody.productInfo.price}
+												{order.orderBody.productInfo.name}
 											</p>
-										</div>
-										{order.orderBody.aditions ? (
-											<>
-												<p className="product-size-cart">Adiciones</p>
-												{order.orderBody.aditions.map((adition) => (
-													<div className="cart-sect-horiontal" key={adition.id}>
-														<p>{adition.nameAdition}</p>
-														<p>${adition.priceAdition}</p>
-													</div>
-												))}
-											</>
-										) : (
-											<p className="product-size-cart">Sin adiciones</p>
-										)}
+											<p className="product-size-cart">
+												{order.orderBody.productInfo.productSize}
+											</p>
+											<div className="cart-sect-horiontal bottom-space">
+												<p>Precio</p>
+												<p className="subtitle-gray">
+													${order.orderBody.productInfo.price}
+												</p>
+											</div>
+											{order.orderBody.aditions ? (
+												<>
+													<p className="product-size-cart">Adiciones</p>
+													{order.orderBody.aditions.map((adition) => (
+														<div
+															className="cart-sect-horiontal"
+															key={adition.id}
+														>
+															<p>{adition.nameAdition}</p>
+															<p>${adition.priceAdition}</p>
+														</div>
+													))}
+												</>
+											) : (
+												<p className="product-size-cart">Sin adiciones</p>
+											)}
 
-										<div className="cart-sect-horiontal top-space-smallest">
-											<p>Total Producto</p>
-											<p className="total-product-order">${order.price}</p>
-										</div>
+											<div className="cart-sect-horiontal top-space-smallest">
+												<p>Total Producto</p>
+												<p className="total-product-order">${order.price}</p>
+											</div>
 
-										<div className="container-icons-product-cart">
-											{/* Edit button */}
-											<IconButton sx={{ width: 42, height: 42 }}>
-												<DeleteOutlineOutlinedIcon
-													color="primary"
-													sx={{
-														width: 30,
-														height: 30,
-													}}
-												/>
-											</IconButton>
-											{/* Plus button */}
-											<IconButton onClick={() => addToCart(order.id, order.orderBody, order.price)} sx={{ width: 42, height: 42 }}>
-												<AddOutlinedIcon
-													color="primary"
-													sx={{
-														width: 30,
-														height: 30,
-													}}
-												/>
-											</IconButton>
-											<span className="amount-product">{order.quantity}</span>
-											{/* Minus Button */}
-											<IconButton onClick={() => removeItemCart(order.id)} sx={{ width: 42, height: 42 }}>
-												<RemoveOutlinedIcon
-													color="primary"
-													sx={{
-														width: 30,
-														height: 30,
-													}}
-												/>
-											</IconButton>
-											{/* Delete button */}
-											<IconButton
-												onClick={() => removeAllProduct(order.id)}
-												sx={{ width: 42, height: 42 }}
-											>
-												<DeleteOutlinedIcon
-													color="primary"
-													sx={{
-														width: 30,
-														height: 30,
-													}}
-												/>
-											</IconButton>
+											<div className="container-icons-product-cart">
+												{/* Edit button */}
+												<IconButton sx={{ width: 42, height: 42 }}>
+													<DeleteOutlineOutlinedIcon
+														color="primary"
+														sx={{
+															width: 30,
+															height: 30,
+														}}
+													/>
+												</IconButton>
+												{/* Plus button */}
+												<IconButton
+													onClick={() =>
+														addToCart(order.id, order.orderBody, order.price)
+													}
+													sx={{ width: 42, height: 42 }}
+												>
+													<AddOutlinedIcon
+														color="primary"
+														sx={{
+															width: 30,
+															height: 30,
+														}}
+													/>
+												</IconButton>
+												<span className="amount-product">{order.quantity}</span>
+												{/* Minus Button */}
+												<IconButton
+													onClick={() => removeItemCart(order.id)}
+													sx={{ width: 42, height: 42 }}
+												>
+													<RemoveOutlinedIcon
+														color="primary"
+														sx={{
+															width: 30,
+															height: 30,
+														}}
+													/>
+												</IconButton>
+												{/* Delete button */}
+												<IconButton
+													onClick={() => removeAllProduct(order.id)}
+													sx={{ width: 42, height: 42 }}
+												>
+													<DeleteOutlinedIcon
+														color="primary"
+														sx={{
+															width: 30,
+															height: 30,
+														}}
+													/>
+												</IconButton>
+											</div>
 										</div>
 									</div>
-								</div>
-							))}
-						</div>
-						<div className="container-products-cart-price top-space">
-							<p>Productos: {quantity}</p>
-							<p>Total: ${totalPrice}</p>
+								))}
+							</div>
+							<div className="container-products-cart-price top-space">
+								<p>Productos: {quantity}</p>
+								<p>Total: ${totalPrice}</p>
+							</div>
 						</div>
 					</div>
-				</div>
+				) : (
+					<div className="container-notice-shop">
+						<h4>No has agregado ningún producto aún</h4>
+						<button className="add-to-cart-shop">
+							<LiaIceCreamSolid size={38} />
+							Agregar
+							<LiaIceCreamSolid size={38} />
+						</button>
+					</div>
+				)}
 			</div>
-			<button onClick={() => console.log(cart)} className="btn-shopping-car">
-				Pagar
-			</button>
+			{cart && cart.length > 0 ? (
+				<button onClick={() => console.log(cart)} className="btn-shopping-car">
+					Pagar
+				</button>
+			) : (
+				<p>Helartico</p>
+			)}
 		</div>
 	);
 }
