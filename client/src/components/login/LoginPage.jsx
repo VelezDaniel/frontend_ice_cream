@@ -12,12 +12,7 @@ function LoginPage() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
-	const {
-		signin,
-		errors: signinErrors,
-		isAuthenticated,
-		user,
-	} = useAuth();
+	const { signin, errors: signinErrors, isAuthenticated, user } = useAuth();
 	const navigate = useNavigate();
 
 	const onSubmit = handleSubmit((data) => {
@@ -25,15 +20,30 @@ function LoginPage() {
 		console.log(data);
 	});
 
-	// useEffect(() => {
-	// 	if(isAuthenticated) navigate("/dashboard");
-	// }, [isAuthenticated])
-
 	useEffect(() => {
-		if (isAuthenticated && user.role != "CLIENTE") {
-			navigate("/dashboard");
-		} else if (isAuthenticated && user.role === "CLIENTE") {
-			navigate("/");
+		if (isAuthenticated && user.role) {
+			switch (user.role) {
+				case "CLIENTE":
+					navigate("/");
+					break;
+				case "RECEPCIONISTA":
+					navigate("/");
+					break;
+				case "TESORERO":
+					navigate("/dashboard");
+					break;
+				case "DOMICILIARIO":
+					navigate("/dashboard");
+					break;
+				case "ADMINISTRADOR":
+					navigate("dashboard");
+					break;
+				case "DEVP":
+					navigate("/dashboard");
+				default:
+					navigate("/");
+					break;
+			}
 		}
 	}, [isAuthenticated]);
 

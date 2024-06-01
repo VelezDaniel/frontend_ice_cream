@@ -4,7 +4,9 @@ import { useAuth } from "../../context/AuthContext";
 import UserSettings from "../user_settings/UserSettings";
 import NoneUserAuthenticated from "../user_settings/NoneUser";
 import ShoppingCar from "../shopping_car/ShoppingCar";
+// ? USO DE CONTECXTOS
 import { CartContext } from "../../context/ShoppingCartContext";
+// ? -------
 import {
 	IoMenu,
 	IoClose,
@@ -23,7 +25,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 function NavBar({ navBarType }) {
 	// States for material ui component
 	// const [countBadge, setCountBadge] = useState(4);
-	const [invisible, setInvisible] = useState(false);
+	// const [invisible, setInvisible] = useState(false);
 	const [cart, setCart] = useContext(CartContext);
 
 	const quantity = cart.reduce((accumulator, current) => {
@@ -79,6 +81,7 @@ function NavBar({ navBarType }) {
 	};
 
 	const openSettingsUser = () => {
+		console.log(user);
 		if (user) {
 			setUserSetting(true);
 		} else {
@@ -147,6 +150,12 @@ function NavBar({ navBarType }) {
 							<a href="/book">
 								<IoBookmarksOutline size={40} className="icon-nav-responsive" />
 								Reservar
+							</a>
+						</li>
+						<li>
+							<a href="/dashboard">
+								<IoBookmarksOutline size={40} className="icon-nav-responsive" />
+								Panel
 							</a>
 						</li>
 						<div className="close-menu" onClick={closeMenu}>

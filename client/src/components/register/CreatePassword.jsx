@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "./register.css";
 import logoImg from "../../assets/imgs/helarticologo2.png";
@@ -20,16 +20,15 @@ function CreatePassword({ insertId }) {
 	// const { isAuthenticated, setIsAuthenticated } = useAuth();
 	// const { isAuthenticated, setIsAuthenticated } = useState(false)
 
-	useEffect(() => {
-		if (isAuthenticated) navigate("/");
-	}, [isAuthenticated]);
+	// useEffect(() => {
+	// 	if (isAuthenticated) navigate("/");
+	// }, [isAuthenticated]);
 
 	// const user = userId;
 	console.log("userId in pass: ", insertId);
 	// console.log("user: ", user);
 
 	const handleSubmitPass = handleSubmit(async (values) => {
-		// e.preventDefault();
 
 		try {
 			const userInfo = {
@@ -41,9 +40,15 @@ function CreatePassword({ insertId }) {
 			console.log("UserInfo:", userInfo);
 
 			const res = await createPassword(userInfo);
-			updateStateAuthentication(true);
+			// updateStateAuthentication(true);
 			console.log("Response of createPassword:", res);
 			console.log("Response data of createPassword:", res.data);
+
+			if(res.data.body.message == "Data save succesfully") {
+				navigate("/login");
+			} else {
+				navigate("/register");
+			}
 			// console.log("Insert Id from createPassword:", res.data.item.insertId);
 
 			// setPassword("");
@@ -51,6 +56,8 @@ function CreatePassword({ insertId }) {
 			console.log(
 				`Insert Id (proviene de password form): ${insertId}, / UserInfo post query = ${userInfo}`
 			);
+
+
 		} catch (error) {
 			console.log("Error from createPassword: ", error);
 		}
