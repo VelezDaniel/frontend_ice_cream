@@ -65,7 +65,7 @@ function UserSettings({ closeMethod }) {
 		}
 	});
 
-	const editPersonalInfoForm = (infoUser) => {
+	const editPersonalInfoForm = () => {
 		return (
 			<div className="modal-content-body">
 				<h4>Ingresa los datos del usuario</h4>

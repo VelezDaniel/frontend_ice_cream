@@ -140,24 +140,44 @@ function NavBar({ navBarType }) {
 							</a>
 						</li>
 
-						<li>
-							<a href="/products">
-								<IoIceCreamOutline size={40} className="icon-nav-responsive" />
-								Productos
-							</a>
-						</li>
+						{user && user.role !== "RECEPCIONISTA" ? (
+							<li>
+								<a href="/products">
+									<IoIceCreamOutline
+										size={40}
+										className="icon-nav-responsive"
+									/>
+									Productos
+								</a>
+							</li>
+						) : (
+							<li>
+								<a href="/products">
+									<IoIceCreamOutline
+										size={40}
+										className="icon-nav-responsive"
+									/>
+									Pedido
+								</a>
+							</li>
+						)}
 						<li>
 							<a href="/book">
 								<IoBookmarksOutline size={40} className="icon-nav-responsive" />
 								Reservar
 							</a>
 						</li>
-						<li>
-							<a href="/dashboard">
-								<IoBookmarksOutline size={40} className="icon-nav-responsive" />
-								Panel
-							</a>
-						</li>
+						{user && user.role !== "CLIENTE" && (
+							<li>
+								<a href="/dashboard">
+									<IoBookmarksOutline
+										size={40}
+										className="icon-nav-responsive"
+									/>
+									Panel
+								</a>
+							</li>
+						)}
 						<div className="close-menu" onClick={closeMenu}>
 							<IoClose size={36} />
 						</div>

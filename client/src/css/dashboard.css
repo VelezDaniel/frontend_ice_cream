@@ -119,6 +119,12 @@
 	gap: 20px;
 }
 
+.box-btn-home {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .top-space {
 	margin-top: 24px;
 }

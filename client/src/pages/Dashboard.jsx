@@ -6,11 +6,15 @@ import DashUsers from "../components/dashboard/dash_users";
 import DashOrders from "../components/dashboard/dash_orders";
 import DashAditions from "../components/dashboard/dash_aditions";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { IoIceCreamOutline } from "react-icons/io5";
 // import { LuPencilLine } from "react-icons/lu";
 import { TbCandy } from "react-icons/tb";
 import { useAuth } from "../context/AuthContext";
 import UserSettings from "../components/user_settings/UserSettings";
+
+// ** MATERIAL IMPORTS **
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 
 function Dashboard() {
 	const [activeComponent, setActiveComponent] = useState(null);
@@ -19,10 +23,12 @@ function Dashboard() {
 	const { user } = useAuth();
 	console.log("show User: ", user);
 
+	const navigate = useNavigate();
+
 	//  Seleccionar componente PEDIDOS
 	const handleOrdersComponent = () => {
 		showComponent("DashOrders");
-	}
+	};
 	// ! Seleccionar componente VENTAS
 
 	// Seleccionar componente RESERVAS
@@ -43,6 +49,10 @@ function Dashboard() {
 	// Seleccionar componente ADICIONES
 	const handleAditionComponent = () => {
 		showComponent("DashAditions");
+	};
+
+	const redirectHome = () => {
+		navigate("/");
 	};
 
 	// Cambiar el componente a mostrar en el dashboard
@@ -84,25 +94,34 @@ function Dashboard() {
 							</div>
 							<span className="btn-text">Mostrar Menos</span>
 						</button> */}
-						<button className="btn-lateral-dash top-space" onClick={handleOrdersComponent}>
+						<button
+							className="btn-lateral-dash top-space"
+							onClick={handleOrdersComponent}
+						>
 							<div className="icon-container">
 								<IoIceCreamOutline size={28} />
 							</div>
 							<span className="btn-text">Pedidos</span>
 						</button>
-						<button className="btn-lateral-dash" >
+						<button className="btn-lateral-dash">
 							<div className="icon-container">
 								<i className="bi bi-cash-coin"></i>
 							</div>
 							<span className="btn-text">Ventas</span>
 						</button>
-						<button className="btn-lateral-dash" onClick={handleBookingsComponent}>
+						<button
+							className="btn-lateral-dash"
+							onClick={handleBookingsComponent}
+						>
 							<div className="icon-container">
 								<i className="bi bi-journal-check"></i>
 							</div>
 							<span className="btn-text">Reservas</span>
 						</button>
-						<button className="btn-lateral-dash" onClick={handleUsersListComponent}>
+						<button
+							className="btn-lateral-dash"
+							onClick={handleUsersListComponent}
+						>
 							<div className="icon-container">
 								<i className="bi bi-people"></i>
 							</div>
@@ -122,11 +141,24 @@ function Dashboard() {
 							onClick={handleAditionComponent}
 						>
 							<div className="icon-container">
-							<TbCandy />
+								<TbCandy />
 							</div>
 							<span className="btn-text">Adiciones</span>
 						</button>
 					</div>
+
+					<div className="box-btn-home">
+						<button
+							className="btn-lateral-dash center-text"
+							onClick={redirectHome}
+						>
+							<div className="icon-container">
+								<HomeOutlinedIcon sx={{ width: 36, height: 36 }} />
+							</div>
+							<span className="btn-text">Home</span>
+						</button>
+					</div>
+
 					<div className="user-dashboard">
 						<p className="rol-text">HELARTICO</p>
 						<p className="rol-text-name">Ice cream bussines</p>
@@ -158,50 +190,13 @@ function Dashboard() {
 					{activeComponent === "DashPortfolio" && <DashPortfolio />}
 					{activeComponent === "DashBookings" && <DashBookings />}
 					{activeComponent === "DashUsers" && <DashUsers />}
-					{activeComponent === "DashOrders" && <DashOrders/>}
-					{activeComponent === "DashAditions" && <DashAditions/>}
+					{activeComponent === "DashOrders" && <DashOrders />}
+					{activeComponent === "DashAditions" && <DashAditions />}
 				</div>
 			</div>
-			{/* USER SETTINGS */}
-			{/* <div
-				className={`user-container ${
-					settingsVisible ? "settings-user-visible" : "settings-user-hidden"
-				}`}
-			>
-				<div className="u-container1">
-					<div className="wrap-btn">
-						<button className="btn-back" onClick={closeSettingsUser}>
-							<i>
-								<IoClose />
-							</i>
-						</button>
-					</div>
-					<div className="u-container2">
-						<div className="u-container2-1">
-							<span className="user-sett-item text-highlighted">Nombres</span>
-							<span className="user-sett-item text-highlighted">Apellidos</span>
-							<span className="user-sett-item">Administrador</span>
-						</div>
-						<div className="u-container2-2">
-							<span className="user-sett-item text-highlighted">Estado</span>
-							<span className="user-sett-item">Identificacion</span>
-							<span className="user-sett-item">Celular</span>
-							<span className="user-sett-item">correodeluser@gmail.com</span>
-							<span className="user-sett-item text-highlighted">Direccion</span>
-							<button className="btn-edit-u-data">
-								<LuPencilLine size={22} />
-								Editar
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<button className="btn-cerrarsesion">
-					<i className="bi bi-box-arrow-right"></i>
-					Cerrar Sesión
-				</button>
-			</div> */}
-			{settingsVisible === true && <UserSettings closeMethod={closeSettingsUser}/>}
+			{settingsVisible === true && (
+				<UserSettings closeMethod={closeSettingsUser} />
+			)}
 		</div>
 	);
 }

@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import "./register.css";
 import CreatePassword from "./CreatePassword";
 import logoImg from "../../assets/imgs/helarticologo2.png";
-// import { registerRequest, createPassword } from "../../api/auth";
 import { useAuth } from "../../context/AuthContext";
-// import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
 	const {
@@ -14,15 +12,10 @@ function RegisterPage() {
 		formState: { errors },
 	} = useForm();
 	const { signup, errors: registerErrors } = useAuth();
-	// const navigate = useNavigate();
 
 	const [userId, setUserId] = useState();
 	const [registerForm, setRegisterForm] = useState(true);
 	const [passwordForm, setPasswordForm] = useState(false);
-
-	// useEffect(() => {
-	// 	if (isAuthenticated) navigate("/");
-	// }, [isAuthenticated]);
 
 	const handleUserIdChange = (e) => {
 		setUserId(e.target.value);
@@ -139,7 +132,7 @@ function RegisterPage() {
 										message: "Correo no es valido",
 									},
 								})}
-								placeholder="correo"
+								placeholder="Correo"
 							/>
 						</div>
 						{errors.email && <p className="notice">{errors.email.message}</p>}
@@ -163,6 +156,28 @@ function RegisterPage() {
 							/>
 						</div>
 						{errors.phone && <p className="notice">{errors.phone.message}</p>}
+
+						<div className="input-group">
+							<label htmlFor="address">
+							<i class="bi bi-house"></i>
+							</label>
+							<input
+								type="text"
+								{...register("address", {
+									required: {
+										value: true,
+										message: "Dirección es requerida",
+									},
+									minLength: {
+										value: 6,
+										message: "No es una dirección válida",
+									},
+								})}
+								placeholder="Dirección"
+							/>
+						</div>
+						{errors.address && <p className="notice">{errors.address.message}</p>}
+
 						<label htmlFor="birth">
 							<i className="bi bi-calendar3"></i> Fecha de Nacimiento
 						</label>
