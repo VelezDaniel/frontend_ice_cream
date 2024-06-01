@@ -23,9 +23,6 @@ import IconButton from "@mui/material/IconButton";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 function NavBar({ navBarType }) {
-	// States for material ui component
-	// const [countBadge, setCountBadge] = useState(4);
-	// const [invisible, setInvisible] = useState(false);
 	const [cart, setCart] = useContext(CartContext);
 
 	const quantity = cart.reduce((accumulator, current) => {

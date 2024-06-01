@@ -103,51 +103,62 @@ function Dashboard() {
 							</div>
 							<span className="btn-text">Pedidos</span>
 						</button>
-						<button className="btn-lateral-dash">
-							<div className="icon-container">
-								<i className="bi bi-cash-coin"></i>
-							</div>
-							<span className="btn-text">Ventas</span>
-						</button>
-						<button
-							className="btn-lateral-dash"
-							onClick={handleBookingsComponent}
-						>
-							<div className="icon-container">
-								<i className="bi bi-journal-check"></i>
-							</div>
-							<span className="btn-text">Reservas</span>
-						</button>
-						<button
-							className="btn-lateral-dash"
-							onClick={handleUsersListComponent}
-						>
-							<div className="icon-container">
-								<i className="bi bi-people"></i>
-							</div>
-							<span className="btn-text">Usuarios</span>
-						</button>
-						<button
-							className="btn-lateral-dash"
-							onClick={handlePortfolioComponent}
-						>
-							<div className="icon-container">
-								<i className="bi bi-briefcase"></i>
-							</div>
-							<span className="btn-text">Portafolio</span>
-						</button>
-						<button
-							className="btn-lateral-dash"
-							onClick={handleAditionComponent}
-						>
-							<div className="icon-container">
-								<TbCandy />
-							</div>
-							<span className="btn-text">Adiciones</span>
-						</button>
-					</div>
 
-					<div className="box-btn-home">
+						{/* seccion permitida solo para el administrador */}
+						{user &&
+							(user.role === "ADMINISTRADOR" || user.role === "TESORERO") && (
+								<button className="btn-lateral-dash">
+									<div className="icon-container">
+										<i className="bi bi-cash-coin"></i>
+									</div>
+									<span className="btn-text">Ventas</span>
+								</button>
+							)}
+
+						{/* Seccion deshabilitada para clientes y domiciliarios */}
+						{user &&
+							user.role !== "CLIENTE" &&
+							user.role !== "DOMICILIARIO" && (
+								<>
+									<button
+										className="btn-lateral-dash"
+										onClick={handleBookingsComponent}
+									>
+										<div className="icon-container">
+											<i className="bi bi-journal-check"></i>
+										</div>
+										<span className="btn-text">Reservas</span>
+									</button>
+									<button
+										className="btn-lateral-dash"
+										onClick={handleUsersListComponent}
+									>
+										<div className="icon-container">
+											<i className="bi bi-people"></i>
+										</div>
+										<span className="btn-text">Usuarios</span>
+									</button>
+									<button
+										className="btn-lateral-dash"
+										onClick={handlePortfolioComponent}
+									>
+										<div className="icon-container">
+											<i className="bi bi-briefcase"></i>
+										</div>
+										<span className="btn-text">Portafolio</span>
+									</button>
+									<button
+										className="btn-lateral-dash"
+										onClick={handleAditionComponent}
+									>
+										<div className="icon-container">
+											<TbCandy />
+										</div>
+										<span className="btn-text">Adiciones</span>
+									</button>
+								</>
+							)}
+
 						<button
 							className="btn-lateral-dash center-text"
 							onClick={redirectHome}
@@ -178,9 +189,6 @@ function Dashboard() {
 						<h1>HELARTICO</h1>
 					</div>
 					<div className="icons h-content">
-						<a className="nav-item nav-icon" href="">
-							<i className="bi bi-handbag"></i>
-						</a>
 						<a className="nav-item nav-icon" onClick={openSettingsUser}>
 							<i className="bi bi-person icon-person"></i>
 						</a>
