@@ -139,7 +139,7 @@ function NavBar({ navBarType }) {
 							</a>
 						</li>
 
-						{user && user.role !== "RECEPCIONISTA" ? (
+						{user === null || (user && user.role !== "RECEPCIONISTA") ? (
 							<li>
 								<a href="/products">
 									<IoIceCreamOutline

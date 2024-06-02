@@ -1,4 +1,4 @@
-// import "./css/dash_portfolio.css";
+import "./css/dash_aditions.css";
 import { TbCandy } from "react-icons/tb";
 import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 import { useState, useEffect } from "react";
@@ -16,7 +16,7 @@ import {
 	deleteFlavorRequest,
 } from "../../api/flavors";
 
-const DashAditions = () => {
+const DashAditions = ({ dashChange, onAction }) => {
 	const [aditionsData, setAditionsData] = useState([]);
 	const [aditionInfo, setAditionInfo] = useState([]);
 	const [flavorsData, setFlavorsData] = useState([]);
@@ -64,7 +64,7 @@ const DashAditions = () => {
 		};
 		handleShowAditions();
 		handleShowFlavors();
-	}, []);
+	}, [dashChange]);
 
 	useEffect(() => {
 		if (aditionInfo) {
@@ -89,7 +89,7 @@ const DashAditions = () => {
 			setEditModal(true);
 		} else {
 			setFlavorInfo(flavorsData[index]);
-			setTypeOfInformation("editFlavor")
+			setTypeOfInformation("editFlavor");
 			setEditModal(true);
 		}
 	};
@@ -119,6 +119,7 @@ const DashAditions = () => {
 					console.log("result from dash_portfolio: ", result);
 					setAddAditionModal(false);
 					reset();
+					onAction("addAdition");
 				} catch (error) {
 					console.log(error);
 				}
@@ -128,14 +129,13 @@ const DashAditions = () => {
 					console.log("result from dash_portfolio: ", result);
 					setAddFlavorModal(false);
 					reset();
+					onAction("addFlavor");
 				} catch (error) {
 					console.log(error);
 				}
 			} else {
 				console.log("Consulta no realizada");
 			}
-
-			// window.location.reload();
 		});
 	};
 
@@ -157,7 +157,7 @@ const DashAditions = () => {
 					console.log("editResult in dashportfolio: ", editResult);
 					setEditModal(false);
 					reset();
-					// window.location.reload();
+					onAction("editAdition");
 				} catch (error) {
 					console.log("error in onsubmitEdit ", error);
 				}
@@ -174,7 +174,7 @@ const DashAditions = () => {
 					console.log("editResult in dashportfolio: ", editResult);
 					setEditModal(false);
 					reset();
-					// window.location.reload();
+					onAction("editFlavor");
 				} catch (error) {
 					console.log("error in onsubmitEdit ", error);
 				}
@@ -192,7 +192,7 @@ const DashAditions = () => {
 				if (result) {
 					setDeleteModal(false);
 					console.log("Registro eliminado: ", result);
-					window.location.reload();
+					onAction("deleteAdition");
 				}
 			} catch (error) {
 				console.log(error);
@@ -203,8 +203,7 @@ const DashAditions = () => {
 				if (result) {
 					setDeleteModal(false);
 					console.log("Registro eliminado: ", result);
-					// setEditModal(false);
-					window.location.reload();
+					onAction("deleteFlavor");
 				}
 			} catch (error) {
 				console.log(error);
@@ -545,19 +544,19 @@ const DashAditions = () => {
 								/>
 							</div> */}
 							<div className="colum-two">
-							<div>
+								<div className="styled-span-aditions">
 									<span>Número adición</span>
 									<span>{aditionData.id}</span>
 								</div>
-								<div>
+								<div className="styled-span-aditions">
 									<span>Nombre</span>
 									<span>{aditionData.nameAdition}</span>
 								</div>
-								<div>
+								<div className="styled-span-aditions">
 									<span>Precio</span>
 									<span>$ {aditionData.priceAdition}</span>
 								</div>
-								<div>
+								<div className="styled-span-aditions">
 									<span>Estado</span>
 									<span>{aditionData.stateAdition}</span>
 								</div>
@@ -579,27 +578,31 @@ const DashAditions = () => {
 							</button>
 						</div>
 						{/* mostrar modal editar */}
-						{editModal && typeOfInformation === "editAdition" && selectedObjectIndex === index && (
-							<ModalTemplate
-								setStateModal={setEditModal}
-								title="Editar Adición"
-								showHeader={true}
-								designClass={""}
-							>
-								{editAditionForm(aditionData)}
-							</ModalTemplate>
-						)}
+						{editModal &&
+							typeOfInformation === "editAdition" &&
+							selectedObjectIndex === index && (
+								<ModalTemplate
+									setStateModal={setEditModal}
+									title="Editar Adición"
+									showHeader={true}
+									designClass={""}
+								>
+									{editAditionForm(aditionData)}
+								</ModalTemplate>
+							)}
 						{/* Mostrar modal eliminar */}
-						{deleteModal && typeOfInformation === "deleteAdition" && selectedObjectIndex === index && (
-							<ModalTemplate
-								setStateModal={setDeleteModal}
-								title={" Eliminar Adición "}
-								showHeader={true}
-								designClass={"alert"}
-							>
-								{deleteAditionForm(aditionData)}
-							</ModalTemplate>
-						)}
+						{deleteModal &&
+							typeOfInformation === "deleteAdition" &&
+							selectedObjectIndex === index && (
+								<ModalTemplate
+									setStateModal={setDeleteModal}
+									title={" Eliminar Adición "}
+									showHeader={true}
+									designClass={"alert"}
+								>
+									{deleteAditionForm(aditionData)}
+								</ModalTemplate>
+							)}
 					</div>
 				))}
 			</div>
@@ -628,15 +631,15 @@ const DashAditions = () => {
 								/>
 							</div> */}
 							<div className="colum-two">
-							<div>
+								<div className="styled-span-aditions">
 									<span>Número sabor</span>
 									<span>{flavorData.id}</span>
 								</div>
-								<div>
+								<div className="styled-span-aditions">
 									<span>Nombre</span>
 									<span>{flavorData.nameFlavor}</span>
 								</div>
-								<div>
+								<div className="styled-span-aditions">
 									<span>Estado</span>
 									<span>{flavorData.stateFlavor}</span>
 								</div>
@@ -658,27 +661,31 @@ const DashAditions = () => {
 							</button>
 						</div>
 						{/* mostrar modal editar */}
-						{editModal && typeOfInformation === "editFlavor" && selectedObjectIndex === index && (
-							<ModalTemplate
-								setStateModal={setEditModal}
-								title="Editar Sabor de Helado"
-								showHeader={true}
-								designClass={""}
-							>
-								{editFlavorForm(flavorData)}
-							</ModalTemplate>
-						)}
+						{editModal &&
+							typeOfInformation === "editFlavor" &&
+							selectedObjectIndex === index && (
+								<ModalTemplate
+									setStateModal={setEditModal}
+									title="Editar Sabor de Helado"
+									showHeader={true}
+									designClass={""}
+								>
+									{editFlavorForm(flavorData)}
+								</ModalTemplate>
+							)}
 						{/* Mostrar modal eliminar */}
-						{deleteModal && typeOfInformation === "deleteFlavor" && selectedObjectIndex === index && (
-							<ModalTemplate
-								setStateModal={setDeleteModal}
-								title={" Eliminar Sabor de Helado "}
-								showHeader={true}
-								designClass={"alert"}
-							>
-								{deleteFlavorForm(flavorData)}
-							</ModalTemplate>
-						)}
+						{deleteModal &&
+							typeOfInformation === "deleteFlavor" &&
+							selectedObjectIndex === index && (
+								<ModalTemplate
+									setStateModal={setDeleteModal}
+									title={" Eliminar Sabor de Helado "}
+									showHeader={true}
+									designClass={"alert"}
+								>
+									{deleteFlavorForm(flavorData)}
+								</ModalTemplate>
+							)}
 					</div>
 				))}
 			</div>

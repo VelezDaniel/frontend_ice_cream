@@ -6,7 +6,6 @@ import DashUsers from "../components/dashboard/dash_users";
 import DashOrders from "../components/dashboard/dash_orders";
 import DashAditions from "../components/dashboard/dash_aditions";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { IoIceCreamOutline } from "react-icons/io5";
 // import { LuPencilLine } from "react-icons/lu";
 import { TbCandy } from "react-icons/tb";
@@ -19,36 +18,40 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 function Dashboard() {
 	const [activeComponent, setActiveComponent] = useState(null);
 	const [settingsVisible, setSettingsVisible] = useState(false);
+	const [dashContentChange, setDashContentChange] = useState(0);
 
 	const { user } = useAuth();
 	console.log("show User: ", user);
 
-	const navigate = useNavigate();
-
 	//  Seleccionar componente PEDIDOS
 	const handleOrdersComponent = () => {
 		showComponent("DashOrders");
+		// updateDashBoardAction("DashOrders");
 	};
 	// ! Seleccionar componente VENTAS
 
 	// Seleccionar componente RESERVAS
 	const handleBookingsComponent = () => {
 		showComponent("DashBookings");
+		// updateDashBoardLocation("DashBookings");
 	};
 
 	//  Seleccionar componente Usuarios
 	const handleUsersListComponent = () => {
 		showComponent("DashUsers");
+		// updateDashBoardLocation("DashUsers");
 	};
 
 	// Seleccionar componente PORTAFOLIO
 	const handlePortfolioComponent = () => {
 		showComponent("DashPortfolio");
+		// updateDashBoardLocation("DashPortfolio");
 	};
 
 	// Seleccionar componente ADICIONES
 	const handleAditionComponent = () => {
 		showComponent("DashAditions");
+		// updateDashBoardLocation("DashAditions");
 	};
 
 	const redirectHome = () => {
@@ -68,6 +71,10 @@ function Dashboard() {
 	// Cerrar ajustes de usuario
 	const closeSettingsUser = () => {
 		setSettingsVisible(false);
+	};
+
+	const handleActionChild = () => {
+		setDashContentChange((prev) => prev + 1);
 	};
 
 	useEffect(() => {
@@ -105,15 +112,14 @@ function Dashboard() {
 						</button>
 
 						{/* seccion permitida solo para el administrador */}
-						{user &&
-							(user.role === "ADMIN" || user.role === "TESORERO") && (
-								<button className="btn-lateral-dash">
-									<div className="icon-container">
-										<i className="bi bi-cash-coin"></i>
-									</div>
-									<span className="btn-text">Ventas</span>
-								</button>
-							)}
+						{user && (user.role === "ADMIN" || user.role === "TESORERO") && (
+							<button className="btn-lateral-dash">
+								<div className="icon-container">
+									<i className="bi bi-cash-coin"></i>
+								</div>
+								<span className="btn-text">Ventas</span>
+							</button>
+						)}
 
 						{/* Seccion deshabilitada para clientes y domiciliarios */}
 						{user &&
@@ -195,11 +201,36 @@ function Dashboard() {
 					</div>
 				</div>
 				<div className="div-specific-content">
-					{activeComponent === "DashPortfolio" && <DashPortfolio />}
-					{activeComponent === "DashBookings" && <DashBookings />}
-					{activeComponent === "DashUsers" && <DashUsers />}
-					{activeComponent === "DashOrders" && <DashOrders />}
-					{activeComponent === "DashAditions" && <DashAditions />}
+					{activeComponent === "DashPortfolio" && (
+						<DashPortfolio
+							dashChange={dashContentChange}
+							onAction={handleActionChild}
+						/>
+					)}
+					{activeComponent === "DashBookings" && (
+						<DashBookings
+							dashChange={dashContentChange}
+							onAction={handleActionChild}
+						/>
+					)}
+					{activeComponent === "DashUsers" && (
+						<DashUsers
+							dashChange={dashContentChange}
+							onAction={handleActionChild}
+						/>
+					)}
+					{activeComponent === "DashOrders" && (
+						<DashOrders
+							dashChange={dashContentChange}
+							onAction={handleActionChild}
+						/>
+					)}
+					{activeComponent === "DashAditions" && (
+						<DashAditions
+							dashChange={dashContentChange}
+							onAction={handleActionChild}
+						/>
+					)}
 				</div>
 			</div>
 			{settingsVisible === true && (

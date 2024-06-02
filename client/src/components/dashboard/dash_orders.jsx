@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
 
-const DashOrders = () => {
+const DashOrders = ({ dashChange, onAction }) => {
 	const [ordersData, setOrdersData] = useState([]);
 
 	return (

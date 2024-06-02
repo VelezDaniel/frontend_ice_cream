@@ -16,6 +16,8 @@ export const useAuth = () => {
 // Creacion de provider (componente que engloba otros componentes)
 export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
+	const [dashLocation, setDashLocation] = useState(null);
+	const [dashAction, setDashAction] = useState(null);
 	// const [regInfo, setRegInfo] = useState(null)
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [errors, setErrors] = useState([]);
@@ -36,7 +38,6 @@ export const AuthProvider = ({ children }) => {
 		console.log("User global: ", user);
 	}, [user]);
 	
-
 	// Metodo para register
 	const signup = async (userData) => {
 		try {
@@ -78,6 +79,14 @@ export const AuthProvider = ({ children }) => {
 	const updateStateAuthentication = (newAuthentication) => {
 		setIsAuthenticated(newAuthentication);
 	};
+
+	const updateDashBoardLocation = (newLocation) => {
+		setDashLocation(newLocation);
+	}
+
+	const updateDashBoardAction = (newAction) => {
+		setDashAction(newAction);
+	}
 
 	// Revision de login y credenciales de usuario
 	useEffect(() => {

@@ -2,6 +2,7 @@ import { LuBookPlus } from "react-icons/lu";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
+import { useAuth } from "../../context/AuthContext";
 import {
 	showBookingsRequest,
 	createBookingRequest,
@@ -29,7 +30,7 @@ import {
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
-function DashBookings() {
+function DashBookings({ dashChange, onAction }) {
 	// ? Configuration Table Material UI ----------
 	const columns = [
 		{ id: "nameClient", label: "Nombre", minWidth: 100 },
@@ -86,7 +87,7 @@ function DashBookings() {
 			}
 		};
 		handleShowBookings();
-	}, []);
+	}, [dashChange]);
 
 	useEffect(() => {
 		if (bookingInfo) {
@@ -139,6 +140,7 @@ function DashBookings() {
 				console.log("add book in dashBookings: ", createResult);
 				setAddModal(false);
 				resetAdd();
+				onAction("addBooking");
 			} else if (values.addIdentity && values.addClient) {
 				const addBooking = {
 					id: 0,
@@ -153,7 +155,7 @@ function DashBookings() {
 				console.log("editResult in dashBookings: ", createResult);
 				setAddModal(false);
 				resetAdd();
-				window.location.reload();
+				onAction("addBookingNoRegister");
 			} else {
 				return new Error("Algo salió mal");
 			}
@@ -180,7 +182,7 @@ function DashBookings() {
 				const editResult = await createBookingRequest(editBooking);
 				console.log("editResult in dashBookings: ", editResult);
 				setEditModal(false);
-				window.location.reload();
+				onAction("editBookingHidden");
 			} else {
 				const editBooking = {
 					id: bookingInfo.id,
@@ -194,7 +196,7 @@ function DashBookings() {
 				const editResult = await createBookingRequest(editBooking);
 				console.log("editResult in dashBookings: ", editResult);
 				setEditModal(false);
-				window.location.reload();
+				onAction("editBooking");
 			}
 		} catch (error) {
 			console.log("error in onsubmitEdit ", error);
@@ -208,7 +210,7 @@ function DashBookings() {
 				setDeleteModal(false);
 				console.log("Registro eliminado: ", result);
 				setEditModal(false);
-				window.location.reload();
+				onAction("deleteBooking");
 			}
 		} catch (error) {
 			console.log(error);
@@ -526,7 +528,7 @@ function DashBookings() {
 											fontWeight: 600,
 											color: "secondary.contrastText",
 											fontSize: 16,
-											fontFamily: 'Montserrat',
+											fontFamily: "Montserrat",
 											backgroundColor: "primary.bgMediumLight",
 										}}
 									>
@@ -535,7 +537,12 @@ function DashBookings() {
 								))}
 							</TableRow>
 						</TableHead>
-						<TableBody sx={{ backgroundColor: "primary.bgLight", fontFamily: 'Montserrat' }}>
+						<TableBody
+							sx={{
+								backgroundColor: "primary.bgLight",
+								fontFamily: "Montserrat",
+							}}
+						>
 							{bookingsData
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((book, bookIndex) => {
@@ -578,7 +585,7 @@ function DashBookings() {
 															sx={{
 																fontWeight: 500,
 																fontSize: 15,
-																fontFamily: 'Montserrat',
+																fontFamily: "Montserrat",
 																color: "secondary.contrastText",
 															}}
 														>
@@ -596,7 +603,11 @@ function DashBookings() {
 					</Table>
 				</TableContainer>
 				<TablePagination
-					sx={{ backgroundColor: "primary.bgMediumLight", fontWeight: 600, fontFamily: 'Montserrat' }}
+					sx={{
+						backgroundColor: "primary.bgMediumLight",
+						fontWeight: 600,
+						fontFamily: "Montserrat",
+					}}
 					rowsPerPageOptions={[10, 25, 100]}
 					component="div"
 					count={bookingsData.length}

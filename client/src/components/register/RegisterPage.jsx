@@ -159,7 +159,7 @@ function RegisterPage() {
 
 						<div className="input-group">
 							<label htmlFor="address">
-							<i class="bi bi-house"></i>
+							<i className="bi bi-house"></i>
 							</label>
 							<input
 								type="text"

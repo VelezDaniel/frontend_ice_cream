@@ -14,7 +14,7 @@ import {
 	deleteProductRequest,
 } from "../../api/products";
 
-function DashPortfolio() {
+function DashPortfolio({ dashChange, onAction }) {
 	const [productsData, setProductsData] = useState([]);
 	const [productInfo, setProductInfo] = useState([]);
 	const [editModal, setEditModal] = useState(false);
@@ -45,7 +45,7 @@ function DashPortfolio() {
 			}
 		};
 		handleShowProducts();
-	}, []);
+	}, [dashChange]);
 
 	useEffect(() => {
 		if (productInfo) {
@@ -78,7 +78,7 @@ function DashPortfolio() {
 		console.log("result from dash_portfolio: ", result);
 		setAddModal(false);
 		reset();
-		// window.location.reload();
+		onAction("addProduct");
 	});
 
 	const onSubmitEdit = handleSubmit(async (values) => {
@@ -100,7 +100,7 @@ function DashPortfolio() {
 			console.log("editResult in dashportfolio: ", editResult);
 			setEditModal(false);
 			reset();
-			// window.location.reload();
+			onAction("editProduct");
 		} catch (error) {
 			console.log("error in onsubmitEdit ", error);
 		}
@@ -113,16 +113,12 @@ function DashPortfolio() {
 				setDeleteModal(false);
 				console.log("Registro eliminado: ", result);
 				setEditModal(false);
-				window.location.reload();
+				onAction("deleteProduct");
 			}
 		} catch (error) {
 			console.log(error);
 		}
 	};
-
-	// const handlerImgBuilder = (imgName) => {
-	// 	let name = 
-	// }
 
 	return (
 		<div className="pannel-container">
@@ -408,16 +404,10 @@ function DashPortfolio() {
 										<div className="input-group">
 											<input
 												type="number"
-												step="0.01"
 												{...register("editPrice", {
 													required: {
 														value: true,
 														message: "Este cambo es requerido",
-													},
-													pattern: {
-														value: /^\d{3,}\.\d{2}$/, // Al menos 3 enteros y 2 decimales
-														message:
-															"Precio debe tener al menos 3 enteros y 2 decimales",
 													},
 												})}
 												defaultValue={productData.price}

@@ -18,7 +18,7 @@ import { FaRegUser } from "react-icons/fa";
 import { LuCake } from "react-icons/lu";
 import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 
-function DashUsers() {
+function DashUsers({ dashChange, onAction }) {
 	const [usersData, setUsersData] = useState([]);
 	const [userData, setUserData] = useState(null);
 	const [editModal, setEditModal] = useState(false);
@@ -63,7 +63,7 @@ function DashUsers() {
 			}
 		};
 		handleShowUsers();
-	}, []);
+	}, [dashChange]);
 
 	// use effect para traer todos los roles
 	useEffect(() => {
@@ -78,7 +78,7 @@ function DashUsers() {
 			}
 		};
 		handleGetRoles();
-	}, []);
+	}, [dashChange]);
 
 	useEffect(() => {
 		if (userData) {
@@ -95,19 +95,29 @@ function DashUsers() {
 
 	const onSubmit = handleSubmit(async (values) => {
 		console.log(values);
-		const result = await createUserRequest(values);
+		const objectValues = {
+			identity: values.addIdentity,
+			name: values.addName,
+			lastName: values.addLastName,
+			phone: values.addPhone,
+			email: values.addEmail,
+			address: values.addAddress,
+			birth: values.addBirth,
+			password: values.addPassword,
+		};
+		const result = await createUserRequest(objectValues);
 		console.log("result from dash_users: ", result);
 		const userInserted = result.data.body;
 		if (result && result.data) {
 			const userInfo = {
 				user: userInserted.id,
-				password: values.password,
+				password: objectValues.password,
 			};
 			const resultPass = await createPassword(userInfo);
 			console.log(resultPass);
+			onAction("addUser");
 		}
 		reset();
-		// window.location.reload();
 	});
 
 	const onSubmitEdit = handleSubmit(async (values) => {
@@ -115,8 +125,8 @@ function DashUsers() {
 		try {
 			const role = {
 				idRole: values.editRole,
-			}
-	
+			};
+
 			const insertRole = await insertRegisterRoleRequest(role);
 			console.log("insertRole: ", insertRole);
 			const personObject = {
@@ -128,7 +138,7 @@ function DashUsers() {
 				email: values.editEmail === userData.email ? null : values.editEmail,
 				birth: values.editBirth,
 			};
-	
+
 			const userObject = {
 				id: values.userId,
 				state: values.editState === userData.state ? null : values.editState,
@@ -136,18 +146,17 @@ function DashUsers() {
 			};
 			const resultPerson = await updatePersonRequest(personObject);
 			const resultUser = await updateUserRequest(userObject);
-	
-			if(resultPerson && resultUser) {
-				console.log(resultPerson)
+
+			if (resultPerson && resultUser) {
+				console.log(resultPerson);
 				console.log(resultUser);
 			}
 			reset();
-			// window.location.reload();
+			onAction("editUser");
 		} catch (error) {
-			console.log('error in onsubmitEdit ',error)
+			console.log("error in onsubmitEdit ", error);
 		}
 	});
-
 
 	const deleteUser = async (userData) => {
 		try {
@@ -155,7 +164,7 @@ function DashUsers() {
 			if (result) {
 				setDeleteModal(false);
 				console.log("Registro eliminado: ", result);
-				window.location.reload();
+				onAction("deleteUser");
 			}
 		} catch (error) {
 			console.log(error);
@@ -282,7 +291,6 @@ function DashUsers() {
 											value: 10,
 											message: "No es un celular valido",
 										},
-	
 									})}
 									placeholder="Celular"
 								/>
@@ -538,12 +546,15 @@ function DashUsers() {
 														message: "No es un celular valido",
 													},
 													validate: (value) => {
-														if (value !== userData.phone || value === userData.phone) {
+														if (
+															value !== userData.phone ||
+															value === userData.phone
+														) {
 															return true;
 														} else {
-															return "Celular no valido"
+															return "Celular no valido";
 														}
-													}
+													},
 												})}
 												defaultValue={userData.phone}
 											/>
