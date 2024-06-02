@@ -130,6 +130,20 @@
 	font-size: 18px;
 }
 
+.cont-separate {
+	width: 98%;
+	align-items: center;
+	justify-content: center;
+}
+
+.cont-separate div {
+	margin-right: auto;
+}
+
+.cont-separate button {
+	margin-right: 14px;
+}
+
 /* ** DISEÑO PARA CADA PRODUCTO DEL CARRITO ** */
 
 .small-card-cart {

@@ -14,6 +14,8 @@ import {
 	IoBookmarksOutline,
 } from "react-icons/io5";
 import { HiOutlineHome } from "react-icons/hi";
+import { HiOutlineBuildingStorefront } from "react-icons/hi2";
+
 // import { useNavigate } from "react-router-dom";
 // import { Link } from 'react-router-dom';
 //  ** IMPORTS MATERIAL UI
@@ -167,7 +169,7 @@ function NavBar({ navBarType }) {
 						{user && user.role !== "CLIENTE" && (
 							<li>
 								<a href="/dashboard">
-									<IoBookmarksOutline
+									<HiOutlineBuildingStorefront
 										size={40}
 										className="icon-nav-responsive"
 									/>

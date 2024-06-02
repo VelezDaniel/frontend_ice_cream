@@ -4,8 +4,13 @@ import "./shoppingcar.css";
 import { CartContext } from "../../context/ShoppingCartContext";
 import { useContext } from "react";
 import ProductImgBuilder from "../../utils/ProductImgBuilder";
+import { useAuth } from "../../context/AuthContext";
+import { useForm } from "react-hook-form";
 
 // * MATERIAL UI IMPORTS
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+// icons
 import IconButton from "@mui/material/IconButton";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
@@ -14,6 +19,13 @@ import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 
 function ShoppingCar({ closeMethod }) {
 	const [cart, setCart] = useContext(CartContext);
+	const { user } = useAuth();
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm();
 
 	const quantity = cart.reduce((accumulator, current) => {
 		console.log("CART: ", cart);
@@ -69,7 +81,10 @@ function ShoppingCar({ closeMethod }) {
 	return (
 		<div className="car-container">
 			<div className="u-container1 add-container-heigh">
-				<div className="wrap-btn">
+				<div className="wrap-btn cont-separate">
+					<div>
+						<h3 className="car-title">Tu pedido</h3>
+					</div>
 					<button className="btn-back" onClick={closeMethod}>
 						<i>
 							<IoClose />
@@ -77,8 +92,83 @@ function ShoppingCar({ closeMethod }) {
 					</button>
 				</div>
 				<div>
-					<h3 className="car-title">Tu pedido</h3>
+					<form>
+						<div className="input-group">
+							<label htmlFor="name">
+								<i className="bi bi-person"></i>
+							</label>
+							<input
+								type="text"
+								{...register("name", {
+									required: {
+										value: true,
+										message: "Campo nombre es requerido",
+									},
+									minLength: {
+										value: 2,
+										message: "Nombre debe ser minimo de dos letras",
+									},
+									maxLength: {
+										value: 25,
+										message: "Nombre debe ser menor a 25 letras",
+									},
+								})}
+								placeholder="Nombres"
+							/>
+						</div>
+						{errors.name && <p className="notice">{errors.name.message}</p>}
+						<div className="input-group">
+							<label htmlFor="lastName">
+								<i className="bi bi-person"></i>
+							</label>
+							<input
+								type="text"
+								{...register("lastName", {
+									required: {
+										value: true,
+										message: "Apellidos es requerido",
+									},
+									minLength: {
+										value: 2,
+										message: "Apellido debe ser minimo de dos letras",
+									},
+									maxLength: {
+										value: 40,
+										message: "Apellido debe ser menor a 40 letras",
+									},
+								})}
+								placeholder="Apellidos"
+							/>
+						</div>
+						{errors.lastName && (
+							<p className="notice">{errors.lastName.message}</p>
+						)}
+						<div className="input-group">
+							<label htmlFor="identity">
+								<i className="bi bi-person-vcard"></i>
+							</label>
+							<input
+								type="text"
+								{...register("identity", {
+									required: {
+										value: true,
+										message: "Identificacion requerida",
+									},
+									minLength: {
+										value: 6,
+										message: "No es una identificacion válida",
+									},
+								})}
+								placeholder="Documento"
+								// value={userId}
+							/>
+						</div>
+						{errors.identity && (
+							<p className="notice">{errors.identity.message}</p>
+						)}
+					</form>
 				</div>
+
 				{cart && cart.length > 0 ? (
 					<div className="u-container1-1 add-container-heigh">
 						<div className="wrap-subtitle">
@@ -194,6 +284,18 @@ function ShoppingCar({ closeMethod }) {
 							</div>
 						</div>
 					</div>
+				) : user &&
+				  (user.role === "RECEPCIONISTA" ||
+						user.role === "DOMICILIARIO" ||
+						user.role === "TESORERO") ? (
+					<div className="container-notice-shop">
+						<h4>No has agregado ningún producto aún</h4>
+						<button className="add-to-cart-shop">
+							<LiaIceCreamSolid size={38} />
+							Crear Pedido
+							<LiaIceCreamSolid size={38} />
+						</button>
+					</div>
 				) : (
 					<div className="container-notice-shop">
 						<h4>No has agregado ningún producto aún</h4>
@@ -207,7 +309,7 @@ function ShoppingCar({ closeMethod }) {
 			</div>
 			{cart && cart.length > 0 ? (
 				<button onClick={() => console.log(cart)} className="btn-shopping-car">
-					Pagar
+					{user && user.role !== "RECEPCIONISTA" ? "Pagar" : "Agregar"}
 				</button>
 			) : (
 				<div></div>

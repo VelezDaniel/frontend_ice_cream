@@ -106,7 +106,7 @@ function Dashboard() {
 
 						{/* seccion permitida solo para el administrador */}
 						{user &&
-							(user.role === "ADMINISTRADOR" || user.role === "TESORERO") && (
+							(user.role === "ADMIN" || user.role === "TESORERO") && (
 								<button className="btn-lateral-dash">
 									<div className="icon-container">
 										<i className="bi bi-cash-coin"></i>
