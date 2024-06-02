@@ -218,7 +218,7 @@ function UserSettings({ closeMethod }) {
 
 	return (
 		<>
-			<div className="user-container">
+				<div className="user-container">
 				<div className="u-container1">
 					<div className="wrap-btn">
 						<button className="btn-back" onClick={closeMethod}>

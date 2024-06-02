@@ -152,10 +152,6 @@ function ModalProduct({ product, setStateModal }) {
 		setSauceSelected(sauce);
 	};
 
-	const SaveProductInformation = () => {
-		// consulta a base de datos
-	};
-
 	// ****************** ----- *******************//
 	// ** ENVIO DEL PRODUCTO INICIO ** //
 	// ****************** ----- *******************//
@@ -250,9 +246,9 @@ function ModalProduct({ product, setStateModal }) {
 		const getAditions = async () => {
 			try {
 				const aditions = await showAditionsRequest();
-				// Establecer adiciones en estado
-				console.log(aditions);
-				setAditionsData(aditions.data.body);
+				const allAditions = aditions.data.body;
+				const availableAditions = allAditions.filter((item) => item.stateAdition === "DISPONIBLE");
+				setAditionsData(availableAditions);
 			} catch (error) {
 				console.log("Error in dash_portfolio: ", error);
 			}
@@ -265,8 +261,6 @@ function ModalProduct({ product, setStateModal }) {
 		const getFlavors = async () => {
 			try {
 				const flavors = await showFlavorsRequest();
-				// Establecer sabores en estado
-				console.log(flavors);
 				setFlavorsData(flavors.data.body);
 			} catch (error) {
 				console.log("Error in dash_portfolio: ", error);

@@ -12,7 +12,7 @@ function LoginPage() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
-	const { signin, errors: signinErrors, isAuthenticated, user } = useAuth();
+	const { signin, logout, errors: signinErrors, isAuthenticated, user } = useAuth();
 	const navigate = useNavigate();
 
 	const onSubmit = handleSubmit((data) => {
@@ -22,6 +22,9 @@ function LoginPage() {
 
 	useEffect(() => {
 		if (isAuthenticated && user.role) {
+			if(user.state !== "ACTIVO") {
+				logout();
+			}
 			switch (user.role) {
 				case "CLIENTE":
 					navigate("/");
@@ -55,7 +58,7 @@ function LoginPage() {
 					<a className="btn-volver" href="/">
 						<i className="bi bi-arrow-left-short"></i>
 					</a>
-					<img className="logo-register" src={logoImg} alt="" />
+					<img className="logo-register" src={logoImg} alt="logo" />
 					<span className="span-title">Login</span>
 					<form className="form-register" onSubmit={onSubmit}>
 						<div className="input-group ident-group">

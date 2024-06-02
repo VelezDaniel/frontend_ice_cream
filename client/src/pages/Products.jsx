@@ -18,7 +18,9 @@ function Products() {
 			try {
 				const items = await showProductsRequest();
 				console.log(items);
-				setProducts(items.data.body);
+				const allItems = items.data.body;
+				const availableItems = allItems.filter((item) => item.state === "DISPONIBLE")
+				setProducts(availableItems);
 			} catch (error) {
 				console.log("Error in Products: ", error);
 			}

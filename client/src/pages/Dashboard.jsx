@@ -1,5 +1,6 @@
 import "../css/dashboard.css";
 import "../components/user_settings/usersettings.css";
+import { useNavigate } from "react-router-dom";
 import DashPortfolio from "../components/dashboard/dash_portfolio";
 import DashBookings from "../components/dashboard/dash_booking";
 import DashUsers from "../components/dashboard/dash_users";
@@ -22,6 +23,7 @@ function Dashboard() {
 
 	const { user } = useAuth();
 	console.log("show User: ", user);
+	const navigate = useNavigate();
 
 	//  Seleccionar componente PEDIDOS
 	const handleOrdersComponent = () => {

@@ -25,7 +25,7 @@ import IconButton from "@mui/material/IconButton";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 function NavBar({ navBarType }) {
-	const [cart, setCart] = useContext(CartContext);
+	const [cart] = useContext(CartContext);
 
 	const quantity = cart.reduce((accumulator, current) => {
 		return accumulator + current.quantity;
@@ -81,10 +81,10 @@ function NavBar({ navBarType }) {
 
 	const openSettingsUser = () => {
 		console.log(user);
-		if (user) {
-			setUserSetting(true);
-		} else {
+		if (user === null) {
 			setNoneUserSetting(true);
+		} else {
+			setUserSetting(true);
 		}
 	};
 
@@ -228,10 +228,12 @@ function NavBar({ navBarType }) {
 				</nav>
 			</div>
 			<div className="aside-component">
+				{user && userSetting && (
+					<UserSettings closeMethod={closeSettingsUser} />
+				)}
 				{noneUserSetting && (
 					<NoneUserAuthenticated closeMethod={closeNoneSettingsUser} />
 				)}
-				{userSetting && <UserSettings closeMethod={closeSettingsUser} />}
 				{shoppingCar && <ShoppingCar closeMethod={closeShoppingCar} />}
 			</div>
 		</>
