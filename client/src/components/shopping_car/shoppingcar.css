@@ -144,6 +144,13 @@
 	margin-right: 14px;
 }
 
+.form-user-receptionist {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
 /* ** DISEÑO PARA CADA PRODUCTO DEL CARRITO ** */
 
 .small-card-cart {

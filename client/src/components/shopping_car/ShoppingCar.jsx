@@ -8,8 +8,8 @@ import { useAuth } from "../../context/AuthContext";
 import { useForm } from "react-hook-form";
 
 // * MATERIAL UI IMPORTS
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import { styled } from "@mui/material";
+import TextField from "@mui/material/TextField";
 // icons
 import IconButton from "@mui/material/IconButton";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
@@ -78,6 +78,24 @@ function ShoppingCar({ closeMethod }) {
 		setCart(updateCart);
 	};
 
+	const StyledTextField = styled(TextField)({
+		"& .MuiInputBase-input": {
+			fontFamily: "Montserrat",
+			fontSize: "14px",
+			fontWeight: 600,
+		},
+		"& .MuiInputLabel-root": {
+			fontFamily: "Montserrat",
+			fontSize: "14px",
+			fontWeight: 600,
+		},
+	});
+
+	const onSubmit = (values) => {
+		console.log(values);
+		console.log(cart);
+	};
+
 	return (
 		<div className="car-container">
 			<div className="u-container1 add-container-heigh">
@@ -90,83 +108,6 @@ function ShoppingCar({ closeMethod }) {
 							<IoClose />
 						</i>
 					</button>
-				</div>
-				<div>
-					<form>
-						<div className="input-group">
-							<label htmlFor="name">
-								<i className="bi bi-person"></i>
-							</label>
-							<input
-								type="text"
-								{...register("name", {
-									required: {
-										value: true,
-										message: "Campo nombre es requerido",
-									},
-									minLength: {
-										value: 2,
-										message: "Nombre debe ser minimo de dos letras",
-									},
-									maxLength: {
-										value: 25,
-										message: "Nombre debe ser menor a 25 letras",
-									},
-								})}
-								placeholder="Nombres"
-							/>
-						</div>
-						{errors.name && <p className="notice">{errors.name.message}</p>}
-						<div className="input-group">
-							<label htmlFor="lastName">
-								<i className="bi bi-person"></i>
-							</label>
-							<input
-								type="text"
-								{...register("lastName", {
-									required: {
-										value: true,
-										message: "Apellidos es requerido",
-									},
-									minLength: {
-										value: 2,
-										message: "Apellido debe ser minimo de dos letras",
-									},
-									maxLength: {
-										value: 40,
-										message: "Apellido debe ser menor a 40 letras",
-									},
-								})}
-								placeholder="Apellidos"
-							/>
-						</div>
-						{errors.lastName && (
-							<p className="notice">{errors.lastName.message}</p>
-						)}
-						<div className="input-group">
-							<label htmlFor="identity">
-								<i className="bi bi-person-vcard"></i>
-							</label>
-							<input
-								type="text"
-								{...register("identity", {
-									required: {
-										value: true,
-										message: "Identificacion requerida",
-									},
-									minLength: {
-										value: 6,
-										message: "No es una identificacion válida",
-									},
-								})}
-								placeholder="Documento"
-								// value={userId}
-							/>
-						</div>
-						{errors.identity && (
-							<p className="notice">{errors.identity.message}</p>
-						)}
-					</form>
 				</div>
 
 				{cart && cart.length > 0 ? (
@@ -290,11 +231,6 @@ function ShoppingCar({ closeMethod }) {
 						user.role === "TESORERO") ? (
 					<div className="container-notice-shop">
 						<h4>No has agregado ningún producto aún</h4>
-						<button className="add-to-cart-shop">
-							<LiaIceCreamSolid size={38} />
-							Crear Pedido
-							<LiaIceCreamSolid size={38} />
-						</button>
 					</div>
 				) : (
 					<div className="container-notice-shop">
@@ -307,10 +243,87 @@ function ShoppingCar({ closeMethod }) {
 					</div>
 				)}
 			</div>
-			{cart && cart.length > 0 ? (
-				<button onClick={() => console.log(cart)} className="btn-shopping-car">
-					{user && user.role !== "RECEPCIONISTA" ? "Pagar" : "Agregar"}
-				</button>
+
+			{user && user.role === "RECEPCIONISTA" ? (
+				<div>
+					<form
+						onSubmit={handleSubmit(onSubmit)}
+						className="form-user-receptionist"
+					>
+						<p className="subtitle-gray">Datos de Cliente</p>
+						<StyledTextField
+							id="standard"
+							variant="standard"
+							autoComplete="off"
+							label="Nombre"
+							{...register("name", {
+								required: {
+									value: true,
+									message: "Campo nombre es requerido",
+								},
+								minLength: {
+									value: 2,
+									message: "Nombre debe ser minimo de dos letras",
+								},
+								maxLength: {
+									value: 25,
+									message: "Nombre debe ser menor a 25 letras",
+								},
+							})}
+						/>
+						{errors.name && <p className="notice">{errors.name.message}</p>}
+						<StyledTextField
+							id="standard"
+							label="Apellido"
+							variant="standard"
+							autoComplete="off"
+							{...register("lastName", {
+								required: {
+									value: true,
+									message: "Apellidos es requerido",
+								},
+								minLength: {
+									value: 2,
+									message: "Apellido debe ser minimo de dos letras",
+								},
+								maxLength: {
+									value: 40,
+									message: "Apellido debe ser menor a 40 letras",
+								},
+							})}
+						/>
+						{errors.lastName && (
+							<p className="notice">{errors.lastName.message}</p>
+						)}
+						<StyledTextField
+							id="standard-number"
+							label="Documento"
+							autoComplete="off"
+							type="number"
+							variant="standard"
+							{...register("identity", {
+								required: {
+									value: true,
+									message: "Identificacion requerida",
+								},
+								minLength: {
+									value: 6,
+									message: "No es una identificacion válida",
+								},
+							})}
+						/>
+						{errors.identity && (
+							<p className="notice">{errors.identity.message}</p>
+						)}
+						{cart && cart.length > 0 ? (
+							<button className="btn-shopping-car">Agregar</button>
+						) : (
+							<div></div>
+						)}
+					</form>
+				</div>
+			) : cart && cart.length > 0 ? (
+				<button className="btn-shopping-car">Pagar</button>
 			) : (
 				<div></div>
 			)}
