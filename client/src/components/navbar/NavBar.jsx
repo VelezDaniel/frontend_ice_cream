@@ -194,6 +194,7 @@ function NavBar({ navBarType }) {
 								width: 48,
 								height: 48,
 								borderRadius: "12px",
+								transition: "all ease 0.3s",
 								":hover": {
 									backgroundColor: "primary.btnHomeHover",
 								},

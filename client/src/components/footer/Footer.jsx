@@ -9,10 +9,6 @@ function Footer() {
 					<img src={logoImg} alt="" />
 				</div>
 				<div className="celda2 flex_center">
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
 					<h2>Horarios de atención</h2>
 					<div className="box-item-foot">
 						<h3>Lunes a sábado</h3>
@@ -28,10 +24,6 @@ function Footer() {
 					</div>
 				</div>
 				<div className="celda3 flex_center">
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
 					<button className="container-btn">
 						<p>Registrate</p>
 						<i className="bi bi-arrow-right-circle"></i>

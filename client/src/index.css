@@ -22,7 +22,7 @@
 	--danger: #ff3131;
 	--danger-dark : #703131;
 	--bg-sideBar: rgb(20, 140, 161);
-	--Rose-one: #ff95e8;
+	--Rose-one: #eba6cd;
 }
 
 * {
@@ -71,6 +71,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+	transition: all ease 0.3s;
 }
 
 .container-btn .btn-portfolio .arrow {

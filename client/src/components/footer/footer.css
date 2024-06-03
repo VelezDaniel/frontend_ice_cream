@@ -7,7 +7,7 @@
 	background: var(--lightTitles);
 	width: 100%;
 	height: 500px;
-  margin: 38px 0px;
+	margin: 38px 0px;
 }
 
 .celda123 {
@@ -55,23 +55,25 @@
 	width: 220px;
 	border: 2px solid var(--font-darkgray);
 	border-radius: 15px;
-  background-color: transparent;
-  cursor: pointer;
+	background-color: transparent;
+	cursor: pointer;
+	transition: all ease 0.3s;
 }
 
 .celda3 button p {
-  font-size: 18px;
-  font-weight: 600;
+	font-size: 18px;
+	font-weight: 600;
 }
 
 .celda3 button i {
-  font-size: 22px;
+	font-size: 22px;
 }
 
-.celda3 button:hover, .celda3 button:link{
-  background-color: var(--mainColor);
-  border: 2px solid var(--lightTitles);
-  color: var(--lightTitles);
+.celda3 button:hover,
+.celda3 button:link {
+	background-color: var(--mainColor);
+	border: 2px solid var(--lightTitles);
+	color: var(--lightTitles);
 }
 
 .celda4 {
@@ -79,7 +81,7 @@
 	place-content: center;
 	border-bottom: 2px solid #000;
 	width: 90%;
-  padding: 36px 0;
+	padding: 36px 0;
 }
 
 .celda5 {
@@ -87,31 +89,30 @@
 	justify-content: space-between;
 	align-items: center;
 	gap: 18px;
-  padding: 20px 0;
+	padding: 20px 0;
 }
 
-.celda5>p {
-  font-weight: 600;
+.celda5 > p {
+	font-weight: 600;
 }
 
 #top {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 #top:hover {
-  color: var(--mainColor);
-  font-weight: 600;
+	color: var(--mainColor);
+	font-weight: 600;
 }
 
 .item {
-  font-weight: 600;
-  font-size: 18px;
+	font-weight: 600;
+	font-size: 18px;
 }
 
 /* * RESPONSIVE * */
 
 @media (width < 990px) {
-
 	.celda1 img {
 		height: auto;
 		max-height: 400px;
@@ -121,7 +122,6 @@
 }
 
 @media (width < 865px) {
-
 	.item {
 		font-size: 18px;
 	}
@@ -141,7 +141,7 @@
 	.celda3 button p {
 		font-size: 14px;
 	}
-	
+
 	.celda4 h1 {
 		font-size: 26px;
 	}
@@ -156,29 +156,61 @@
 }
 
 @media (width < 710px) {
+	.celda123 {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 24px;
+	}
+
+	.celda1 {
+		display: flex;
+		align-items: center;
+	}
+
+	.celda1 img {
+		width: 48%;
+		height: auto;
+	}
 
 	.item {
-		font-size: 10px;
+		font-size: 16px;
 	}
 
 	.celda2 h2 {
-		font-size: 14px;
+		font-size: 20px;
+	}
+
+	.box-item-foot {
+		text-align: center;
 	}
 
 	.box-item-foot h3 {
-		font-size: 12px;
+		font-size: 18px;
 	}
 
 	.box-item-foot p {
-		font-size: 10px;
+		font-size: 16px;
+	}
+
+	.celda2 {
+		width: 90%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.celda3 {
+		width: auto;
 	}
 
 	.celda3 button {
-		width: 132px;
+		width: 162px;
 	}
 
 	.celda3 button p {
-		font-size: 10px;
+		font-size: 16px;
 	}
 
 	.celda4 h1 {
@@ -187,9 +219,9 @@
 
 	.celda5 p {
 		font-size: 10px;
-	}	
+	}
 
 	.btn-foot-social-media {
-		font-size: 10px;
+		font-size: 16px;
 	}
 }

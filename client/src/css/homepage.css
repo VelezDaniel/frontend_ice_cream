@@ -1,27 +1,28 @@
-@import url('../index.css');
+@import url("../index.css");
 
 .main-container-posters {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 38px;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 38px;
 }
 
 .container-poster {
-  width: 84%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 14px 42px;
+	width: 84%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 14px 42px;
+	gap: 10px;
 }
 
 .poster-styled-one {
-  position: absolute;
+	position: absolute;
 	width: 40%;
 	height: 100vh;
-	background: url('../assets/imgs/malteadadoble.jpg');
+	background: url("../assets/imgs/malteadadoble.jpg");
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -31,14 +32,14 @@
 	justify-content: end;
 	align-items: start;
 	padding: 20px 38px 64px 66px;
-  border-radius: 10px;
+	border-radius: 10px;
 }
 
 .poster-styled-two {
-  position: absolute;
+	position: absolute;
 	width: 40%;
 	height: 100vh;
-	background: url('../assets/imgs/malteadafresa.jpg');
+	background: url("../assets/imgs/malteadafresa.jpg");
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -48,64 +49,141 @@
 	justify-content: start;
 	align-items: start;
 	padding: 46px 38px 64px 66px;
-  border-radius: 10px;
+	border-radius: 10px;
 }
 
 .poster-text {
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--lightTitles);
+	font-size: 22px;
+	font-weight: 600;
+	color: var(--lightTitles);
 }
 
 .poster-container-description {
-  width: 46%;
-  display: flex;
-  flex-direction: column;
-  gap: 26px;
-  margin: 0 26px;
+	width: 46%;
+	display: flex;
+	flex-direction: column;
+	gap: 26px;
+	margin: 0 26px;
 }
 
 .small-letter {
-  font-size: 18px;
-  font-weight: 600;
-  font-style: italic;
-  color: var(--grayFonts);
+	font-size: 18px;
+	font-weight: 600;
+	font-style: italic;
+	color: var(--grayFonts);
 }
 
 .subtext-description {
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--font-darkgray);
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--font-darkgray);
 }
 
 .poster-container-description-two {
-  width: 60%;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+	width: 70%;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	margin: 0 20px;
 }
 
-.box-places{
-  display: flex;
-  gap: 28px;
+.box-places {
+	display: flex;
+	gap: 28px;
 }
 
 .box-places p {
-  font-size: 26px;
-  font-weight: 600;
-  color: var(--Rose-one);
+	font-size: 26px;
+	font-weight: 600;
+	color: var(--Rose-one);
 }
 
 .description-small {
-  font-size: 18px;
-  color: var(--grayFonts);
-  font-weight: 500;
-  font-style: italic;
+	font-size: 18px;
+	color: var(--grayFonts);
+	font-weight: 500;
+	font-style: italic;
 }
 
 .poster-text-2 {
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--font-darkgray);
-  font-style: italic;
+	font-size: 22px;
+	font-weight: 600;
+	color: var(--lightTitles);
+	font-style: italic;
+	background-color: var(--btn-home-hover);
+	padding: 8px 14px;
+	text-align: center;
+	border-radius: 10px;
+}
+
+/* RESPONSIVE */
+
+@media (width < 1024px) {
+	.poster-styled-two {
+		max-height: 600px;
+		min-width: 360px;
+	}
+	.poster-styled-one {
+		max-height: 600px;
+		min-width: 360px;
+	}
+}
+
+@media (width < 842px) {
+	.subtext-description {
+		font-size: 22px;
+	}
+
+	.description-small {
+		font-size: 16px;
+	}
+
+	.poster-text-2 {
+		font-size: 18px;
+	}
+
+	.poster-text {
+		font-size: 18px;
+	}
+
+  .box-places {
+    display: flex;
+    flex-direction: column;
+  }
+
+	.box-places p {
+    font-size: 18px;
+	}
+
+  .small-letter {
+    font-size: 14px;
+  }
+}
+
+@media (width < 595px) {
+
+  .container-poster {
+    width: 94%;
+    padding: 14px 0;
+  }
+  .subtext-description {
+		font-size: 18px;
+	}
+
+	.description-small {
+		font-size: 14px;
+	}
+
+	.poster-text-2 {
+		font-size: 16px;
+	}
+
+  .poster-styled-two {
+		height: 526px;
+		min-width: 290px;
+	}
+	.poster-styled-one {
+    height: 526px;
+		min-width: 290px;
+	}
 }

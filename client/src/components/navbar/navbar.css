@@ -84,6 +84,7 @@ nav {
 	margin: 20px;
 	display: none;
 	cursor: pointer;
+	transition: all ease 0.3s;
 }
 
 .nav-navBar .logo {
@@ -111,6 +112,7 @@ nav {
   color: var(--lightTitles);
   padding: 6px;
 	cursor: pointer;
+	transition: all ease 0.3s;
 }
 
 .nav-navBar .icons .nav-item i{
