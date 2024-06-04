@@ -225,12 +225,18 @@
 
 @media (width < 1250px) {
 	.car-container {
-		width: 44%;
+		width: 58%;
 	}
 }
 
-@media (width < 820px) {
+@media (width < 860px) {
 	.car-container {
 		width: 78%;
+	}
+}
+
+@media (width < 646px){
+	.car-container {
+		width: 100%;
 	}
 }

@@ -17,13 +17,6 @@ function CreatePassword({ insertId }) {
 		formState: { errors },
 	} = useForm();
 
-	// const { isAuthenticated, setIsAuthenticated } = useAuth();
-	// const { isAuthenticated, setIsAuthenticated } = useState(false)
-
-	// useEffect(() => {
-	// 	if (isAuthenticated) navigate("/");
-	// }, [isAuthenticated]);
-
 	// const user = userId;
 	console.log("userId in pass: ", insertId);
 	// console.log("user: ", user);
@@ -120,10 +113,10 @@ function CreatePassword({ insertId }) {
 						placeholder="Confirmar contraseña"
 						id="confirmPassword"
 					/>
+				</div>
 					{errors.confirmPass && (
 						<p className="notice">{errors.confirmPass.message}</p>
 					)}
-				</div>
 				<input className="btn-enviar" type="submit" value="Confirmar" />
 			</form>
 		</div>

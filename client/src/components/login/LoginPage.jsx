@@ -73,7 +73,7 @@ function LoginPage() {
 								id="identity"
 							/>
 						</div>
-						{errors.user && (
+						{errors.identity && (
 							<span className="notice">Identificaicon requerida!</span>
 						)}
 						<div className="input-group">
@@ -97,8 +97,8 @@ function LoginPage() {
 							<span className="notice">Contraseña requerida</span>
 						)}
 						{signinErrors.map((error, i) => (
-							<div className="errors" key={i}>
-								{error}
+							<div className="notice" key={i}>
+								{error.body}
 							</div>
 						))}
 						<input className="btn-Ingresar" type="submit" value="Ingresar" />

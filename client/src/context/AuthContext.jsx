@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { registerRequest, loginRequest, verifyTokenRequest } from "../api/auth";
 import Cookies from "js-cookie";
 
-
 export const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -16,9 +15,6 @@ export const useAuth = () => {
 // Creacion de provider (componente que engloba otros componentes)
 export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
-	const [dashLocation, setDashLocation] = useState(null);
-	const [dashAction, setDashAction] = useState(null);
-	// const [regInfo, setRegInfo] = useState(null)
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [errors, setErrors] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -37,12 +33,12 @@ export const AuthProvider = ({ children }) => {
 	useEffect(() => {
 		console.log("User global: ", user);
 	}, [user]);
-	
+
 	// Metodo para register
 	const signup = async (userData) => {
 		try {
 			const res = await registerRequest(userData);
-			console.log('res_register in authContext: ',res);
+			console.log("res_register in authContext: ", res);
 			const userInfo = res.data.body;
 			console.log("UserInfo: ", userInfo);
 			setUser(userInfo);
@@ -59,19 +55,30 @@ export const AuthProvider = ({ children }) => {
 	const signin = async (userCredentials) => {
 		try {
 			const result = await loginRequest(userCredentials);
-			console.log("respuesta de loguinRequest: ", result, "res.data = ", result.data);
-			const userInfo = result.data.body;
-			console.log(`UserInfo:  ${userInfo}`);
-			setUser(userInfo);
-			console.log("user credentials from authcontext: ", userCredentials);
-			setIsAuthenticated(true);
+			console.log(
+				"respuesta de loguinRequest: ",
+				result,
+				"res.data = ",
+				result.data
+			);
+
+			if (result.status === 200) {
+				const userInfo = result.data.body;
+				console.log(`UserInfo:  ${userInfo}`);
+				setUser(userInfo);
+				console.log("user credentials from authcontext: ", userCredentials);
+				setIsAuthenticated(true);
+			} else {
+				setErrors([result.message]);
+			}
 		} catch (error) {
-			console.log(error);
-			// if (Array.isArray(error.response.data)) {
-			// 	return setErrors(error.response.data);
-			// }
-			setErrors([error.response.data.message]);
-			console.log("error from loginRequest in signin: ", error);
+			console.log("error in loguinRequest ", error);
+
+			if (error.response && error.response.data) {
+				setErrors([error.response.data]);
+			} else {
+				setErrors(["Unexpected error ocurred"]);
+			}
 		}
 	};
 
@@ -79,14 +86,6 @@ export const AuthProvider = ({ children }) => {
 	const updateStateAuthentication = (newAuthentication) => {
 		setIsAuthenticated(newAuthentication);
 	};
-
-	const updateDashBoardLocation = (newLocation) => {
-		setDashLocation(newLocation);
-	}
-
-	const updateDashBoardAction = (newAction) => {
-		setDashAction(newAction);
-	}
 
 	// Revision de login y credenciales de usuario
 	useEffect(() => {
@@ -129,7 +128,7 @@ export const AuthProvider = ({ children }) => {
 		Cookies.remove("token");
 		setUser(null);
 		setIsAuthenticated(false);
-	}
+	};
 
 	return (
 		<AuthContext.Provider

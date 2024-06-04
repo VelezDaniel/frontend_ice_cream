@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import "./register.css";
 import CreatePassword from "./CreatePassword";
 import logoImg from "../../assets/imgs/helarticologo2.png";
+// import { RiContractLine } from "react-icons/ri";
 import { useAuth } from "../../context/AuthContext";
+// Toast from Sonner
+import { Toaster, toast } from "sonner";
 
 function RegisterPage() {
 	const {
@@ -29,6 +32,14 @@ function RegisterPage() {
 		}
 		console.log("resultSignup: ", resultSignup);
 	});
+
+	// const onSubmit = handleSubmit(async (values) => {
+	// 	const resultSignup = await signup(values);
+	// 	console.log("resultSignup: ", resultSignup);
+	// 	if (resultSignup) {
+	// 		return await resultSignup;
+	// 	}
+	// });
 
 	return (
 		<div className="contenedor-padre">
@@ -159,7 +170,7 @@ function RegisterPage() {
 
 						<div className="input-group">
 							<label htmlFor="address">
-							<i className="bi bi-house"></i>
+								<i className="bi bi-house"></i>
 							</label>
 							<input
 								type="text"
@@ -176,7 +187,9 @@ function RegisterPage() {
 								placeholder="Dirección"
 							/>
 						</div>
-						{errors.address && <p className="notice">{errors.address.message}</p>}
+						{errors.address && (
+							<p className="notice">{errors.address.message}</p>
+						)}
 
 						<label htmlFor="birth">
 							<i className="bi bi-calendar3"></i> Fecha de Nacimiento
@@ -192,21 +205,8 @@ function RegisterPage() {
 							})}
 						/>
 						{errors.birth && <p className="notice">{errors.birth.message}</p>}
-						<div className="input-border-none">
-							<label htmlFor="terms">Terminos y condiciones</label>
-							<input
-								type="checkbox"
-								{...register("terms", { required: true })}
-							/>
-						</div>
-						{errors.checkbox && (
-							<p className="notice">Debes aceptar los terminos</p>
-						)}
-						<input
-							className="btn-enviar"
-							type="submit"
-							value="Continuar"
-						></input>
+
+						<input className="btn-enviar" type="submit" value="Continuar" />
 						{Array.isArray(registerErrors) &&
 							registerErrors.map((error, i) => (
 								<div className="errors" key={i}>
@@ -216,6 +216,7 @@ function RegisterPage() {
 					</form>
 				</div>
 			)}
+			<Toaster />
 			{/* Password Form */}
 			{/* <CreatePassword insertId={insertId} /> */}
 			{passwordForm && <CreatePassword insertId={userId} />}

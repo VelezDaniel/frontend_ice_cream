@@ -139,7 +139,7 @@ function ShoppingCar({ closeMethod }) {
 													${order.orderBody.productInfo.price}
 												</p>
 											</div>
-											{order.orderBody.aditions ? (
+											{order.orderBody.aditions && order.orderBody.aditions.length > 0 ? (
 												<>
 													<p className="product-size-cart">Adiciones</p>
 													{order.orderBody.aditions.map((adition) => (
@@ -154,6 +154,18 @@ function ShoppingCar({ closeMethod }) {
 												</>
 											) : (
 												<p className="product-size-cart">Sin adiciones</p>
+											)}
+
+											{order.orderBody.sauce && order.orderBody.sauce != {} ? (
+												<div className="cart-sect-horiontal">
+													<p>Salsa</p>
+													<p>{order.orderBody.sauce.sauceName}</p>
+												</div>
+											) : (
+												<div className="cart-sect-horiontal">
+													<p>Salsa</p>
+													<p>Ninguna</p>
+												</div>
 											)}
 
 											<div className="cart-sect-horiontal top-space-smallest">

@@ -23,7 +23,6 @@ function ModalProduct({ product, setStateModal }) {
 	const {
 		register,
 		handleSubmit,
-		watch,
 		formState: { errors },
 	} = useForm();
 	// const aditionChecked = watch("adition");
@@ -39,7 +38,7 @@ function ModalProduct({ product, setStateModal }) {
 	const [selectedAditions, setSelectedAditions] = useState([]);
 	const [aditionQuantities, setAditionQuantities] = useState({});
 	const [sauceChecked, setSauceChecked] = useState(false);
-	const [sauceSelected, setSauceSelected] = useState({});
+	const [sauceSelected, setSauceSelected] = useState(null);
 	// ? Material UI
 	const theme = useTheme();
 	const [flavorName, setFlavorName] = useState([]);
@@ -226,7 +225,7 @@ function ModalProduct({ product, setStateModal }) {
 			data.flavors = result;
 		}
 
-		if (sauceSelected != {}) {
+		if (sauceSelected !== null) {
 			data.sauce = sauceSelected;
 			data.description = `Descripción: ${data.description}.  SALSA: ${sauceSelected.sauceName}`;
 		}
@@ -247,7 +246,9 @@ function ModalProduct({ product, setStateModal }) {
 			try {
 				const aditions = await showAditionsRequest();
 				const allAditions = aditions.data.body;
-				const availableAditions = allAditions.filter((item) => item.stateAdition === "DISPONIBLE");
+				const availableAditions = allAditions.filter(
+					(item) => item.stateAdition === "DISPONIBLE"
+				);
 				setAditionsData(availableAditions);
 			} catch (error) {
 				console.log("Error in dash_portfolio: ", error);
@@ -328,7 +329,13 @@ function ModalProduct({ product, setStateModal }) {
 												Sabores
 											</InputLabel>
 											<Select
-												{...register("flavors")}
+												{...register("flavors", {
+													required: {
+														value: true,
+														message:
+															"Debes seleccionar al menos un sabor de helado",
+													},
+												})}
 												labelId="demo-multiple-chip-label"
 												id="demo-multiple-chip"
 												multiple
@@ -363,9 +370,14 @@ function ModalProduct({ product, setStateModal }) {
 											</Select>
 										</FormControl>
 									</div>
+									{errors.flavors && (
+										<p className="notice">{errors.flavors.message}</p>
+									)}
 								</>
 							) : (
-								<p className="subtitle-gray">El producto que elegiste no tiene helado</p>
+								<p className="subtitle-gray">
+									El producto que elegiste no tiene helado
+								</p>
 							)}
 						</>
 
