@@ -17,6 +17,8 @@ import { IoSearch } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
 import { LuCake } from "react-icons/lu";
 import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
+// TOAST from SONNER
+import { toast, Toaster } from "sonner";
 
 function DashUsers({ dashChange, onAction }) {
 	const [usersData, setUsersData] = useState([]);
@@ -26,6 +28,7 @@ function DashUsers({ dashChange, onAction }) {
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
 	const [roles, setRoles] = useState([]);
+	const [resToast, setResToast] = useState({});
 
 	const {
 		register,
@@ -82,6 +85,7 @@ function DashUsers({ dashChange, onAction }) {
 
 	useEffect(() => {
 		if (userData) {
+			console.log(userData);
 			setValue("editName", userData.name);
 			setValue("editLastName", userData.lastName);
 			setValue("editEmail", userData.email);
@@ -92,6 +96,25 @@ function DashUsers({ dashChange, onAction }) {
 			setValue("editBirth", userData.birth);
 		}
 	}, [userData]);
+
+	useEffect(() => {
+		const showToast = () => {
+			// const btn = document.getElementById(idButton);
+			// btn.addEventListener("click", () => {});
+			if (resToast && resToast.state === false) {
+				toast.error("Lo sentimos", {
+					description: resToast.message,
+					duration: 5000,
+				});
+			} else if (resToast.state === true) {
+				toast.success("Accion Exitosa", {
+					description: resToast.message,
+					duration: 4000,
+				});
+			}
+		};
+		showToast();
+	}, [resToast]);
 
 	const onSubmit = handleSubmit(async (values) => {
 		console.log(values);
@@ -116,45 +139,94 @@ function DashUsers({ dashChange, onAction }) {
 			const resultPass = await createPassword(userInfo);
 			console.log(resultPass);
 			onAction("addUser");
+			if (resultPass.data.body.message === "Data save succesfully") {
+				setResToast({
+					state: true,
+					message: "Nuevo usuario agregado",
+				});
+			} else {
+				setResToast({
+					state: false,
+					message: "No se pudo agregar el usuario. Vuelve a intentarlo.",
+				});
+			}
 		}
 		reset();
+		setAddModal(false);
 	});
 
 	const onSubmitEdit = handleSubmit(async (values) => {
 		console.log("values for edit: ", values);
-		try {
-			const role = {
-				idRole: values.editRole,
-			};
+		if (
+			values.editName == userData.name &&
+			values.editLastName == userData.lastName &&
+			values.editEmail == userData.email &&
+			values.editRole == userData.idUserRole &&
+			values.editPhone == userData.phone &&
+			values.editAddress == userData.address &&
+			values.editState == userData.state &&
+			values.editBirth == userData.birth
+		) {
+			setResToast({
+				state: false,
+				message:
+					"Debes cambiar al menos un dato para actualizar la información",
+			});
+		} else {
+			try {
+				let insertRole = null;
+				if (values.editRole !== userData.idUserRole) {
+					const role = {
+						idRole: values.editRole,
+					};
 
-			const insertRole = await insertRegisterRoleRequest(role);
-			console.log("insertRole: ", insertRole);
-			const personObject = {
-				id: values.userId,
-				name: values.editName,
-				lastName: values.editLastName,
-				phone: values.editPhone === userData.phone ? null : values.editPhone,
-				address: values.editAddress,
-				email: values.editEmail === userData.email ? null : values.editEmail,
-				birth: values.editBirth,
-			};
+					insertRole = await insertRegisterRoleRequest(role);
+					console.log("insertRole: ", insertRole);
+				}
 
-			const userObject = {
-				id: values.userId,
-				state: values.editState === userData.state ? null : values.editState,
-				registerRole: insertRole.data.body.insertId,
-			};
-			const resultPerson = await updatePersonRequest(personObject);
-			const resultUser = await updateUserRequest(userObject);
+				const personObject = {
+					id: values.userId,
+					name: values.editName,
+					lastName: values.editLastName,
+					phone: values.editPhone === userData.phone ? null : values.editPhone,
+					address: values.editAddress,
+					email: values.editEmail === userData.email ? null : values.editEmail,
+					birth: values.editBirth,
+				};
 
-			if (resultPerson && resultUser) {
-				console.log(resultPerson);
-				console.log(resultUser);
+				const userObject = {
+					id: values.userId,
+					state: values.editState === userData.state ? null : values.editState,
+					registerRole:
+						insertRole !== null ? insertRole.data.body.insertId : null,
+				};
+
+				const resultPerson = await updatePersonRequest(personObject);
+				const resultUser = await updateUserRequest(userObject);
+
+				if (resultPerson && resultUser) {
+					console.log(resultPerson);
+					console.log(resultUser);
+				}
+
+				reset();
+				onAction("editUser");
+				setEditModal(false);
+
+				if (resultUser.data.body && resultPerson.data.body) {
+					setResToast({
+						state: true,
+						message: "Información de usuario actualizada",
+					});
+				} else {
+					setResToast({
+						state: false,
+						message: "No se pudo actualizar el usuario. Vuelve a intentarlo.",
+					});
+				}
+			} catch (error) {
+				console.log("error in onsubmitEdit ", error);
 			}
-			reset();
-			onAction("editUser");
-		} catch (error) {
-			console.log("error in onsubmitEdit ", error);
 		}
 	});
 
@@ -165,6 +237,16 @@ function DashUsers({ dashChange, onAction }) {
 				setDeleteModal(false);
 				console.log("Registro eliminado: ", result);
 				onAction("deleteUser");
+				setResToast({
+					state: true,
+					message: "Usuario eliminado exitosamente",
+				});
+			} else {
+				setDeleteModal(false);
+				setResToast({
+					state: false,
+					message: "No se pudo eliminar el usuario, intentalo de nuevo",
+				});
 			}
 		} catch (error) {
 			console.log(error);
@@ -351,12 +433,9 @@ function DashUsers({ dashChange, onAction }) {
 							{errors.addPassword && (
 								<p className="notice">{errors.addPassword.message}</p>
 							)}
-							<input
-								className="btn-enviar"
-								id="btn-add-user"
-								type="submit"
-								value="Continuar"
-							></input>
+							<button className="btn-enviar" id="btn-add-user">
+								Continuar
+							</button>
 							{registerErrors.map((error, i) => (
 								<div className="errors" key={i}>
 									{error}
@@ -513,15 +592,7 @@ function DashUsers({ dashChange, onAction }) {
 										<div className="form-group-select">
 											<select
 												className="form-control"
-												{...register("editRole", {
-													validate: (value) => {
-														if (value !== userData.idUserRole) {
-															return true;
-														} else {
-															return false;
-														}
-													},
-												})}
+												{...register("editRole")}
 												defaultValue={userData.idUserRole}
 											>
 												{roles.map((role) => (
@@ -615,9 +686,8 @@ function DashUsers({ dashChange, onAction }) {
 										<input
 											type="submit"
 											className="btn-enviar"
-											id="btn-add-user"
+											id="btn-edit-user"
 											value="Actualizar"
-											// onClick={onSubmitEdit}
 										/>
 
 										{registerErrors.map((error, i) => (
@@ -663,6 +733,7 @@ function DashUsers({ dashChange, onAction }) {
 					</div>
 				))}
 			</div>
+			<Toaster />
 		</div>
 	);
 }
