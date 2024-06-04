@@ -309,30 +309,52 @@ function DashBookings({ dashChange, onAction }) {
 									/>
 								</div>
 							</div>
+							{errorsAdd.addDescription && (
+								<span className="notice">{errorsAdd.addDescription.message}</span>
+							)}
 
 							<div>
 								<label>Nombre completo</label>
 								<div className="div-calendar-book">
 									<input
-										placeholder="Ingrese nombre del cliente"
-										className="input-book-design"
+										placeholder="Nombre del cliente"
+										className="input-book-design client-inputs"
 										type="text"
-										{...registerAdd("addClient")}
+										{...registerAdd("addClient", {
+											required: {
+												value: true,
+												message: "Nombre del cliente requerido",
+											}
+										})}
 									/>
 								</div>
 							</div>
+
+							{errorsAdd.addClient && (
+								<span className="notice">{errorsAdd.addClient.message}</span>
+							)}
 
 							<div>
 								<label>Identificación</label>
 								<div className="div-calendar-book">
 									<input
-										placeholder="Ingrese Identificación del cliente"
-										className="input-book-design"
+										placeholder="Identificación del cliente"
+										className="input-book-design client-inputs"
 										type="number"
-										{...registerAdd("addIdentity")}
+										{...registerAdd("addIdentity", {
+											required: {
+												value: true,
+												message: "Identificación del cliente requerida"
+											}
+										})}
 									/>
 								</div>
 							</div>
+
+							{errorsAdd.addIdentity && (
+								<span className="notice">{errorsAdd.addIdentity.message}</span>
+							)}
+
 							<div className="box-btn-center">
 								<input
 									className="btn-enviar"

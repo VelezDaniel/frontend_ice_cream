@@ -11,3 +11,8 @@
   align-items: center;
   margin-top: 6px;
 }
+
+.client-inputs {
+  width: 244px !important;
+  font-size: 14px !important;
+}
