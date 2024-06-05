@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
 // import { useAuth } from "../../context/AuthContext";
+import { toast, Toaster } from "sonner";
 import {
 	showAditionsRequest,
 	createAditionRequest,
@@ -138,8 +139,21 @@ const DashAditions = ({ dashChange, onAction }) => {
 			if (addingInfo === "adition") {
 				try {
 					const result = await createAditionRequest(values);
-					console.log("result from dash_portfolio: ", result);
+					console.log("result from dash_aditions: ", result);
 					setAddAditionModal(false);
+
+					if (result.data.body[0] === "Data saved succesfully") {
+						setResToast({
+							state: true,
+							message: "Nueva adición agregada",
+						});
+					} else {
+						setResToast({
+							state: false,
+							message: "No se pudo agregar la adición. Vuelve a intentarlo.",
+						});
+					}
+
 					reset();
 					onAction("addAdition");
 				} catch (error) {
@@ -150,6 +164,19 @@ const DashAditions = ({ dashChange, onAction }) => {
 					const result = await createFlavorRequest(values);
 					console.log("result from dash_portfolio: ", result);
 					setAddFlavorModal(false);
+
+					if (result.data.body[0] === "Data saved succesfully") {
+						setResToast({
+							state: true,
+							message: "Nuevo sabor agregado",
+						});
+					} else {
+						setResToast({
+							state: false,
+							message: "No se pudo agregar el sabor. Vuelve a intentarlo.",
+						});
+					}
+
 					reset();
 					onAction("addFlavor");
 				} catch (error) {
@@ -178,6 +205,19 @@ const DashAditions = ({ dashChange, onAction }) => {
 					const editResult = await createAditionRequest(editAdition);
 					console.log("editResult in dashportfolio: ", editResult);
 					setEditModal(false);
+
+					if (editResult.data.body[0] === "Data updated succesfully") {
+						setResToast({
+							state: true,
+							message: "Adición actualizada",
+						});
+					} else {
+						setResToast({
+							state: false,
+							message: "No se pudo actualizar la adición. Vuelve a intentarlo.",
+						});
+					}
+
 					reset();
 					onAction("editAdition");
 				} catch (error) {
@@ -195,6 +235,18 @@ const DashAditions = ({ dashChange, onAction }) => {
 					const editResult = await createFlavorRequest(editFlavor);
 					console.log("editResult in dashportfolio: ", editResult);
 					setEditModal(false);
+
+					if (editResult.data.body[0] === "Data updated succesfully") {
+						setResToast({
+							state: true,
+							message: "Sabor actualizado",
+						});
+					} else {
+						setResToast({
+							state: false,
+							message: "No se pudo actualizar el sabor. Vuelve a intentarlo.",
+						});
+					}
 					reset();
 					onAction("editFlavor");
 				} catch (error) {
@@ -211,22 +263,45 @@ const DashAditions = ({ dashChange, onAction }) => {
 		if (infoSelected === "adition") {
 			try {
 				const result = await deleteAditionRequest(deletingInfo);
-				if (result) {
-					setDeleteModal(false);
-					console.log("Registro eliminado: ", result);
-					onAction("deleteAdition");
+				setDeleteModal(false);
+				console.log("Registro eliminado: ", result);
+
+				if (result.data.body === "Information deleted") {
+					setResToast({
+						state: true,
+						message: "Adición eliminada con éxito",
+					});
+				} else {
+					setResToast({
+						state: false,
+						message: "No se pudo eliminar la adición. Vuelve a intentarlo.",
+					});
 				}
+
+				onAction("deleteAdition");
 			} catch (error) {
 				console.log(error);
 			}
 		} else if (infoSelected === "flavor") {
 			try {
 				const result = await deleteFlavorRequest(deletingInfo);
-				if (result) {
-					setDeleteModal(false);
-					console.log("Registro eliminado: ", result);
-					onAction("deleteFlavor");
+
+				setDeleteModal(false);
+				console.log("Registro eliminado: ", result);
+
+				if (result.data.body === "Information deleted") {
+					setResToast({
+						state: true,
+						message: "Sabor eliminado éxitosamente",
+					});
+				} else {
+					setResToast({
+						state: false,
+						message: "No se pudo eliminar el sabor. Vuelve a intentarlo.",
+					});
 				}
+
+				onAction("deleteFlavor");
 			} catch (error) {
 				console.log(error);
 			}
@@ -711,6 +786,7 @@ const DashAditions = ({ dashChange, onAction }) => {
 					</div>
 				))}
 			</div>
+			<Toaster position="top-right" />
 		</div>
 	);
 };

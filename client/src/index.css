@@ -237,13 +237,32 @@ input[type="date"] {
 }
 
 /* TOAST - pop up */
-.toast-error-style {
-	background-color: var(--danger-dark);
-	font-weight: 600;
-}
 
 .toast-success-style {
-	background-color: var(--success-green);
+	background-color: #b2ffc1;
 	font-weight: 600;
 	color: var(--font-darkgray);
 }
+
+.toast-error-style {
+	background-color: #ff9494;
+	font-weight: 600;
+}
+
+.toast-success-style div:first-child, .toast-error-style div:first-child {
+	font-size: 16px;
+	font-weight: 600;
+	margin-left: 10px;
+}
+
+.toast-success-style div:last-child, .toast-error-style div:last-child {
+	font-size: 14px;
+	font-weight: 600;
+	margin-left: 10px;
+}
+
+.toast-success-style:first-child svg, .toast-error-style:first-child svg {
+	width: 30px;
+	height: 30px;
+}
+
