@@ -166,11 +166,18 @@
 
 /* registrado */
 .grid-user-settings-info {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	width: 94%;
-	margin: 16px 0;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
 
+.column-1-user-settings {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 4px;
 }
 
 .column-1-user-settings p {
@@ -178,11 +185,11 @@
 	color: var(--color-text);
 }
 
-.column-2-user-settings p {
-	font-weight: 600;
-	color: var(--font-darkgray);
-	text-align: end;
+.column-1-user-settings .label-text-user-setting {
+	font-style: italic;
+	color: var(--grayFonts);
 }
+
 
 @media (width < 1250px) {
 	.btn-cerrarsesion {
@@ -200,10 +207,6 @@
 	}
 
 	.column-1-user-settings p {
-		font-size: 14px;
-	}
-	
-	.column-2-user-settings p {
 		font-size: 14px;
 	}
 

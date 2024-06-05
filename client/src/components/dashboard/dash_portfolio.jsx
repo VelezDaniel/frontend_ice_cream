@@ -4,6 +4,7 @@ import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
+import {toast, Toaster} from "sonner";
 
 import ProductImgBuilder from "../../utils/ProductImgBuilder";
 
@@ -21,6 +22,7 @@ function DashPortfolio({ dashChange, onAction }) {
 	const [addModal, setAddModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
+	const [resToast, setResToast] = useState({});
 
 	const {
 		register,
@@ -70,6 +72,27 @@ function DashPortfolio({ dashChange, onAction }) {
 		setselectedObjectIndex(index);
 	};
 
+	useEffect(() => {
+		const showToast = () => {
+			// const btn = document.getElementById(idButton);
+			// btn.addEventListener("click", () => {});
+			if (resToast && resToast.state === false) {
+				toast.error("Lo sentimos", {
+					className: "toast-error-style",
+					description: resToast.message,
+					duration: 5000,
+				});
+			} else if (resToast.state === true) {
+				toast.success("Accion Exitosa", {
+					className: "toast-success-style",
+					description: resToast.message,
+					duration: 4000,
+				});
+			}
+		};
+		showToast();
+	}, [resToast]);
+
 	// Add new product
 	const onSubmit = handleSubmit(async (values) => {
 		console.log(values);
@@ -77,7 +100,19 @@ function DashPortfolio({ dashChange, onAction }) {
 		const result = await createProductRequest(values);
 		console.log("result from dash_portfolio: ", result);
 		setAddModal(false);
+		if (result.data.body[0] === "Data saved succesfully") {
+			setResToast({
+				state: true,
+				message: "Nuevo producto agregado",
+			});
+		} else {
+			setResToast({
+				state: false,
+				message: "No se pudo agregar el producto. Vuelve a intentarlo.",
+			});
+		}
 		reset();
+
 		onAction("addProduct");
 	});
 
@@ -100,6 +135,19 @@ function DashPortfolio({ dashChange, onAction }) {
 			console.log("editResult in dashportfolio: ", editResult);
 			setEditModal(false);
 			reset();
+
+			if (editResult.data.body[0] === "Data updated succesfully") {
+				setResToast({
+					state: true,
+					message: "Producto actualizado",
+				});
+			} else {
+				setResToast({
+					state: false,
+					message: "No se pudo actualizar el producto. Vuelve a intentarlo.",
+				});
+			}
+
 			onAction("editProduct");
 		} catch (error) {
 			console.log("error in onsubmitEdit ", error);
@@ -113,6 +161,19 @@ function DashPortfolio({ dashChange, onAction }) {
 				setDeleteModal(false);
 				console.log("Registro eliminado: ", result);
 				setEditModal(false);
+
+				if (result.data.body === "Information deleted") {
+					setResToast({
+						state: true,
+						message: "Producto eliminado éxitosamente",
+					});
+				} else {
+					setResToast({
+						state: false,
+						message: "No se pudo eliminar el producto. Vuelve a intentarlo.",
+					});
+				}
+
 				onAction("deleteProduct");
 			}
 		} catch (error) {
@@ -193,11 +254,6 @@ function DashPortfolio({ dashChange, onAction }) {
 										required: {
 											value: true,
 											message: "Este cambo es requerido",
-										},
-										pattern: {
-											value: /^\d{3,}\.\d{2}$/, // Al menos 3 enteros y 2 decimales
-											message:
-												"Precio debe tener al menos 3 enteros y 2 decimales",
 										},
 									})}
 									placeholder="Precio unitario"
@@ -530,6 +586,7 @@ function DashPortfolio({ dashChange, onAction }) {
 					</div>
 				))}
 			</div>
+			<Toaster position="top-right" />
 		</div>
 	);
 }

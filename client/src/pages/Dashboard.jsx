@@ -236,7 +236,11 @@ function Dashboard() {
 				</div>
 			</div>
 			{settingsVisible === true && (
-				<UserSettings closeMethod={closeSettingsUser} />
+				<UserSettings
+					closeMethod={closeSettingsUser}
+					onAction={handleActionChild}
+					dashChange={dashContentChange}
+				/>
 			)}
 		</div>
 	);

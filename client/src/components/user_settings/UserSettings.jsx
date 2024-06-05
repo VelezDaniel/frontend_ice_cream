@@ -9,8 +9,9 @@ import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from "sonner";
 
-function UserSettings({ closeMethod }) {
+function UserSettings({ closeMethod, dashChange, onAction }) {
 	const navigate = useNavigate();
 	const [updateModal, setUpdateModal] = useState(false);
 	const { user, errors: registerErrors, logout } = useAuth();
@@ -21,6 +22,8 @@ function UserSettings({ closeMethod }) {
 		reset,
 		formState: { errors },
 	} = useForm();
+
+	const [resToast, setResToast] = useState({});
 
 	const openModalUpdate = () => {
 		setUpdateModal(true);
@@ -38,9 +41,29 @@ function UserSettings({ closeMethod }) {
 			setValue("editEmail", user.email);
 			setValue("editPhone", user.phone);
 			setValue("editAddress", user.address);
-			setValue("editBirth", user.birth);
 		}
 	}, [user]);
+
+	useEffect(() => {}, [dashChange]);
+
+	useEffect(() => {
+		const showToast = () => {
+			if (resToast && resToast.state === false) {
+				toast.error("Lo sentimos", {
+					className: "toast-error-style",
+					description: resToast.message,
+					duration: 5000,
+				});
+			} else if (resToast.state === true) {
+				toast.success("Accion Exitosa", {
+					className: "toast-success-style",
+					description: resToast.message,
+					duration: 4000,
+				});
+			}
+		};
+		showToast();
+	}, [resToast]);
 
 	const onSubmitEditPersonalInfo = handleSubmit(async (values) => {
 		const personObject = {
@@ -50,16 +73,29 @@ function UserSettings({ closeMethod }) {
 			phone: values.editPhone === user.phone ? null : values.editPhone,
 			address: values.editAddress,
 			email: values.editEmail === user.email ? null : values.editEmail,
-			birth: values.editBirth,
 		};
 
 		try {
-			const result = updatePersonRequest(personObject);
+			const result = await updatePersonRequest(personObject);
 			if (!result) {
 				console.log("Actualizacion no realizada");
 			}
+			console.log("result: ", result);
 			setUpdateModal(false);
 			reset();
+			onAction("editCurrentUserInfo");
+			// if (result.data.body[0] === "Data updated succesfully") {
+			// 	setResToast({
+			// 		state: true,
+			// 		message: "Sabor actualizado",
+			// 	});
+			// } else {
+			// 	setResToast({
+			// 		state: false,
+			// 		message: "No se pudo actualizar el sabor. Vuelve a intentarlo.",
+			// 	});
+			// }
+			// window.location.reload();
 		} catch (error) {
 			console.logg(error);
 		}
@@ -183,22 +219,6 @@ function UserSettings({ closeMethod }) {
 					{errors.editAddress && (
 						<p className="notice">{errors.editAddress.message}</p>
 					)}
-					<span className="span-edit-form">Fecha nacimiento</span>
-					<div className="input-group">
-						<input
-							type="date"
-							{...register("editBirth", {
-								required: {
-									value: true,
-									message: "Fecha de nacimiento requerida",
-								},
-							})}
-							defaultValue={user.birth}
-						/>
-					</div>
-					{errors.editBirth && (
-						<p className="notice">{errors.editBirth.message}</p>
-					)}
 					<input
 						type="submit"
 						className="btn-enviar"
@@ -218,7 +238,7 @@ function UserSettings({ closeMethod }) {
 
 	return (
 		<>
-				<div className="user-container">
+			<div className="user-container">
 				<div className="u-container1">
 					<div className="wrap-btn">
 						<button className="btn-back" onClick={closeMethod}>
@@ -235,22 +255,19 @@ function UserSettings({ closeMethod }) {
 							</span>
 							<div className="grid-user-settings-info">
 								<div className="column-1-user-settings">
-									<p>Nombre: </p>
-									<p>Rol: </p>
-									<p>Estado: </p>
-									<p>Identidad: </p>
-									<p>Celular: </p>
-									<p>Correo: </p>
-									<p>Dirección: </p>
-								</div>
-
-								<div className="column-2-user-settings">
+									<p className="label-text-user-setting">Nombre</p>
 									<p>{user.name.concat(` ${user.lastName}`)}</p>
+									<p className="label-text-user-setting">Rol</p>
 									<p>{user.role}</p>
+									<p className="label-text-user-setting">Estado</p>
 									<p>{user.state}</p>
+									<p className="label-text-user-setting">Identidad</p>
 									<p>{user.identity}</p>
+									<p className="label-text-user-setting">Celular</p>
 									<p>{user.phone}</p>
+									<p className="label-text-user-setting">Correo</p>
 									<p>{user.email}</p>
+									<p className="label-text-user-setting">Dirección</p>
 									<p>{user.address}</p>
 								</div>
 							</div>
@@ -275,6 +292,7 @@ function UserSettings({ closeMethod }) {
 					{editPersonalInfoForm(user)}
 				</ModalTemplate>
 			)}
+			<Toaster position="top-right" />
 		</>
 	);
 }

@@ -111,8 +111,6 @@ const DashAditions = ({ dashChange, onAction }) => {
 
 	useEffect(() => {
 		const showToast = () => {
-			// const btn = document.getElementById(idButton);
-			// btn.addEventListener("click", () => {});
 			if (resToast && resToast.state === false) {
 				toast.error("Lo sentimos", {
 					className: "toast-error-style",

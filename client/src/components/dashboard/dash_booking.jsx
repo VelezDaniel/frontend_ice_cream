@@ -10,6 +10,7 @@ import {
 } from "../../api/bookings";
 import { showUserRequest } from "../../api/users";
 import "./css/dash_bookings.css";
+import { toast, Toaster } from "sonner";
 
 // IMPORTS MATERIAL UI
 import {
@@ -61,6 +62,7 @@ function DashBookings({ dashChange, onAction }) {
 	const [addModal, setAddModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
+	const [resToast, setResToast] = useState({});
 
 	const {
 		register: registerAdd,
@@ -112,6 +114,25 @@ function DashBookings({ dashChange, onAction }) {
 		setBookingInfo(bookingsData[index]);
 	};
 
+	useEffect(() => {
+		const showToast = () => {
+			if (resToast && resToast.state === false) {
+				toast.error("Lo sentimos", {
+					className: "toast-error-style",
+					description: resToast.message,
+					duration: 5000,
+				});
+			} else if (resToast.state === true) {
+				toast.success("Accion Exitosa", {
+					className: "toast-success-style",
+					description: resToast.message,
+					duration: 4000,
+				});
+			}
+		};
+		showToast();
+	}, [resToast]);
+
 	const onSubmitAdd = handleSubmitAdd(async (values) => {
 		console.log("values in onSubmitAdd", values);
 		try {
@@ -140,6 +161,19 @@ function DashBookings({ dashChange, onAction }) {
 				console.log("add book in dashBookings: ", createResult);
 				setAddModal(false);
 				resetAdd();
+
+				if (createResult.data.body[0] === "Data saved succesfully") {
+					setResToast({
+						state: true,
+						message: "Nueva reservación agregada",
+					});
+				} else {
+					setResToast({
+						state: false,
+						message: "No se pudo agregar la reservación. Vuelve a intentarlo.",
+					});
+				}
+
 				onAction("addBooking");
 			} else if (values.addIdentity && values.addClient) {
 				const addBooking = {
@@ -155,9 +189,25 @@ function DashBookings({ dashChange, onAction }) {
 				console.log("editResult in dashBookings: ", createResult);
 				setAddModal(false);
 				resetAdd();
+
+				if (createResult.data.body[0] === "Data saved succesfully") {
+					setResToast({
+						state: true,
+						message: "Nueva reservación agregada",
+					});
+				} else {
+					setResToast({
+						state: false,
+						message: "No se pudo agregar la reservación. Vuelve a intentarlo.",
+					});
+				}
+
 				onAction("addBookingNoRegister");
 			} else {
-				return new Error("Algo salió mal");
+				setResToast({
+					state: false,
+					message: "Error inesperado... No se pudo agregar la reservación. Vuelve a intentarlo.",
+				});
 			}
 		} catch (error) {
 			console.log("Error in add dash_booking", error);
@@ -182,6 +232,17 @@ function DashBookings({ dashChange, onAction }) {
 				const editResult = await createBookingRequest(editBooking);
 				console.log("editResult in dashBookings: ", editResult);
 				setEditModal(false);
+				if (editResult.data.body[0] === "Data updated succesfully") {
+					setResToast({
+						state: true,
+						message: "Reservación actualizada",
+					});
+				} else {
+					setResToast({
+						state: false,
+						message: "No se pudo actualizar la reservación. Vuelve a intentarlo.",
+					});
+				}
 				onAction("editBookingHidden");
 			} else {
 				const editBooking = {
@@ -196,6 +257,17 @@ function DashBookings({ dashChange, onAction }) {
 				const editResult = await createBookingRequest(editBooking);
 				console.log("editResult in dashBookings: ", editResult);
 				setEditModal(false);
+				if (editResult.data.body[0] === "Data updated succesfully") {
+					setResToast({
+						state: true,
+						message: "Reservación actualizada",
+					});
+				} else {
+					setResToast({
+						state: false,
+						message: "No se pudo actualizar la reservación. Vuelve a intentarlo.",
+					});
+				}
 				onAction("editBooking");
 			}
 		} catch (error) {
@@ -210,6 +282,17 @@ function DashBookings({ dashChange, onAction }) {
 				setDeleteModal(false);
 				console.log("Registro eliminado: ", result);
 				setEditModal(false);
+				if (result.data.body === "Information deleted") {
+					setResToast({
+						state: true,
+						message: "Reservación eliminada éxitosamente",
+					});
+				} else {
+					setResToast({
+						state: false,
+						message: "No se pudo eliminar la reservación. Vuelve a intentarlo.",
+					});
+				}
 				onAction("deleteBooking");
 			}
 		} catch (error) {
@@ -310,7 +393,9 @@ function DashBookings({ dashChange, onAction }) {
 								</div>
 							</div>
 							{errorsAdd.addDescription && (
-								<span className="notice">{errorsAdd.addDescription.message}</span>
+								<span className="notice">
+									{errorsAdd.addDescription.message}
+								</span>
 							)}
 
 							<div>
@@ -324,7 +409,7 @@ function DashBookings({ dashChange, onAction }) {
 											required: {
 												value: true,
 												message: "Nombre del cliente requerido",
-											}
+											},
 										})}
 									/>
 								</div>
@@ -344,8 +429,8 @@ function DashBookings({ dashChange, onAction }) {
 										{...registerAdd("addIdentity", {
 											required: {
 												value: true,
-												message: "Identificación del cliente requerida"
-											}
+												message: "Identificación del cliente requerida",
+											},
 										})}
 									/>
 								</div>
@@ -639,6 +724,7 @@ function DashBookings({ dashChange, onAction }) {
 					onRowsPerPageChange={handleChangeRowsPerPage}
 				/>
 			</Paper>
+			<Toaster position="top-right" />
 		</div>
 	);
 }

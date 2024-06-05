@@ -103,16 +103,13 @@ export const AuthProvider = ({ children }) => {
 				console.log(cookies.token);
 				console.log("res: ", result);
 				console.log("res.data: --> ", result.data.body);
-				// if (!res.data) {
-				// 	setIsAuthenticated(false);
-				// 	setLoading(false);
-				// 	return;
-				// }
+
 				if (!result.data) return setIsAuthenticated(false);
 				const userInformation = result.data.body;
 				setIsAuthenticated(true);
 				setUser(userInformation);
 				setLoading(false);
+				
 			} catch (error) {
 				console.log("Error in catch from verifyToken UseEffect", error);
 				setIsAuthenticated(false);
