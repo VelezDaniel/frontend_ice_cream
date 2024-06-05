@@ -27,6 +27,7 @@ const DashAditions = ({ dashChange, onAction }) => {
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
 	const [typeOfInformation, setTypeOfInformation] = useState(null);
+	const [resToast, setResToast] = useState({});
 
 	const {
 		register,
@@ -106,6 +107,27 @@ const DashAditions = ({ dashChange, onAction }) => {
 			setDeleteModal(true);
 		}
 	};
+
+	useEffect(() => {
+		const showToast = () => {
+			// const btn = document.getElementById(idButton);
+			// btn.addEventListener("click", () => {});
+			if (resToast && resToast.state === false) {
+				toast.error("Lo sentimos", {
+					className: "toast-error-style",
+					description: resToast.message,
+					duration: 5000,
+				});
+			} else if (resToast.state === true) {
+				toast.success("Accion Exitosa", {
+					className: "toast-success-style",
+					description: resToast.message,
+					duration: 4000,
+				});
+			}
+		};
+		showToast();
+	}, [resToast]);
 
 	// Funcion para agregar informacion (adicion o sabor)
 	const onSubmit = (addingInfo) => {

@@ -31,7 +31,7 @@ function HomePage() {
 			</div>
 			<div className="container-poster">
 				<div className="poster-container-description-two">
-					<h4 className="subtext-description">Contamos con servicio de Domicilios</h4>
+					<h4 className="subtext-description">¡Contamos con servicio de Domicilio!</h4>
 					<p className="description-small">
 						Desde la comodidad de tu casa puedes pedir tus productos favoritos
 						sin tener que acercarte a nuestro local físico

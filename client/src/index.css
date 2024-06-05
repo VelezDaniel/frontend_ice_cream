@@ -23,6 +23,7 @@
 	--danger-dark : #703131;
 	--bg-sideBar: rgb(20, 140, 161);
 	--Rose-one: #eba6cd;
+	--success-green: #94e6ac;
 }
 
 * {
@@ -233,4 +234,16 @@ input[type="date"] {
 	margin-top: 6px;
 	padding: 4px 10px;
 	gap: 6px;
+}
+
+/* TOAST - pop up */
+.toast-error-style {
+	background-color: var(--danger-dark);
+	font-weight: 600;
+}
+
+.toast-success-style {
+	background-color: var(--success-green);
+	font-weight: 600;
+	color: var(--font-darkgray);
 }

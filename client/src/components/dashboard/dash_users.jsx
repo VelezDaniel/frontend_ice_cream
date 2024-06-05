@@ -103,11 +103,13 @@ function DashUsers({ dashChange, onAction }) {
 			// btn.addEventListener("click", () => {});
 			if (resToast && resToast.state === false) {
 				toast.error("Lo sentimos", {
+					className: "toast-error-style",
 					description: resToast.message,
 					duration: 5000,
 				});
 			} else if (resToast.state === true) {
 				toast.success("Accion Exitosa", {
+					className: "toast-success-style",
 					description: resToast.message,
 					duration: 4000,
 				});
@@ -733,7 +735,7 @@ function DashUsers({ dashChange, onAction }) {
 					</div>
 				))}
 			</div>
-			<Toaster />
+			<Toaster position="top-right" />
 		</div>
 	);
 }
