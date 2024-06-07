@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { registerRequest, loginRequest, verifyTokenRequest } from "../api/auth";
 import Cookies from "js-cookie";
+import { Toaster, toast } from "sonner";
 
 export const AuthContext = createContext();
 
@@ -18,6 +19,8 @@ export const AuthProvider = ({ children }) => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [errors, setErrors] = useState([]);
 	const [loading, setLoading] = useState(true);
+	// Estado para controlar mensajes dependiendo el momento
+	const [actionTime, setActionTime] = useState(0);
 
 	// Efecto para eliminar errores despues de 8 segundos
 	useEffect(() => {
@@ -33,6 +36,25 @@ export const AuthProvider = ({ children }) => {
 	useEffect(() => {
 		console.log("User global: ", user);
 	}, [user]);
+
+	useEffect(() => {
+		const showToast = () => {
+			if (actionTime === 2 && user === null) {
+				toast("Sesión cerrada", {
+					className: "toast-error-style",
+					description: "Has cerrado tu cuenta correctamente",
+					duration: 4000,
+				});
+			} else if (actionTime === 1 && user !== null) {
+				toast(`Bienvenido ${user.name}`, {
+					className: "toast-success-style",
+					description: "Iniciaste sesión",
+					duration: 3000,
+				});
+			}
+		};
+		showToast();
+	}, [actionTime]);
 
 	// Metodo para register
 	const signup = async (userData) => {
@@ -66,6 +88,7 @@ export const AuthProvider = ({ children }) => {
 				const userInfo = result.data.body;
 				console.log(`UserInfo:  ${userInfo}`);
 				setUser(userInfo);
+				setActionTime(1);
 				console.log("user credentials from authcontext: ", userCredentials);
 				setIsAuthenticated(true);
 			} else {
@@ -128,6 +151,7 @@ export const AuthProvider = ({ children }) => {
 		Cookies.remove("token");
 		setUser(null);
 		setIsAuthenticated(false);
+		setActionTime(2);
 	};
 
 	return (
@@ -143,6 +167,7 @@ export const AuthProvider = ({ children }) => {
 				loading,
 			}}
 		>
+			{/* <Toaster /> */}
 			{children}
 		</AuthContext.Provider>
 	);

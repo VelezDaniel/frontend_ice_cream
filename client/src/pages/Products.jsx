@@ -19,7 +19,9 @@ function Products() {
 				const items = await showProductsRequest();
 				console.log(items);
 				const allItems = items.data.body;
-				const availableItems = allItems.filter((item) => item.state === "DISPONIBLE")
+				const availableItems = allItems.filter(
+					(item) => item.state === "DISPONIBLE"
+				);
 				setProducts(availableItems);
 			} catch (error) {
 				console.log("Error in Products: ", error);
@@ -74,7 +76,11 @@ function Products() {
 										onClick={() => handleProduct(product)}
 									>
 										<div className="box-img-card-product">
-											<img src={ProductImgBuilder(product.name.toLowerCase())} alt="imagen helado" className="img-card-portfolio" />
+											<img
+												src={ProductImgBuilder(product.name.toLowerCase())}
+												alt="imagen helado"
+												className="img-card-portfolio"
+											/>
 										</div>
 										<div className="box-info-product">
 											<div className="info-product-1">

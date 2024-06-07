@@ -12,6 +12,7 @@ import { AuthProvider } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import { ShoppingCartProvider } from "./context/ShoppingCartContext";
+import { Toaster } from "sonner";
 // Styles
 import "./index.css";
 // import "primereact/resources/themes/lara-light-cyan/theme.css";
@@ -20,6 +21,7 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<ShoppingCartProvider>
+				<Toaster position="top-left" />
 				<AuthProvider>
 					<BrowserRouter>
 						<Routes>

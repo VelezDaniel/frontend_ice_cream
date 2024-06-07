@@ -29,7 +29,6 @@ function ModalProduct({ product, setStateModal }) {
 
 	// CONTEXT
 	const [cart, setCart] = useContext(CartContext);
-
 	const [flavorsData, setFlavorsData] = useState([]);
 	const [selectedFlavor, setSelectedFlavor] = useState([]);
 	const [flavorsNames, setFlavorsNames] = useState([]);
@@ -39,6 +38,7 @@ function ModalProduct({ product, setStateModal }) {
 	const [aditionQuantities, setAditionQuantities] = useState({});
 	const [sauceChecked, setSauceChecked] = useState(false);
 	const [sauceSelected, setSauceSelected] = useState(null);
+
 	// ? Material UI
 	const theme = useTheme();
 	const [flavorName, setFlavorName] = useState([]);
@@ -237,7 +237,7 @@ function ModalProduct({ product, setStateModal }) {
 	});
 
 	// ****************** ----- *******************//
-	// ** ENVIO DEL PRODUCTO FINAL ** //
+	// ** ENVIO DEL PRODUCTO ** / FINAL / ** //
 	// ****************** ----- *******************//
 
 	// ? use effect para traer adiciones
