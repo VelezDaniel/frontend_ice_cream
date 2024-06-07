@@ -8,9 +8,8 @@ import {
 	deleteBookingRequest,
 } from "../api/bookings";
 import ModalTemplate from "../components/modal/ModalTemplate";
-
-// Prime React
-import { Message } from "primereact/message";
+// Sonner
+import { toast, Toaster } from "sonner";
 
 // Material UI
 import Table from "@mui/material/Table";
@@ -38,6 +37,7 @@ function Bookings() {
 	const {
 		register,
 		handleSubmit,
+		reset,
 		setValue,
 		formState: { errors },
 	} = useForm();
@@ -49,6 +49,27 @@ function Bookings() {
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [getIndex, setGetIndex] = useState(null);
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
+	const [resToast, setResToast] = useState({});
+
+	useEffect(() => {
+		const showToast = () => {
+			if (resToast && resToast.state === false) {
+				toast.error("Lo sentimos", {
+					className: "toast-error-style",
+					description: resToast.message,
+					duration: 4000,
+				});
+			} else if (resToast.state === true) {
+				toast.success(resToast.title, {
+					className: "toast-success-style",
+					description: resToast.message,
+					duration: 3000,
+				});
+			}
+		};
+		showToast();
+	}, [resToast]);
+
 	useEffect(() => {
 		if (bookData) {
 			setValue("editDateBook", bookData.dateBook);
@@ -58,21 +79,23 @@ function Bookings() {
 		}
 	}, [bookData]);
 
-	console.log(bookData);
-	const handleShowBooks = async () => {
-		try {
-			if (user != null) {
-				const items = await showUserBookingsRequest(user);
-				// Establecer usuarios en estado
-				console.log(items);
-				setUserBooks(items.data.body);
-			} else {
-				console.log("user null", user);
+	useEffect(() => {
+		const handleShowBooks = async () => {
+			try {
+				if (user != null) {
+					const items = await showUserBookingsRequest(user);
+					// Establecer usuarios en estado
+					console.log(items);
+					setUserBooks(items.data.body);
+				} else {
+					console.log("user null", user);
+				}
+			} catch (error) {
+				console.log("Error in useEffect books: ", error);
 			}
-		} catch (error) {
-			console.log("Error in useEffect books: ", error);
-		}
-	};
+		};
+		handleShowBooks();
+	});
 
 	const handleForm = () => {
 		setShowBooks(false);
@@ -80,7 +103,7 @@ function Bookings() {
 	};
 
 	const handleBooks = () => {
-		handleShowBooks();
+		// handleShowBooks();
 		setShowBooks(true);
 		setBookForm(false);
 	};
@@ -112,7 +135,20 @@ function Bookings() {
 
 		const addBook = await createBookingRequest(info);
 		console.log("addBook response: ", addBook);
-		// location.reload();
+		reset();
+		if (addBook.data.body[0] === "Data saved succesfully") {
+			setResToast({
+				title: "¡No faltes!",
+				state: true,
+				message:
+					"Tu reservación ha sido creada,  recuerda anotarla por si lo olvidas",
+			});
+		} else {
+			setResToast({
+				state: false,
+				message: "No se pudo crear la reservación. Vuelve a intentarlo.",
+			});
+		}
 	};
 
 	const openModalEdit = (index) => {
@@ -143,7 +179,18 @@ function Bookings() {
 			};
 			const result = await createBookingRequest(infoBook);
 			console.log(result);
-			window.location.reload();
+			if (resultPass.data.body[0] === "Data updated succesfully") {
+				setResToast({
+					title: "¡Muy bien!",
+					state: true,
+					message: "Se ha actualizado tu reservación",
+				});
+			} else {
+				setResToast({
+					state: false,
+					message: "No se pudo actualizar la reservación. Vuelve a intentarlo.",
+				});
+			}
 		} catch (error) {
 			console.log("error in onsubmitEdit ", error);
 		}
@@ -152,10 +199,19 @@ function Bookings() {
 	const deleteBook = async (bookData) => {
 		try {
 			const result = await deleteBookingRequest(bookData);
-			if (result) {
-				setDeleteModal(false);
-				console.log("Registro eliminado: ", result);
-				window.location.reload();
+			setDeleteModal(false);
+			console.log("Registro eliminado: ", result);
+			if (result.data.body === "Information deleted") {
+				setResToast({
+					title: "Hasta tu próxima reservación",
+					state: true,
+					message: "Se eliminó tu reservación",
+				});
+			} else {
+				setResToast({
+					state: false,
+					message: "No se pudo eliminar la reservación. Vuelve a intentarlo.",
+				});
 			}
 		} catch (error) {
 			console.log(error);
@@ -213,11 +269,7 @@ function Bookings() {
 									/>
 								</div>
 								{errors && errors.dateBook && (
-									<Message
-										severity="error"
-										className="message-prime-react"
-										text={errors.dateBook.message}
-									/>
+									<p className="notice">{errors.dateBook.message}</p>
 								)}
 							</div>
 
@@ -236,11 +288,7 @@ function Bookings() {
 									/>
 								</div>
 								{errors && errors.timeBook && (
-									<Message
-										severity="error"
-										className="message-prime-react"
-										text={errors.timeBook.message}
-									/>
+									<p className="notice">{errors.timeBook.message}</p>
 								)}
 							</div>
 
@@ -261,11 +309,7 @@ function Bookings() {
 									/>
 								</div>
 								{errors && errors.addGuests && (
-									<Message
-										severity="error"
-										className="message-prime-react"
-										text={errors.addGuests.message}
-									/>
+									<p className="notice">{errors.addGuests.message}</p>
 								)}
 							</div>
 
@@ -294,11 +338,7 @@ function Bookings() {
 									/>
 								</div>
 								{errors && errors.addDescription && (
-									<Message
-										severity="error"
-										className="message-prime-react"
-										text={errors.addDescription.message}
-									/>
+									<p className="notice">{errors.addDescription.message}</p>
 								)}
 							</div>
 
@@ -323,11 +363,7 @@ function Bookings() {
 											/>
 										</div>
 										{errors && errors.addClient && (
-											<Message
-												severity="error"
-												className="message-prime-react"
-												text={errors.addClient.message}
-											/>
+											<p className="notice">{errors.addClient.message}</p>
 										)}
 									</div>
 
@@ -348,11 +384,7 @@ function Bookings() {
 											/>
 										</div>
 										{errors && errors.addIdentity && (
-											<Message
-												severity="error"
-												className="message-prime-react"
-												text={errors.addIdentity.message}
-											/>
+											<p className="notice">{errors.addIdentity.message}</p>
 										)}
 									</div>
 								</>
