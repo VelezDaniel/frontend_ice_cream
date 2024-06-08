@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import Products from "./pages/Products";
 import Bookings from "./pages/Bookings";
 import Payment from "./pages/Payment";
+import CancelPayment from "./pages/CancelPayment";
 // import Banner from "./components/banner/banner";
 import { AuthProvider } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
@@ -33,6 +34,8 @@ function App() {
 							<Route path="/book" element={<Bookings />} />
 
 							<Route path="/payed" element={<Payment />} />
+
+							<Route path="/payment-canceled" element={<CancelPayment />} />
 
 							{/* Solo usuarios funcionarios */}
 							<Route element={<ProtectedRoute />}>

@@ -13,7 +13,7 @@ import ModalTemplate from "../modal/ModalTemplate";
 // Sonner Toast
 
 // * MATERIAL UI IMPORTS
-import { duration, styled } from "@mui/material";
+import { styled } from "@mui/material";
 import TextField from "@mui/material/TextField";
 // icons
 import IconButton from "@mui/material/IconButton";
@@ -98,9 +98,9 @@ function ShoppingCar({ closeMethod }) {
 		},
 	});
 
-	const redirectTo = (page) => {
-		navigate(`${page}`);
-	};
+	// const redirectTo = (page) => {
+	// 	navigate(`${page}`);
+	// };
 
 	const handlerPaymentRedirect = () => {
 		if (user && user.role === "CLIENTE") {
@@ -113,6 +113,9 @@ function ShoppingCar({ closeMethod }) {
 	const goToPay = async () => {
 		if (user && user.role === "CLIENTE") {
 			try {
+
+				localStorage.setItem('cart', JSON.stringify(cart));
+
 				const response = await createOrderRequest({
 					userInformation: user,
 					orderInformation: cart,

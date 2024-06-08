@@ -3,8 +3,21 @@ import Banner from "../components/banner/banner";
 import ComponentCarousel from "../components/carousel/Carousel";
 import Footer from "../components/footer/Footer";
 import "../css/homepage.css";
+import { CartContext } from "../context/ShoppingCartContext";
+import { useContext, useEffect } from "react";
 
 function HomePage() {
+
+	const [cart, setCart] = useContext(CartContext);
+
+	useEffect(() => {
+		const savedCart = localStorage.getItem('cart');
+		if(savedCart) {
+			setCart(JSON.parse(savedCart));
+			localStorage.removeItem('cart');
+		}
+	}, [setCart]);
+
 	return (
 		<div className="body-home">
 			<NavBar />
