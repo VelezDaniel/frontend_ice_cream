@@ -146,6 +146,33 @@
 	justify-content: center;
 }
 
+/* Button with lights and bright */
+.btn-bright {
+	cursor: pointer;
+	width: 90%;
+	height: 46px;
+	font-size: 20px;
+	font-weight: 600;
+	border-radius: 8px;
+	color: var(--lightTitles);
+	border: 3px solid var(--mainColor);
+	background-color: var(--mainColor);
+	letter-spacing: 0.4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.3s ease;
+	margin-bottom: 26px;
+}
+
+.btn-bright:hover {
+	color: var(--lightTitles);
+	text-shadow: 0 0 10px var(--lightTitles), 0 0 20px var(--lightTitles),
+		0 0 40px var(--lightTitles);
+	background-color: var(--btn-blue);
+	border: 3px solid var(--btn-blue);
+}
+
 /* SPACES */
 
 .space-left {
@@ -236,7 +263,7 @@ input[type="date"] {
 	gap: 6px;
 }
 
-/* TOAST - pop up */
+/* style TOAST - pop up */
 
 .toast-success-style {
 	background-color: #b2ffc1;
@@ -266,3 +293,8 @@ input[type="date"] {
 	height: 30px;
 }
 
+/* Custom Design toaster */
+.toast-window {
+	background-color: #C1FFFF;
+	color: #272727;
+}

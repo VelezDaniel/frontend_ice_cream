@@ -8,6 +8,7 @@ const ModalTemplate = ({
 	title,
 	showHeader,
 	designClass,
+	bg,
 }) => {
 	return (
 		<div className="cover-modal">
@@ -30,7 +31,7 @@ const ModalTemplate = ({
 				{modalContent ? (
 					<div className="modal-content">{modalContent}</div>
 				) : (
-					<div className="modal-content">{children}</div>
+					<div className={`modal-content ${bg}`}>{children}</div>
 				)}
 			</div>
 		</div>

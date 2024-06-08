@@ -2,13 +2,18 @@ import { IoClose } from "react-icons/io5";
 import { LiaIceCreamSolid } from "react-icons/lia";
 import "./shoppingcar.css";
 import { CartContext } from "../../context/ShoppingCartContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import ProductImgBuilder from "../../utils/ProductImgBuilder";
 import { useAuth } from "../../context/AuthContext";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { createOrderRequest } from "../../api/payment";
+
+import ModalTemplate from "../modal/ModalTemplate";
+// Sonner Toast
 
 // * MATERIAL UI IMPORTS
-import { styled } from "@mui/material";
+import { duration, styled } from "@mui/material";
 import TextField from "@mui/material/TextField";
 // icons
 import IconButton from "@mui/material/IconButton";
@@ -19,7 +24,9 @@ import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 
 function ShoppingCar({ closeMethod }) {
 	const [cart, setCart] = useContext(CartContext);
+	const [modal, setModal] = useState(false);
 	const { user } = useAuth();
+	const navigate = useNavigate();
 
 	const {
 		register,
@@ -91,6 +98,37 @@ function ShoppingCar({ closeMethod }) {
 		},
 	});
 
+	const redirectTo = (page) => {
+		navigate(`${page}`);
+	};
+
+	const handlerPaymentRedirect = () => {
+		if (user && user.role === "CLIENTE") {
+			goToPay();
+		} else {
+			goToPrevFormPayment();
+		}
+	};
+
+	const goToPay = async () => {
+		if (user && user.role === "CLIENTE") {
+			try {
+				const response = await createOrderRequest({
+					userInformation: user,
+					orderInformation: cart,
+				});
+				if (response) {
+					console.log(response);
+					window.location.href = response.data.links[1].href;
+				}
+			} catch (error) {
+				console.log("Error in goToPay: ", error);
+			}
+		}
+	};
+
+	const goToPrevFormPayment = () => {};
+
 	const onSubmit = (values) => {
 		console.log(values);
 		console.log(cart);
@@ -139,7 +177,8 @@ function ShoppingCar({ closeMethod }) {
 													${order.orderBody.productInfo.price}
 												</p>
 											</div>
-											{order.orderBody.aditions && order.orderBody.aditions.length > 0 ? (
+											{order.orderBody.aditions &&
+											order.orderBody.aditions.length > 0 ? (
 												<>
 													<p className="product-size-cart">Adiciones</p>
 													{order.orderBody.aditions.map((adition) => (
@@ -335,9 +374,32 @@ function ShoppingCar({ closeMethod }) {
 					</form>
 				</div>
 			) : cart && cart.length > 0 ? (
-				<button className="btn-shopping-car">Pagar</button>
+				<button onClick={() => setModal(true)} className="btn-shopping-car">
+					Pagar
+				</button>
 			) : (
 				<div></div>
+			)}
+			{modal && modal === true && (
+				<ModalTemplate
+					showHeader={true}
+					designClass={""}
+					setStateModal={setModal}
+					title={"Elige tu forma de pago"}
+				>
+					<div className="box-payment-methods">
+						<h4>Puedes elegir solo una forma de pago</h4>
+						<div>
+							<button
+								onClick={() => handlerPaymentRedirect()}
+								className="btn-shopping-car"
+							>
+								Pagar ahora
+							</button>
+							<button className="btn-shopping-car">Contra entrega</button>
+						</div>
+					</div>
+				</ModalTemplate>
 			)}
 		</div>
 	);

@@ -68,3 +68,9 @@
 .btn-close-modal:hover {
   background-color: var(--bg-cover);
 }
+
+/* Backgrounds */
+.bg-blue-light {
+  background-color: var(--bg-cards);
+  border-radius: 10px;
+}

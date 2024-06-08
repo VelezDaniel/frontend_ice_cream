@@ -7,6 +7,7 @@ import LoginPage from "./components/login/LoginPage";
 import HomePage from "./pages/HomePage";
 import Products from "./pages/Products";
 import Bookings from "./pages/Bookings";
+import Payment from "./pages/Payment";
 // import Banner from "./components/banner/banner";
 import { AuthProvider } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
@@ -15,7 +16,6 @@ import { ShoppingCartProvider } from "./context/ShoppingCartContext";
 import { Toaster } from "sonner";
 // Styles
 import "./index.css";
-// import "primereact/resources/themes/lara-light-cyan/theme.css";
 
 function App() {
 	return (
@@ -31,6 +31,8 @@ function App() {
 							<Route path="/register" element={<RegisterPage />} />
 							<Route path="/products" element={<Products />} />
 							<Route path="/book" element={<Bookings />} />
+
+							<Route path="/payed" element={<Payment />} />
 
 							{/* Solo usuarios funcionarios */}
 							<Route element={<ProtectedRoute />}>

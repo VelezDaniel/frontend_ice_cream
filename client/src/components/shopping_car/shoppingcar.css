@@ -221,6 +221,15 @@
 	gap: 8px;
 }
 
+.box-payment-methods, .box-payment-methods div {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 16px;
+}
+
 /* MEDIA QUERYS */
 
 @media (width < 1250px) {
