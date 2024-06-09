@@ -105,6 +105,8 @@ function ModalProduct({ product, setStateModal }) {
 		},
 	];
 
+	const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 	// Manejar cambio en el checkbox ADICION
 	const handleAditionChange = (event) => {
 		setAditionChecked(event.target.checked);
@@ -131,7 +133,7 @@ function ModalProduct({ product, setStateModal }) {
 
 	// Manejo de cantidad de adicion
 	const handlerQuantityChange = (aditionId) => (event) => {
-		const value = parseInt(event.target.value);
+		const value = parseInt(event.target.value, 10);
 		setAditionQuantities((prevQuantities) => ({
 			...prevQuantities,
 			[aditionId]: value,
@@ -155,7 +157,7 @@ function ModalProduct({ product, setStateModal }) {
 	// ** ENVIO DEL PRODUCTO INICIO ** //
 	// ****************** ----- *******************//
 
-	// ? FUNCIONES PREVIAS NECESARIAS PARA EL CARRITO
+	// ? FUNCIONES PARA EL CARRITO
 	const addToCart = (id, orderBody, price) => {
 		setCart((currentItems) => {
 			const isItemsFound = currentItems.find((item) => item.id === id);
@@ -191,11 +193,15 @@ function ModalProduct({ product, setStateModal }) {
 				);
 
 				if (aditionObj) {
-					priceCartItem = priceCartItem + parseInt(aditionObj.priceAdition);
+					const quantity = aditionQuantities[adition] || 1;
+					const totalAditionPrice = parseInt(aditionObj.priceAdition) * quantity
+					priceCartItem += totalAditionPrice;
 					return {
 						id: aditionObj.id,
 						nameAdition: aditionObj.nameAdition,
 						priceAdition: aditionObj.priceAdition,
+						quantity: quantity,
+						totalPrice: totalAditionPrice,
 					};
 				} else {
 					console.log("Adicion no encontrada");
@@ -419,13 +425,26 @@ function ModalProduct({ product, setStateModal }) {
 												</div>
 											</label>
 											{selectedAditions.includes(adition.id) && (
-												<input
-													className="input-adition-quantity"
-													type="number"
-													value={aditionQuantities[adition.id] || ""}
-													onChange={handlerQuantityChange(adition.id)}
-													placeholder="¿Cuantos?"
-												/>
+												// <input
+												// 	className="input-adition-quantity"
+												// 	type="number"
+												// 	value={aditionQuantities[adition.id] || ""}
+												// 	onChange={handlerQuantityChange(adition.id)}
+												// 	placeholder="¿Cuantos?"
+												// />
+												<div className="form-group-select">
+													<select
+														className="form-control"
+														value={aditionQuantities[adition.id] || 1}
+														onChange={handlerQuantityChange(adition.id)}
+													>
+														{numbers.map((num) => (
+															<option key={num} value={num}>
+																{num}
+															</option>
+														))}
+													</select>
+												</div>
 											)}
 										</div>
 									))}

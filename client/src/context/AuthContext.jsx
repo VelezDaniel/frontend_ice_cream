@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { registerRequest, loginRequest, verifyTokenRequest } from "../api/auth";
+import { CartContext } from "./ShoppingCartContext";
 import Cookies from "js-cookie";
 import { Toaster, toast } from "sonner";
 
@@ -21,6 +22,7 @@ export const AuthProvider = ({ children }) => {
 	const [loading, setLoading] = useState(true);
 	// Estado para controlar mensajes dependiendo el momento
 	const [actionTime, setActionTime] = useState(0);
+	const [cart, setCart] = useContext(CartContext);
 
 	// Efecto para eliminar errores despues de 8 segundos
 	useEffect(() => {
@@ -149,6 +151,7 @@ export const AuthProvider = ({ children }) => {
 		setUser(null);
 		setIsAuthenticated(false);
 		setActionTime(2);
+		setCart([]);
 	};
 
 	return (
