@@ -256,6 +256,12 @@ input[type="date"] {
 	color: var(--grayFonts);
 }
 
+.font-small-desc {
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--grayFonts);
+}
+
 /* advertise */
 .message-prime-react {
 	margin-top: 6px;

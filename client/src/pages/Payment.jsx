@@ -7,9 +7,13 @@ import { useNavigate } from "react-router-dom";
 
 const Payed = () => {
 	const [closeModal, setCloseModal] = useState(true);
-	const [stateSuccesModal, setStateSuccesModal] = useState(false);
+	// const [stateSuccesModal, setStateSuccesModal] = useState(false);
 	
 	const navigate = useNavigate();
+
+	const closeModalAndSendInfo = () => {
+		setCloseModal(false);
+	}
 
 	useEffect(() => {
 		if (closeModal === false) {
@@ -23,9 +27,6 @@ const Payed = () => {
 
 	return (
 		<div className="payed-bg">
-			{/* <div className="loader">
-				<span className="loader-text">Estamos procesando tu pago...</span>
-			</div> */}
 			<ModalTemplate bg={"bg-blue-light"} setStateModal={setCloseModal}>
 				<div className="body-modal-payment">
 					<div className="loader"></div>
@@ -39,7 +40,7 @@ const Payed = () => {
 						<p className="description-modal-payment">
 							Muy pronto recibirás tus productos
 						</p>
-						<button onClick={() => setCloseModal(false)} className="btn-bright">
+						<button onClick={() => closeModalAndSendInfo(false)} className="btn-bright">
 							Regresar
 						</button>
 					</div>

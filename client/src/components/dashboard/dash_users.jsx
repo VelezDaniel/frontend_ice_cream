@@ -10,10 +10,11 @@ import {
 	insertRegisterRoleRequest,
 } from "../../api/users";
 import { createPassword } from "../../api/auth";
+import { showDeliveriesRequest } from "../../api/deliveries";
 import ModalTemplate from "../modal/ModalTemplate";
 import { useAuth } from "../../context/AuthContext";
 import "./css/dash_users.css";
-import { IoSearch } from "react-icons/io5";
+// import { IoSearch } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
 import { LuCake } from "react-icons/lu";
 import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
@@ -29,6 +30,7 @@ function DashUsers({ dashChange, onAction }) {
 	const [selectedObjectIndex, setselectedObjectIndex] = useState(null);
 	const [roles, setRoles] = useState([]);
 	const [resToast, setResToast] = useState({});
+	const [deliveries, setDeliveries] = useState();
 
 	const {
 		register,
@@ -68,6 +70,36 @@ function DashUsers({ dashChange, onAction }) {
 		handleShowUsers();
 	}, [dashChange]);
 
+	// useEfeect para traer opciones de domicilio
+	useEffect(() => {
+		const showDeliveries = async () => {
+			const result = await showDeliveriesRequest();
+			console.log("result deliveira; ", result);
+			setDeliveries(result.data.body);
+		};
+		showDeliveries();
+	}, []);
+
+	// useEffect(() => {
+	// 	if (deliveries.length > 0) {
+	// 		deliveries.find((item) => {
+	// 			if (item.id == userData.id) {
+	// 				return item.deliveryDescription;
+	// 			}
+	// 		});
+	// 	}
+	// }, [deliveries]);
+
+	const showDeliveryArea = (areaId) => {
+		if (deliveries.length > 0) {
+			const delivery = deliveries.find((item) => item.id == areaId);
+			if (delivery) {
+				return delivery.deliveryDescription;
+			}
+		}
+		return null;
+	};
+
 	// use effect para traer todos los roles
 	useEffect(() => {
 		const handleGetRoles = async () => {
@@ -94,6 +126,7 @@ function DashUsers({ dashChange, onAction }) {
 			setValue("editAddress", userData.address);
 			setValue("editState", userData.state);
 			setValue("editBirth", userData.birth);
+			setValue("editArea", userData.area);
 		}
 	}, [userData]);
 
@@ -128,6 +161,7 @@ function DashUsers({ dashChange, onAction }) {
 			email: values.addEmail,
 			address: values.addAddress,
 			birth: values.addBirth,
+			area: values.addArea,
 			password: values.addPassword,
 		};
 		const result = await createUserRequest(objectValues);
@@ -167,7 +201,8 @@ function DashUsers({ dashChange, onAction }) {
 			values.editPhone == userData.phone &&
 			values.editAddress == userData.address &&
 			values.editState == userData.state &&
-			values.editBirth == userData.birth
+			values.editBirth == userData.birth &&
+			values.editArea == userData.area
 		) {
 			setResToast({
 				state: false,
@@ -382,6 +417,32 @@ function DashUsers({ dashChange, onAction }) {
 							{errors.addPhone && (
 								<p className="notice">{errors.addPhone.message}</p>
 							)}
+
+							<span className="font-small-desc">
+								Selecciona el area donde te encuentras
+							</span>
+							<div className="form-group-select">
+								<select
+									className="form-control"
+									{...register("addArea", {
+										required: {
+											value: true,
+											message: "Selecciona el area donde te encuentras",
+										},
+									})}
+								>
+									{deliveries &&
+										deliveries.map((area) => (
+											<option key={area.id} value={area.id}>
+												{area.deliveryDescription}
+											</option>
+										))}
+								</select>
+							</div>
+							{errors.addArea && (
+								<p className="notice">{errors.addArea.message}</p>
+							)}
+
 							<div className="input-group">
 								<input
 									type="text"
@@ -471,7 +532,7 @@ function DashUsers({ dashChange, onAction }) {
 								</div>
 								<div>
 									<span>Dirección</span>
-									<span>{userData.address}</span>
+									<span> {showDeliveryArea(userData.area)} - {userData.address}</span>
 								</div>
 								<div>
 									<span>Estado</span>
@@ -635,6 +696,33 @@ function DashUsers({ dashChange, onAction }) {
 										{errors.editPhone && (
 											<p className="notice">{errors.editPhone.message}</p>
 										)}
+
+										<span className="font-small-desc">
+											Selecciona el area donde te encuentras
+										</span>
+										<div className="form-group-select">
+											<select
+												defaultValue={userData.area}
+												className="form-control"
+												{...register("editArea", {
+													required: {
+														value: true,
+														message: "Selecciona el area",
+													},
+												})}
+											>
+												{deliveries &&
+													deliveries.map((area) => (
+														<option key={area.id} value={area.id}>
+															{area.deliveryDescription}
+														</option>
+													))}
+											</select>
+										</div>
+										{errors.area && (
+											<p className="notice">{errors.area.message}</p>
+										)}
+
 										<span className="span-edit-form">Direccion</span>
 										<div className="input-group">
 											<input
@@ -735,7 +823,7 @@ function DashUsers({ dashChange, onAction }) {
 					</div>
 				))}
 			</div>
-			<Toaster position="top-right" />
+			{/* <Toaster /> */}
 		</div>
 	);
 }

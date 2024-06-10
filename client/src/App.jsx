@@ -22,7 +22,7 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<ShoppingCartProvider>
-				<Toaster position="top-left" />
+				<Toaster position="top-center" />
 				<AuthProvider>
 					<BrowserRouter>
 						<Routes>

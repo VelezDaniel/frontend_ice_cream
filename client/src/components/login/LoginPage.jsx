@@ -21,7 +21,7 @@ function LoginPage() {
 	});
 
 	useEffect(() => {
-		if (isAuthenticated && user.role) {
+		if (isAuthenticated && user && user.role) {
 			if(user.state !== "ACTIVO") {
 				logout();
 			}

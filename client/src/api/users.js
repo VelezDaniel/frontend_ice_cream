@@ -14,7 +14,7 @@ export const showUserRequest = async (client) => {
 }
 
 export const createUserRequest = async (user) => axios.post('/person/complete', user);
-export const createPersonRequest = async (person) => axios.post('/person/newperson', person);
+// export const createPersonRequest = async (person) => axios.post('/person/newperson', person);
 
 export const updatePersonRequest = async (user) => axios.patch('/person', user);
 export const updateUserRequest = async (user) => axios.patch('/users', user);

@@ -7,9 +7,11 @@ export const createFlavorRequest = async (flavor) => axios.post('/flavors', flav
 
 export const deleteFlavorRequest = async (flavor) => {
   try {
-    const response =  await axios.delete(`/flavors/${flavor.id}`, flavor);
+    const response = await axios.delete(`/flavors/${flavor.id}`, flavor);
     return response;
   } catch (error) {
-    console.log('error for request: ',error);
+    console.log('error for request: ', error);
   }
 }
+
+export const insertDetailflavorsOrder = async (detailFlavor) => axios.post('/flavors/detail-flavor', detailFlavor);

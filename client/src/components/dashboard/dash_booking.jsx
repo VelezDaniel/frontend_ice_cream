@@ -724,7 +724,7 @@ function DashBookings({ dashChange, onAction }) {
 					onRowsPerPageChange={handleChangeRowsPerPage}
 				/>
 			</Paper>
-			<Toaster position="top-right" />
+			{/* <Toaster position="top-right" /> */}
 		</div>
 	);
 }

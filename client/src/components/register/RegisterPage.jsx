@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import "./register.css";
 import CreatePassword from "./CreatePassword";
+import { showDeliveriesRequest } from "../../api/deliveries";
 import logoImg from "../../assets/imgs/helarticologo2.png";
 // import { RiContractLine } from "react-icons/ri";
 import { useAuth } from "../../context/AuthContext";
@@ -19,12 +20,23 @@ function RegisterPage() {
 	const [userId, setUserId] = useState();
 	const [registerForm, setRegisterForm] = useState(true);
 	const [passwordForm, setPasswordForm] = useState(false);
+	const [deliveries, setDeliveries] = useState();
 
 	const handleUserIdChange = (e) => {
 		setUserId(e.target.value);
 	};
 
+	useEffect(() => {
+		const showDeliveries = async () => {
+			const result = await showDeliveriesRequest();
+			console.log("result deliveira; ", result);
+			setDeliveries(result.data.body);
+		};
+		showDeliveries();
+	}, []);
+
 	const onSubmit = handleSubmit(async (values) => {
+		console.log(values);
 		const resultSignup = await signup(values);
 		if (resultSignup && resultSignup.status === 201) {
 			setRegisterForm(false);
@@ -172,6 +184,28 @@ function RegisterPage() {
 							/>
 						</div>
 						{errors.phone && <p className="notice">{errors.phone.message}</p>}
+
+						<span className="font-small-desc">Selecciona el area donde te encuentras</span>
+						<div className="form-group-select">
+							<select
+								className="form-control"
+								{...register("area", {
+									required: {
+										value: true,
+										message: "Selecciona el area donde te encuentras",
+									}
+								})}
+							>
+								{deliveries && deliveries.map((area) => (
+									<option key={area.id} value={area.id}>
+										{area.deliveryDescription}
+									</option>
+								))}
+							</select>
+						</div>
+						{errors.area && (
+							<p className="notice">{errors.area.message}</p>
+						)}
 
 						<div className="input-group">
 							<label htmlFor="address">

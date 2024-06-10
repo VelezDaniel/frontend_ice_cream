@@ -8,7 +8,9 @@ import { useAuth } from "../../context/AuthContext";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { createOrderRequest } from "../../api/payment";
-import { createPersonRequest, createUserRequest } from "../../api/users";
+import { createUserRequest } from "../../api/users";
+import { createOrderProductRequest } from "../../api/orders";
+import { insertDetailflavorsOrder } from "../../api/flavors";
 import ModalTemplate from "../modal/ModalTemplate";
 // * SONNER TOAST
 import { Toaster, toast } from "sonner";
@@ -25,8 +27,11 @@ import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 
 function ShoppingCar({ closeMethod }) {
 	const [cart, setCart] = useContext(CartContext);
+	// const [finalOrder, setFinalOrder] = useState(null);
 	const [modal, setModal] = useState(false);
 	const [formIsActive, setFormIsActive] = useState(false);
+
+	let finalOrder;
 
 	const { user } = useAuth();
 	const navigate = useNavigate();
@@ -135,6 +140,11 @@ function ShoppingCar({ closeMethod }) {
 
 	const goToPay = async () => {
 		if (user && user.role === "CLIENTE") {
+			finalOrder = {
+				cart: cart,
+				client: user,
+				totalPriceOrder: totalPrice,
+			};
 			try {
 				localStorage.setItem("cart", JSON.stringify(cart));
 
@@ -152,11 +162,88 @@ function ShoppingCar({ closeMethod }) {
 		}
 	};
 
-	const goToPrevFormPayment = () => {};
+	const toastErrorCart = () => {
+		toast.error("Ooh ooh", {
+			className: "toast-error-style",
+			description: "No algo salió mal... Por favor intentalo de nuevo",
+			duration: 5000,
+		});
+	};
 
-	const onSubmit = (values) => {
+	const onSubmit = async (values) => {
+		values.id = 0;
+		finalOrder = {
+			cart: cart,
+			client: values,
+			totalPriceOrder: totalPrice,
+		};
+		// setFinalOrder(order);
+		// cart.client = values;
 		console.log(values);
 		console.log(cart);
+		console.log(finalOrder);
+		const createClient = await createUserRequest(values);
+		console.log(createClient);
+		if (
+			(createClient && createClient.data.body.affectedRows) ||
+			(createClient && createClient.data.body.identity == values.identity)
+		) {
+			// Se utiliza For of porque este permite el uso de async await, el forEach no
+			for (const element of cart) {
+				const order = {
+					id: 0,
+					quantity: element.quantity,
+					description: element.orderBody.description,
+					totalValueProduct: element.price,
+					cutlery: element.orderBody.cutlery === true ? 1 : 0,
+					idProduct: element.orderBody.productInfo.id,
+				};
+
+				try {
+					const orderResult = await createOrderProductRequest(order);
+					console.log("orderResult: ", orderResult);
+
+					if (orderResult && orderResult.data.body[1].insertId) {
+					}
+				} catch (error) {
+					console.error("Error creating order: ", error);
+					// Optionally handle the error (e.g., roll back previous operations, notify user)
+					toastErrorCart();
+					return;
+				}
+			}
+
+			// const order = {
+			// 	id: 0,
+			// 	quantity: element.quantity,
+			// 	description: element.orderBody.description,
+			// 	totalValueProduct: element.price,
+			// 	cutlery: (element.orderBody.cutlery === true) ? 1 : 0,
+			// 	idProduct: element.orderBody.productInfo.id,
+			// }
+			// const orderResult = await createOrderProductRequest(order);
+			// console.log("orderResult: ", orderResult);
+
+			// const flavorDetail = {
+			// 	id: 0,
+			// 	flavors: cart.orderBody.flavors,
+			// };
+			// for (let i = 0; i < cart.orderBody.flavors.length; i++) {
+			// 	const flavor = {
+			// 		id: 0,
+			// 		idFlavor: cart.orderBody.flavors.id[i],
+			// 		idOrder: orderResult,
+			// 	};
+
+			// 	const flavorDetailResult = await insertDetailflavorsOrder(flavor);
+			// }
+			// Si el cliente seleccionó alguna adición se ejecuta esta lógica
+			// if (cart.orderBody.aditions.length > 0) {
+			// }
+		} else {
+			// Si no se ejecuta la consulta se muestra un mensaje de error
+			toastErrorCart();
+		}
 	};
 
 	const onSubmitUserForm = async (values) => {
@@ -178,17 +265,22 @@ function ShoppingCar({ closeMethod }) {
 		// Validar si se actualizó o se inserto y agregar datos del cliente al carrito para efectuar la factura correctamente
 		if (result && result.data.body.affectedRows) {
 			console.log(result);
-			cart.client = client;
+			finalOrder = {
+				cart: cart,
+				client: client,
+				totalPriceOrder: totalPrice,
+			};
 			goToPay();
 		} else if (result && result.data.body.identity == client.identity) {
-			cart.client = result.data.body;
+			finalOrder = {
+				cart: cart,
+				client: result.data.body,
+				totalPriceOrder: totalPrice,
+			};
+			// cart.client = result.data.body;
 			goToPay();
 		} else {
-			toast.error("Ooh ooh", {
-				className: "toast-error-style",
-				description: "No algo salió mal... Por favor intentalo de nuevo",
-				duration: 5000,
-			});
+			toastErrorCart();
 		}
 	};
 
