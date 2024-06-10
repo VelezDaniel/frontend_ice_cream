@@ -43,7 +43,6 @@
 	width: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
-	
 }
 
 .btn-shopping-car {
@@ -107,12 +106,12 @@
 	border-radius: 10px;
 }
 
-.add-to-cart-shop:hover{
+.add-to-cart-shop:hover {
 	background-color: var(--btn-blue);
 	text-shadow: 0 0 10px var(--lightTitles), 0 0 20px var(--lightTitles),
 		0 0 40px var(--lightTitles);
-		gap: 12px;
-		transition: all ease-in 0.3s;
+	gap: 12px;
+	transition: all ease-in 0.3s;
 }
 
 .container-notice-shop {
@@ -221,7 +220,8 @@
 	gap: 8px;
 }
 
-.box-payment-methods, .box-payment-methods div {
+.box-payment-methods,
+.box-payment-methods div {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -229,6 +229,101 @@
 	align-items: center;
 	gap: 16px;
 }
+
+/* modal prev form */
+.body-modal-prevpay-form {
+	margin: 8px 14px;
+}
+
+.box-subtitle-prevpay-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	margin-bottom: 12px;
+}
+
+.box-subtitle-prevpay-form .p1 {
+	font-weight: 600;
+	font-size: 16px;
+}
+
+.box-subtitle-prevpay-form .p2 {
+	font-style: italic;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.box-text-terms-prev-form {
+	width: 350px;
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	margin-bottom: 22px;
+}
+
+.box-text-terms-prev-form p {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--color-text);
+	text-align: center;
+}
+
+.box-text-terms-prev-form a {
+	font-weight: 600;
+	font-size: 16px;
+	color: var(--btn-blue);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 6px;
+}
+
+.box-text-terms-prev-form a:hover {
+	color: var(--mainColor);
+}
+
+/* Checkbox design */
+.container-checkbox {
+  cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+}
+
+.container-checkbox p {
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--btn-blue);
+}
+
+.container-checkbox input {
+  display: none;
+}
+
+.container-checkbox svg {
+  overflow: visible;
+}
+
+.path {
+  fill: none;
+  stroke: var(--btn-blue);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+  stroke-dasharray: 241 9999999;
+  stroke-dashoffset: 0;
+}
+
+.container-checkbox input:checked ~ svg .path {
+  stroke-dasharray: 70.5096664428711 9999999;
+  stroke-dashoffset: -262.2723388671875;
+	stroke: var(--mainColor);
+}
+/* End checkbox design */
 
 /* MEDIA QUERYS */
 
@@ -244,7 +339,7 @@
 	}
 }
 
-@media (width < 646px){
+@media (width < 646px) {
 	.car-container {
 		width: 100%;
 	}

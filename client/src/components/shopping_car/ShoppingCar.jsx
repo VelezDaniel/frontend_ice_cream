@@ -8,11 +8,15 @@ import { useAuth } from "../../context/AuthContext";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { createOrderRequest } from "../../api/payment";
+import { createPersonRequest, createUserRequest } from "../../api/users";
 import ModalTemplate from "../modal/ModalTemplate";
+// * SONNER TOAST
+import { Toaster, toast } from "sonner";
 // * MATERIAL UI IMPORTS
 import { styled } from "@mui/material";
 import TextField from "@mui/material/TextField";
 // * icons
+import { FaArrowRight } from "react-icons/fa";
 import IconButton from "@mui/material/IconButton";
 // import DeleteOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
@@ -153,6 +157,39 @@ function ShoppingCar({ closeMethod }) {
 	const onSubmit = (values) => {
 		console.log(values);
 		console.log(cart);
+	};
+
+	const onSubmitUserForm = async (values) => {
+		console.log("user info: ", values);
+		// Guardar los datos (unicamente tabla persona)
+		const client = {
+			id: 0,
+			name: values.name,
+			lastName: values.lastName,
+			identity: values.identity,
+			phone: values.phone,
+			email: values.email,
+			address: values.address,
+			birth: values.birth,
+			accionRequestForm: "prevPayForm",
+		};
+		const result = await createUserRequest(client);
+
+		// Validar si se actualizó o se inserto y agregar datos del cliente al carrito para efectuar la factura correctamente
+		if (result && result.data.body.affectedRows) {
+			console.log(result);
+			cart.client = client;
+			goToPay();
+		} else if (result && result.data.body.identity == client.identity) {
+			cart.client = result.data.body;
+			goToPay();
+		} else {
+			toast.error("Ooh ooh", {
+				className: "toast-error-style",
+				description: "No algo salió mal... Por favor intentalo de nuevo",
+				duration: 5000,
+			});
+		}
 	};
 
 	return (
@@ -414,169 +451,215 @@ function ShoppingCar({ closeMethod }) {
 			)}
 
 			{formIsActive && formIsActive === true && (
-				<div>
-					<div>
-						<h3>Permitenos conocerte</h3>
-						<p>Por favor ingresa tus datos</p>
-						<p>(estos serán utilizados solo para identificar tu compra)</p>
+				<ModalTemplate
+					showHeader={true}
+					designClass={""}
+					title={"Permitenos conocerte"}
+					setStateModal={setFormIsActive}
+				>
+					<div className="body-modal-prevpay-form">
+						<div className="box-subtitle-prevpay-form">
+							<p className="p1">Por favor ingresa tus datos</p>
+							<p className="p2">
+								(estos serán utilizados solo para identificar tu compra)
+							</p>
+						</div>
+						<form
+							className="form-register"
+							onSubmit={handleSubmit(onSubmitUserForm)}
+						>
+							<div className="input-group">
+								<label htmlFor="name">
+									<i className="bi bi-person"></i>
+								</label>
+								<input
+									type="text"
+									autoComplete="off"
+									{...register("name", {
+										required: {
+											value: true,
+											message: "Campo nombre es requerido",
+										},
+										minLength: {
+											value: 2,
+											message: "Nombre debe ser minimo de dos letras",
+										},
+										maxLength: {
+											value: 25,
+											message: "Nombre debe ser menor a 25 letras",
+										},
+									})}
+									placeholder="Nombres"
+								/>
+							</div>
+							{errors.name && <p className="notice">{errors.name.message}</p>}
+							<div className="input-group">
+								<label htmlFor="lastName">
+									<i className="bi bi-person"></i>
+								</label>
+								<input
+									type="text"
+									autoComplete="off"
+									{...register("lastName", {
+										required: {
+											value: true,
+											message: "Apellidos es requerido",
+										},
+										minLength: {
+											value: 2,
+											message: "Apellido debe ser minimo de dos letras",
+										},
+										maxLength: {
+											value: 40,
+											message: "Apellido debe ser menor a 40 letras",
+										},
+									})}
+									placeholder="Apellidos"
+								/>
+							</div>
+							{errors.lastName && (
+								<p className="notice">{errors.lastName.message}</p>
+							)}
+							<div className="input-group">
+								<label htmlFor="identity">
+									<i className="bi bi-person-vcard"></i>
+								</label>
+								<input
+									type="number"
+									autoComplete="off"
+									{...register("identity", {
+										required: {
+											value: true,
+											message: "Identificacion requerida",
+										},
+										minLength: {
+											value: 6,
+											message: "No es una identificacion válida",
+										},
+									})}
+									placeholder="Documento"
+									// value={userId}
+								/>
+							</div>
+							{errors.identity && (
+								<p className="notice">{errors.identity.message}</p>
+							)}
+							<div className="input-group">
+								<label htmlFor="email">
+									<i className="bi bi-envelope"></i>
+								</label>
+								<input
+									type="text"
+									autoComplete="off"
+									{...register("email", {
+										required: {
+											value: true,
+											message: "Correo es requerido",
+										},
+										pattern: {
+											value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+											message: "Correo no es valido",
+										},
+									})}
+									placeholder="Correo (mismo de Paypal)"
+								/>
+							</div>
+							{errors.email && <p className="notice">{errors.email.message}</p>}
+							<div className="input-group">
+								<label htmlFor="phone">
+									<i className="bi bi-phone"></i>
+								</label>
+								<input
+									type="number"
+									autoComplete="off"
+									{...register("phone", {
+										required: {
+											value: true,
+											message: "Celular es requerido",
+										},
+										minLength: {
+											value: 10,
+											message: "No es un celular valido",
+										},
+									})}
+									placeholder="Celular"
+								/>
+							</div>
+							{errors.phone && <p className="notice">{errors.phone.message}</p>}
+
+							<div className="input-group">
+								<label htmlFor="address">
+									<i className="bi bi-house"></i>
+								</label>
+								<input
+									type="text"
+									autoComplete="off"
+									{...register("address", {
+										required: {
+											value: true,
+											message: "Dirección es requerida",
+										},
+										minLength: {
+											value: 6,
+											message: "No es una dirección válida",
+										},
+									})}
+									placeholder="Dirección"
+								/>
+							</div>
+							{errors.address && (
+								<p className="notice">{errors.address.message}</p>
+							)}
+
+							<label htmlFor="birth">
+								<i className="bi bi-calendar3"></i> Fecha de Nacimiento
+							</label>
+							<input
+								type="date"
+								id="nacimiento"
+								{...register("birth", {
+									required: {
+										value: true,
+										message: "Fecha de nacimiento es requerida",
+									},
+								})}
+							/>
+							{errors.birth && <p className="notice">{errors.birth.message}</p>}
+							<div className="box-text-terms-prev-form">
+								<p>
+									Para continuar debes aceptar los terminos y condiciones de
+									nuestro sitio y la política de tratamiento de datos
+								</p>
+								<a href="">
+									Ver documentos <FaArrowRight />
+								</a>
+								<label className="container-checkbox">
+									<input
+										type="checkbox"
+										{...register("terms", {
+											required: {
+												value: true,
+												message: "Debes aceptar los terminos",
+											},
+										})}
+									/>
+									<svg viewBox="0 0 64 64" height="1.5em" width="1.5em">
+										<path
+											d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
+											pathLength="575.0541381835938"
+											className="path"
+										></path>
+									</svg>
+									<p>Aceptar todos</p>
+								</label>
+							</div>
+							{errors.terms && <p className="notice">{errors.terms.message}</p>}
+							<input className="btn-enviar" type="submit" value="Continuar" />
+						</form>
 					</div>
-					<form className="form-register" onSubmit={onSubmit}>
-						<div className="input-group">
-							<label htmlFor="name">
-								<i className="bi bi-person"></i>
-							</label>
-							<input
-								type="text"
-								{...register("name", {
-									required: {
-										value: true,
-										message: "Campo nombre es requerido",
-									},
-									minLength: {
-										value: 2,
-										message: "Nombre debe ser minimo de dos letras",
-									},
-									maxLength: {
-										value: 25,
-										message: "Nombre debe ser menor a 25 letras",
-									},
-								})}
-								placeholder="Nombres"
-							/>
-						</div>
-						{errors.name && <p className="notice">{errors.name.message}</p>}
-						<div className="input-group">
-							<label htmlFor="lastName">
-								<i className="bi bi-person"></i>
-							</label>
-							<input
-								type="text"
-								{...register("lastName", {
-									required: {
-										value: true,
-										message: "Apellidos es requerido",
-									},
-									minLength: {
-										value: 2,
-										message: "Apellido debe ser minimo de dos letras",
-									},
-									maxLength: {
-										value: 40,
-										message: "Apellido debe ser menor a 40 letras",
-									},
-								})}
-								placeholder="Apellidos"
-							/>
-						</div>
-						{errors.lastName && (
-							<p className="notice">{errors.lastName.message}</p>
-						)}
-						<div className="input-group">
-							<label htmlFor="identity">
-								<i className="bi bi-person-vcard"></i>
-							</label>
-							<input
-								type="text"
-								{...register("identity", {
-									required: {
-										value: true,
-										message: "Identificacion requerida",
-									},
-									minLength: {
-										value: 6,
-										message: "No es una identificacion válida",
-									},
-								})}
-								placeholder="Documento"
-								// value={userId}
-							/>
-						</div>
-						{errors.identity && (
-							<p className="notice">{errors.identity.message}</p>
-						)}
-						<div className="input-group">
-							<label htmlFor="email">
-								<i className="bi bi-envelope"></i>
-							</label>
-							<input
-								type="text"
-								{...register("email", {
-									required: {
-										value: true,
-										message: "Correo es requerido",
-									},
-									pattern: {
-										value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-										message: "Correo no es valido",
-									},
-								})}
-								placeholder="Correo"
-							/>
-						</div>
-						{errors.email && <p className="notice">{errors.email.message}</p>}
-						<div className="input-group">
-							<label htmlFor="phone">
-								<i className="bi bi-phone"></i>
-							</label>
-							<input
-								type="text"
-								{...register("phone", {
-									required: {
-										value: true,
-										message: "Celular es requerido",
-									},
-									minLength: {
-										value: 10,
-										message: "No es un celular valido",
-									},
-								})}
-								placeholder="Celular"
-							/>
-						</div>
-						{errors.phone && <p className="notice">{errors.phone.message}</p>}
-
-						<div className="input-group">
-							<label htmlFor="address">
-								<i className="bi bi-house"></i>
-							</label>
-							<input
-								type="text"
-								{...register("address", {
-									required: {
-										value: true,
-										message: "Dirección es requerida",
-									},
-									minLength: {
-										value: 6,
-										message: "No es una dirección válida",
-									},
-								})}
-								placeholder="Dirección"
-							/>
-						</div>
-						{errors.address && (
-							<p className="notice">{errors.address.message}</p>
-						)}
-
-						<label htmlFor="birth">
-							<i className="bi bi-calendar3"></i> Fecha de Nacimiento
-						</label>
-						<input
-							type="date"
-							id="nacimiento"
-							{...register("birth", {
-								required: {
-									value: true,
-									message: "Fecha de nacimiento es requerida",
-								},
-							})}
-						/>
-						{errors.birth && <p className="notice">{errors.birth.message}</p>}
-
-						<input className="btn-enviar" type="submit" value="Continuar" />
-					</form>
-				</div>
+				</ModalTemplate>
 			)}
+			<Toaster position="top-left" />
 		</div>
 	);
 }

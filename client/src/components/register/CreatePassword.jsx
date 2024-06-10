@@ -3,13 +3,13 @@ import { useForm } from "react-hook-form";
 import "./register.css";
 import logoImg from "../../assets/imgs/helarticologo2.png";
 import { createPassword } from "../../api/auth";
-import { useAuth } from "../../context/AuthContext";
+// import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function CreatePassword({ insertId }) {
 	const navigate = useNavigate();
 
-	const { updateStateAuthentication, isAuthenticated } = useAuth();
+	// const { updateStateAuthentication, isAuthenticated } = useAuth();
 	const {
 		register,
 		watch,

@@ -68,6 +68,7 @@ function LoginPage() {
 							{/* <input type="text" name="nombres" id="nombres" placeholder="Nombres" /> */}
 							<input
 								type="number"
+								autoComplete="off"
 								{...register("identity", { required: true })}
 								placeholder="Identificacion"
 								id="identity"

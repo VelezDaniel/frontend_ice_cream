@@ -59,6 +59,7 @@ function RegisterPage() {
 							</label>
 							<input
 								type="text"
+								autoComplete="off"
 								{...register("name", {
 									required: {
 										value: true,
@@ -83,6 +84,7 @@ function RegisterPage() {
 							</label>
 							<input
 								type="text"
+								autoComplete="off"
 								{...register("lastName", {
 									required: {
 										value: true,
@@ -108,7 +110,8 @@ function RegisterPage() {
 								<i className="bi bi-person-vcard"></i>
 							</label>
 							<input
-								type="text"
+								type="number"
+								autoComplete="off"
 								{...register("identity", {
 									required: {
 										value: true,
@@ -133,6 +136,7 @@ function RegisterPage() {
 							</label>
 							<input
 								type="text"
+								autoComplete="off"
 								{...register("email", {
 									required: {
 										value: true,
@@ -152,7 +156,8 @@ function RegisterPage() {
 								<i className="bi bi-phone"></i>
 							</label>
 							<input
-								type="text"
+								type="number"
+								autoComplete="off"
 								{...register("phone", {
 									required: {
 										value: true,
@@ -174,6 +179,7 @@ function RegisterPage() {
 							</label>
 							<input
 								type="text"
+								autoComplete="off"
 								{...register("address", {
 									required: {
 										value: true,

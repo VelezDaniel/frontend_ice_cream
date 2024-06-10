@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ModalTemplate from "../components/modal/ModalTemplate";
 import "../css/payed.css";
 import { useNavigate } from "react-router-dom";
-import { captureOrderRequest } from "../api/payment";
+
 // react icons
 
 const Payed = () => {
@@ -10,29 +10,6 @@ const Payed = () => {
 	const [stateSuccesModal, setStateSuccesModal] = useState(false);
 	
 	const navigate = useNavigate();
-
-
-	// useEffect(() => {
-	// 	const confirmPayment = async () => {
-	// 		const params = new URLSearchParams(location.search);
-	// 		const token = params.get("token");
-
-	// 		try {
-	// 			const response = await captureOrderRequest(token);
-
-	// 			if (response.data === "payed") {
-	// 				console.log("Payment confirmed: ", response.data);
-	// 				setStateSuccesModal(true);
-	// 			} else {
-	// 				console.log("Payment failed: ", response.data);
-	// 			}
-	// 		} catch (error) {
-	// 			console.log("error in confirm payment: ", error);
-	// 		}
-	// // 	};
-
-	// 	confirmPayment();
-	// }, [location]);
 
 	useEffect(() => {
 		if (closeModal === false) {
@@ -43,14 +20,6 @@ const Payed = () => {
 			navigate("/");
 		}
 	}, [closeModal]);
-
-	// const successEvent = () => {
-
-	// };
-
-	// const cancelEvent = () => {
-
-	// };
 
 	return (
 		<div className="payed-bg">
