@@ -81,7 +81,8 @@ function DashUsers({ dashChange, onAction }) {
 	}, []);
 
 	const showDeliveryArea = (areaId) => {
-		if (deliveries.length > 0) {
+		console.log("deliveries: ", deliveries)
+		if (deliveries) {
 			const delivery = deliveries.find((item) => item.id == areaId);
 			if (delivery) {
 				return delivery.deliveryDescription;

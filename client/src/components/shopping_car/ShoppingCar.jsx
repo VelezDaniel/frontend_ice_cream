@@ -187,6 +187,7 @@ function ShoppingCar({ closeMethod }) {
 		const createClient = await createUserRequest(values);
 		console.log("createcliente", createClient);
 		if (createClient.status === 201) {
+			values.id = createClient.data.body.idClient;
 			finalOrder = {
 				cart: cart,
 				client: values,

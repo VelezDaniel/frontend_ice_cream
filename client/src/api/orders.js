@@ -7,7 +7,7 @@ export const showOrdersByUser = async (userId) => axios.get(`/orders/${userId}`)
 
 export const createOrderProductRequest = async (order) => axios.post('/orders', order);
 
-export const createNewOrderRequest = async (newOrder) => axios.post('/orders/new-order');
+export const createNewOrderRequest = async (newOrder) => axios.post('/orders/new-order', newOrder);
 
 export const deleteOrderRequest = async (order) => {
   try {
