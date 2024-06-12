@@ -80,16 +80,6 @@ function DashUsers({ dashChange, onAction }) {
 		showDeliveries();
 	}, []);
 
-	// useEffect(() => {
-	// 	if (deliveries.length > 0) {
-	// 		deliveries.find((item) => {
-	// 			if (item.id == userData.id) {
-	// 				return item.deliveryDescription;
-	// 			}
-	// 		});
-	// 	}
-	// }, [deliveries]);
-
 	const showDeliveryArea = (areaId) => {
 		if (deliveries.length > 0) {
 			const delivery = deliveries.find((item) => item.id == areaId);

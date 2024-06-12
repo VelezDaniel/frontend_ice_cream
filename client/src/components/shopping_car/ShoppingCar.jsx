@@ -9,7 +9,10 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { createOrderRequest } from "../../api/payment";
 import { createUserRequest } from "../../api/users";
-import { createOrderProductRequest } from "../../api/orders";
+import {
+	createNewOrderRequest,
+	createOrderProductRequest,
+} from "../../api/orders";
 import { insertDetailflavorsOrder } from "../../api/flavors";
 import ModalTemplate from "../modal/ModalTemplate";
 // * SONNER TOAST
@@ -172,74 +175,29 @@ function ShoppingCar({ closeMethod }) {
 
 	const onSubmit = async (values) => {
 		values.id = 0;
-		finalOrder = {
-			cart: cart,
-			client: values,
-			totalPriceOrder: totalPrice,
-		};
+		// finalOrder = {
+		// 	cart: cart,
+		// 	client: values,
+		// 	totalPriceOrder: totalPrice,
+		// };
 		// setFinalOrder(order);
 		// cart.client = values;
 		console.log(values);
 		console.log(cart);
-		console.log(finalOrder);
 		const createClient = await createUserRequest(values);
-		console.log(createClient);
-		if (
-			(createClient && createClient.data.body.affectedRows) ||
-			(createClient && createClient.data.body.identity == values.identity)
-		) {
-			// Se utiliza For of porque este permite el uso de async await, el forEach no
-			for (const element of cart) {
-				const order = {
-					id: 0,
-					quantity: element.quantity,
-					description: element.orderBody.description,
-					totalValueProduct: element.price,
-					cutlery: element.orderBody.cutlery === true ? 1 : 0,
-					idProduct: element.orderBody.productInfo.id,
-				};
+		console.log("createcliente", createClient);
+		if (createClient.status === 201) {
+			finalOrder = {
+				cart: cart,
+				client: values,
+				fromLocal: true,
+				totalPriceOrder: totalPrice,
+			};
 
-				try {
-					const orderResult = await createOrderProductRequest(order);
-					console.log("orderResult: ", orderResult);
-
-					if (orderResult && orderResult.data.body[1].insertId) {
-					}
-				} catch (error) {
-					console.error("Error creating order: ", error);
-					// Optionally handle the error (e.g., roll back previous operations, notify user)
-					toastErrorCart();
-					return;
-				}
-			}
-
-			// const order = {
-			// 	id: 0,
-			// 	quantity: element.quantity,
-			// 	description: element.orderBody.description,
-			// 	totalValueProduct: element.price,
-			// 	cutlery: (element.orderBody.cutlery === true) ? 1 : 0,
-			// 	idProduct: element.orderBody.productInfo.id,
-			// }
-			// const orderResult = await createOrderProductRequest(order);
-			// console.log("orderResult: ", orderResult);
-
-			// const flavorDetail = {
-			// 	id: 0,
-			// 	flavors: cart.orderBody.flavors,
-			// };
-			// for (let i = 0; i < cart.orderBody.flavors.length; i++) {
-			// 	const flavor = {
-			// 		id: 0,
-			// 		idFlavor: cart.orderBody.flavors.id[i],
-			// 		idOrder: orderResult,
-			// 	};
-
-			// 	const flavorDetailResult = await insertDetailflavorsOrder(flavor);
-			// }
-			// Si el cliente seleccionó alguna adición se ejecuta esta lógica
-			// if (cart.orderBody.aditions.length > 0) {
-			// }
+			console.log("finalOrder: ", finalOrder);
+			const newOrder = await createNewOrderRequest(finalOrder);
+			console.log("newOrder", newOrder);
+			
 		} else {
 			// Si no se ejecuta la consulta se muestra un mensaje de error
 			toastErrorCart();
