@@ -10,7 +10,7 @@ import {
 } from "../../api/bookings";
 import { showUserRequest } from "../../api/users";
 import "./css/dash_bookings.css";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 // IMPORTS MATERIAL UI
 import {
@@ -23,7 +23,6 @@ import {
 	TablePagination,
 	TableRow,
 	IconButton,
-	Button,
 	Stack,
 } from "@mui/material";
 
