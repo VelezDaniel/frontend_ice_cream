@@ -61,27 +61,21 @@ const DashOrders = ({ dashChange, onAction }) => {
 			<div>
 				{ordersData &&
 					ordersData.map((order) => (
-						<Card sx={{ maxWidth: 345 }}>
-							<CardMedia
-								component="img"
-								alt="imagen helado"
-								height="140"
-								image={ProductImgBuilder(order.name.toLowerCase())}
-							/>
-							<CardContent>
-								<p gutterBottom variant="h5" component="div">
-									Lizard
-								</p>
-								<p variant="body2" color="text.secondary">
-									Lizards are a widespread group of squamate reptiles, with over
-									6,000 species, ranging across all continents except Antarctica
-								</p>
-							</CardContent>
-							<CardActions>
-								<Button size="small">Share</Button>
-								<Button size="small">Learn More</Button>
-							</CardActions>
-						</Card>
+						<div className="container-order-products">
+							<div className="order-products-header">
+								<p>{order.idOrder}</p>
+								<p>{order.deliveryDescription}</p>
+								<p>${order.totalOrder}</p>
+								<div>
+									<p>Datos del Cliente</p>
+									<p>{order.client.identity}</p>
+									<p>`{order.client.name} {order.client.lastName}`</p>
+									{order.client.address != "N/A" && (
+										<p>{order.client.address}</p>
+									)}
+								</div>
+							</div>
+						</div>
 					))}
 			</div>
 		</div>
