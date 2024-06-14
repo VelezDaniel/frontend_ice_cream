@@ -9,7 +9,6 @@ import "./css/dash_orders.css";
 // * Imports Material UI
 import {
 	Card,
-	CardActions,
 	CardContent,
 	CardMedia,
 	Button,
@@ -66,33 +65,51 @@ const DashOrders = ({ dashChange, onAction }) => {
 					ordersData.map((order) => (
 						<div key={order.idOrder} className="container-order-products">
 							<div className="order-products-header">
-								<p className="font-title-description-order">Pedido: {order.idOrder}</p>
-								<p className="font-title-description-order">{order.deliveryDescription}</p>
+								<p className="font-title-description-order">
+									Pedido: {order.idOrder}
+								</p>
+								<p className="font-title-description-order">
+									{order.deliveryDescription}
+								</p>
 								{order.descriptionDelivery &&
 									order.descriptionDelivery != null && (
 										<>
-											<p className="font-title-description-order">Direccion: {order.descriptionDelivery}</p>
-											<p className="font-title-description-order">${order.priceDelivery}</p>
+											<p className="font-title-description-order">
+												Direccion: {order.descriptionDelivery}
+											</p>
+											<p className="font-title-description-order">
+												${order.priceDelivery}
+											</p>
 										</>
 									)}
 								<div className="box-info-client-order">
-									<p className="font-title-description-order">Datos del Cliente</p>
-									<p className="font-title-description-order">Id: {order.client.identity}</p>
+									<p className="font-title-description-order">
+										Datos del Cliente
+									</p>
+									<p className="font-title-description-order">
+										Id: {order.client.identity}
+									</p>
 									<p className="font-title-description-order">
 										{order.client.name} {order.client.lastName}
 									</p>
 									{order.client.address != "N/A" && (
-										<p>{order.client.address}</p>
+										<p className="font-title-description-order">{order.client.address}</p>
 									)}
-									{order.client.phone != null && <p>{order.client.phone}</p>}
-									{order.client.area != null && <p>{order.client.area}</p>}
+									{order.client.phone != null && (
+										<p className="font-title-description-order">
+											{order.client.phone}
+										</p>
+									)}
 								</div>
 							</div>
 							<div className="order-products-body">
 								{order &&
 									order.details &&
 									order.details.map((detail) => (
-										<Card className="product-card" key={detail.idDetail} sx={{ maxWidth: 300, minWidth: 254, height: "auto" }}>
+										<Card className="card-product"
+											key={detail.idDetail}
+											sx={{ maxWidth: 266, minWidth: 224, minHeight: 190, paddingTop: 3}}
+										>
 											<CardMedia
 												component="img"
 												sx={{

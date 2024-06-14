@@ -23,13 +23,13 @@ const Payed = () => {
 		console.log("finalOrder: ", finalOrder);
 		const newOrder = await createNewOrderRequest(finalOrder);
 		console.log("newOrder in payment", newOrder);
-		if (newOrder.data.status == 201) {
+		if (newOrder) {
 			setStateRequest(true);
 			localStorage.removeItem("cart");
 			localStorage.removeItem("totalPrice");
 			navigate("/");
 		} else {
-			console.log("ERROR EN handleCreateOrder")
+			console.log("ERROR EN handleCreateOrder");
 		}
 	};
 

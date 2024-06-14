@@ -20,6 +20,7 @@
   padding: 2px 26px;
   display: flex;
   justify-content: end;
+  margin: 8px 0;
 }
 
 .div-dash-btn-add button {
