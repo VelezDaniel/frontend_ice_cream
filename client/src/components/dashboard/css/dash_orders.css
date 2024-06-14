@@ -1,2 +1,49 @@
-@import url('../../../index.css');
+@import url("../../../index.css");
 
+.container-orders-products {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+  width: 100%;
+}
+
+.container-order-products {
+	background-color: var(--lightMainColor);
+  margin-right: 18px;
+  border-radius: 8px;
+}
+
+.order-products-header {
+	display: flex;
+  justify-content: space-between;
+  padding: 8px 18px 0 18px;
+}
+
+.order-products-body {
+	display: flex;
+  padding: 0 12px;
+  gap: 6px;
+  /* overflow-x: auto; */
+  height: auto;
+  overflow: auto;
+}
+
+.box-info-client-order {
+  text-align: end;
+}
+
+/* .box-info-client-order{
+  padding: 0 20px;
+} */
+
+.font-title-description-order {
+  font-size: 16px;
+	font-weight: 600;
+	color: var(--font-darkgray);
+}
+
+.font-text-description-order {
+  font-size: 14px;
+	font-weight: 500;
+	color: var(--font-darkgray);
+}

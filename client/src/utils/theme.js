@@ -10,6 +10,7 @@ const theme = createTheme({
       bgLight: '#ebfffe',
       bgMediumLight: '#8efbff',
       btnHomeHover: '#dfdfdf67',
+      colorBtnsForms: '#0D5D7D',
     },
     secondary: {
       light: '#0c7676',

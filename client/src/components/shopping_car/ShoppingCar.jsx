@@ -33,6 +33,7 @@ function ShoppingCar({ closeMethod }) {
 	// const [finalOrder, setFinalOrder] = useState(null);
 	const [modal, setModal] = useState(false);
 	const [formIsActive, setFormIsActive] = useState(false);
+	const [parcialOrder, setParcialOrder] = useState(null);
 
 	let finalOrder;
 
@@ -109,6 +110,12 @@ function ShoppingCar({ closeMethod }) {
 		},
 	});
 
+	useEffect(() => {
+		// Mantener el local storage actualizado
+		localStorage.setItem("cart", JSON.stringify(cart));
+		localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
+	}, [cart, totalPrice]);
+
 	// useEffect(() => {
 	// 	if (idOrder) {
 	// 		console.log(idOrder);
@@ -146,10 +153,11 @@ function ShoppingCar({ closeMethod }) {
 			finalOrder = {
 				cart: cart,
 				client: user,
+				fromLocal: false,
 				totalPriceOrder: totalPrice,
 			};
 			try {
-				localStorage.setItem("cart", JSON.stringify(cart));
+				// localStorage.setItem("cart", JSON.stringify(cart));
 
 				const response = await createOrderRequest({
 					userInformation: user,
@@ -198,7 +206,6 @@ function ShoppingCar({ closeMethod }) {
 			console.log("finalOrder: ", finalOrder);
 			const newOrder = await createNewOrderRequest(finalOrder);
 			console.log("newOrder", newOrder);
-			
 		} else {
 			// Si no se ejecuta la consulta se muestra un mensaje de error
 			toastErrorCart();
@@ -220,13 +227,14 @@ function ShoppingCar({ closeMethod }) {
 			accionRequestForm: "prevPayForm",
 		};
 		const result = await createUserRequest(client);
-
+		
+		console.log("result of client with prevForm ",result);
 		// Validar si se actualizó o se inserto y agregar datos del cliente al carrito para efectuar la factura correctamente
-		if (result && result.data.body.affectedRows) {
-			console.log(result);
+		if (result && result.data.body.affectedRows == 1) {
 			finalOrder = {
 				cart: cart,
-				client: client,
+				client: l,
+				fromLocal: true,
 				totalPriceOrder: totalPrice,
 			};
 			goToPay();
