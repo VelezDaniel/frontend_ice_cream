@@ -99,8 +99,10 @@ export const AuthProvider = ({ children }) => {
 		} catch (error) {
 			console.log("error in loguinRequest ", error);
 
+			console.log("setError: ", errors);
 			if (error.response && error.response.data) {
-				setErrors([error.response.data]);
+				const errorMessage = Array.isArray(error.response.data) ? error.response.data[0] : error.response.data.message || "Error desconocido";
+				setErrors([error]);
 			} else {
 				setErrors(["Unexpected error ocurred"]);
 			}
@@ -134,7 +136,6 @@ export const AuthProvider = ({ children }) => {
 				setIsAuthenticated(true);
 				setUser(userInformation);
 				setLoading(false);
-				
 			} catch (error) {
 				console.log("Error in catch from verifyToken UseEffect", error);
 				setIsAuthenticated(false);

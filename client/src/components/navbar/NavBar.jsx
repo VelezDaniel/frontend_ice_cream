@@ -1,10 +1,10 @@
 import "./navbar.css";
 import { useState, useEffect, useContext } from "react";
-import { useAuth } from "../../context/AuthContext";
 import UserSettings from "../user_settings/UserSettings";
 import NoneUserAuthenticated from "../user_settings/NoneUser";
 import ShoppingCar from "../shopping_car/ShoppingCar";
 // ? USO DE CONTECXTOS
+import { useAuth } from "../../context/AuthContext";
 import { CartContext } from "../../context/ShoppingCartContext";
 // ? -------
 import {
@@ -15,7 +15,6 @@ import {
 } from "react-icons/io5";
 import { HiOutlineHome } from "react-icons/hi";
 import { HiOutlineBuildingStorefront } from "react-icons/hi2";
-
 // import { useNavigate } from "react-router-dom";
 // import { Link } from 'react-router-dom';
 //  ** IMPORTS MATERIAL UI
@@ -48,6 +47,9 @@ function NavBar({ navBarType }) {
 
 	const { isAuthenticated, user } = useAuth();
 
+	// DOM object
+	// const mainDiv = document.getElementById("super-main-container-home");
+
 	useEffect(() => {
 		if (navBarType === "NoHome") {
 			setScroll(true);
@@ -69,7 +71,7 @@ function NavBar({ navBarType }) {
 				window.removeEventListener("scroll", changeColorNav);
 			};
 		}
-	}, []); // Agregamos una dependencia vacía para que se ejecute solo una vez al montar el componente
+	}, []);
 
 	const openMenu = () => {
 		setMenuVisible(true);
@@ -82,17 +84,21 @@ function NavBar({ navBarType }) {
 	const openSettingsUser = () => {
 		console.log(user);
 		if (user === null) {
+			// mainDiv.style.overflowY = "hidden";
 			setNoneUserSetting(true);
 		} else {
+			// mainDiv.style.overflowY = "hidden";
 			setUserSetting(true);
 		}
 	};
 
 	const closeSettingsUser = () => {
+		// mainDiv.style.overflowY = "auto";
 		setUserSetting(false);
 	};
 
 	const closeNoneSettingsUser = () => {
+		// mainDiv.style.overflowY = "auto";
 		setNoneUserSetting(false);
 	};
 

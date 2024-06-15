@@ -1,24 +1,41 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 function Banner() {
-    const navigate = useNavigate ();
+	const navigate = useNavigate();
+	const { user } = useAuth();
 
-    const handleClick = () => {
-        navigate('/register');
-    };
+	const handleClick = () => {
+		navigate("/register");
+	};
 
-  return (
-    <div className="welcome-menu">
-        <h3>Lorem ipsum im lor de prise effect track</h3>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id corrupti consectetur porro eum odit possimus
-            dolores quasi. Magnam.</p>
-        <div className="container-btn">
-            <button className="btn btn-portfolio" onClick={handleClick}>Registrarse
-                <i className="bi bi-arrow-right-short arrow"></i>
-            </button>
-        </div>
-    </div>
-  )
+    const handleClickProducts = () => {
+		navigate("/products");
+	};
+
+	return (
+		<div className="welcome-menu">
+			<h3>Deliciosos helados generan mágicas experiencias</h3>
+			<p className="text-banner-subtext">
+				Eres importante para nosotros, por eso trabajamos diariamente para darte
+				el mejor servicio y las mejores experiencias, satisfaciendo tus pequeños
+				y grandes antojos.
+			</p>
+			<div className="container-btn">
+				{user && user.name ? (
+					<button className="btn btn-portfolio" onClick={() => handleClickProducts}>
+						Ver productos
+						<i className="bi bi-arrow-right-short arrow"></i>
+					</button>
+				) : (
+					<button className="btn btn-portfolio" onClick={() => handleClick}>
+						Registrarse
+						<i className="bi bi-arrow-right-short arrow"></i>
+					</button>
+				)}
+			</div>
+		</div>
+	);
 }
 
 export default Banner;

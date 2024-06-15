@@ -98,9 +98,9 @@ function LoginPage() {
 							<span className="notice">Contraseña requerida</span>
 						)}
 						{signinErrors.map((error, i) => (
-							<div className="notice" key={i}>
+							<p className="notice" key={i}>
 								{error.body}
-							</div>
+							</p>
 						))}
 						<input className="btn-Ingresar" type="submit" value="Ingresar" />
 						<Link className="btn-Registrarse" to="/register">

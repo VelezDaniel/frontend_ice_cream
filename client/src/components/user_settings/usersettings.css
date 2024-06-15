@@ -1,7 +1,7 @@
 @import url("../../index.css");
 
 .user-container {
-	height: 100%;
+	height: auto;
 	width: 26%;
 	background-color: var(--bg-cards);
 	display: flex;
@@ -13,6 +13,7 @@
 	position: fixed;
 	right: 0;
 	top: 0;
+	overflow-y: auto;
 	/* transform: translateX(0); */
 	transition: transform 0.5s ease-in-out;
 }
@@ -119,12 +120,13 @@
 	gap: 6px;
 	cursor: pointer;
 	margin-top: 22px;
+	transition: all 0.3s ease-in;
 }
 
 .btn-edit-u-data:hover {
 	color: var(--lightTitles);
   background-color: var(--mainColor);
-	border: 3px solid var(--mainColor);
+	/* border: 3px solid var(--mainColor); */
 }
 
 .btn-cerrarsesion {
@@ -142,7 +144,7 @@
 	padding-left: 6px;
 	padding: 6px 32px;
 	margin-bottom: 14px;
-	transition: all 0.3s ease;
+	transition: all 0.3s ease-in;
 }
 
 .btn-cerrarsesion:hover {
