@@ -4,8 +4,8 @@ import "../css/payed.css";
 import { useNavigate } from "react-router-dom";
 import { createNewOrderRequest } from "../api/orders";
 import { useAuth } from "../context/AuthContext";
-
-// react icons
+// * SONNER
+import { toast } from "sonner";
 
 const Payed = () => {
 	const [closeModal, setCloseModal] = useState(true);
@@ -14,6 +14,24 @@ const Payed = () => {
 
 	const { user } = useAuth();
 	const navigate = useNavigate();
+
+	const showToast = (orderGenerated) => {
+		// const btn = document.getElementById(idButton);
+		// btn.addEventListener("click", () => {});
+		if (orderGenerated && orderGenerated.data.status == 201) {
+			toast.success("Accion Exitosa", {
+				className: "toast-success-style",
+				description: "Tu pedido se ha creado correctamente",
+				duration: 4000,
+			});
+		} else {
+			toast.error("Lo sentimos", {
+				className: "toast-error-style",
+				description: "Algo fue mal con tu pedido... Lo estamos revisando",
+				duration: 5000,
+			});
+		}
+	};
 
 	const closeModalAndSendInfo = () => {
 		setCloseModal(false);
@@ -25,6 +43,7 @@ const Payed = () => {
 		console.log("newOrder in payment", newOrder);
 		if (newOrder) {
 			setStateRequest(true);
+			showToast(newOrder);
 			localStorage.removeItem("cart");
 			localStorage.removeItem("totalPrice");
 			navigate("/");
@@ -35,16 +54,23 @@ const Payed = () => {
 
 	// const closePaymentPage = () => {};
 
-	// useEffect(() => {
-
-	// }, [user]);
-
 	useEffect(() => {
 		if (closeModal === false) {
+			const existentFinalOrder = localStorage.getItem("finalOrder");
+
 			const existentCart = localStorage.getItem("cart");
 			const existentTotalPrice = localStorage.getItem("totalPrice");
 
-			if (existentCart && existentTotalPrice) {
+			let finalOrderData = null;
+			// let cartData = null;
+			// let totalPrice = 0;
+
+			if (existentFinalOrder) {
+				finalOrderData = JSON.parse(existentFinalOrder);
+				console.log("final order: ", finalOrderData);
+
+				handleCreateOrder(finalOrderData);
+			} else if (existentCart && existentTotalPrice) {
 				const arrayExistentCart = JSON.parse(existentCart);
 
 				if (
@@ -89,7 +115,7 @@ const Payed = () => {
 							onClick={() => closeModalAndSendInfo(false)}
 							className="btn-bright"
 						>
-							Regresar
+							Confirmar pedido
 						</button>
 					</div>
 				</div>

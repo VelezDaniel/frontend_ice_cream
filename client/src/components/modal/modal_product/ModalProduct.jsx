@@ -124,11 +124,15 @@ function ModalProduct({ product, setStateModal }) {
 				? [...prevSelected, aditionId]
 				: prevSelected.filter((id) => id !== aditionId)
 		);
-		setAditionQuantities((prevQuantities) =>
-			checked
-				? { ...prevQuantities, [aditionId]: "" }
-				: { ...prevQuantities, [aditionId]: undefined }
-		);
+		setAditionQuantities((prevQuantities) => {
+			const newQuantities = { ...prevQuantities };
+			if (checked) {
+				newQuantities[aditionId] = 1;
+			} else {
+				delete newQuantities[aditionId];
+			}
+			return newQuantities;
+		});
 	};
 
 	// Manejo de cantidad de adicion
@@ -194,7 +198,8 @@ function ModalProduct({ product, setStateModal }) {
 
 				if (aditionObj) {
 					const quantity = aditionQuantities[adition] || 1;
-					const totalAditionPrice = parseInt(aditionObj.priceAdition) * quantity
+					const totalAditionPrice =
+						parseInt(aditionObj.priceAdition) * quantity;
 					priceCartItem += totalAditionPrice;
 					return {
 						id: aditionObj.id,

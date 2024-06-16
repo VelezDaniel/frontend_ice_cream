@@ -81,7 +81,7 @@ function DashUsers({ dashChange, onAction }) {
 	}, []);
 
 	const showDeliveryArea = (areaId) => {
-		console.log("deliveries: ", deliveries)
+		console.log("deliveries: ", deliveries);
 		if (deliveries) {
 			const delivery = deliveries.find((item) => item.id == areaId);
 			if (delivery) {
@@ -106,6 +106,7 @@ function DashUsers({ dashChange, onAction }) {
 		handleGetRoles();
 	}, [dashChange]);
 
+	// Valores para editar
 	useEffect(() => {
 		if (userData) {
 			console.log(userData);
@@ -121,6 +122,17 @@ function DashUsers({ dashChange, onAction }) {
 		}
 	}, [userData]);
 
+	// Guardar informacion de zonas de entrega
+	useEffect(() => {
+		const showDeliveries = async () => {
+			const result = await showDeliveriesRequest();
+			console.log("result deliveira; ", result);
+			setDeliveries(result.data.body);
+		};
+		showDeliveries();
+	}, []);
+
+	// Mostrar mensaje
 	useEffect(() => {
 		const showToast = () => {
 			// const btn = document.getElementById(idButton);
@@ -220,6 +232,7 @@ function DashUsers({ dashChange, onAction }) {
 					address: values.editAddress,
 					email: values.editEmail === userData.email ? null : values.editEmail,
 					birth: values.editBirth,
+					area: values.editArea,
 				};
 
 				const userObject = {
@@ -449,6 +462,30 @@ function DashUsers({ dashChange, onAction }) {
 							{errors.addAddress && (
 								<p className="notice">{errors.addAddress.message}</p>
 							)}
+
+							<span className="font-small-desc">
+								Selecciona el area donde te encuentras
+							</span>
+							<div className="form-group-select">
+								<select
+									className="form-control"
+									{...register("area", {
+										required: {
+											value: true,
+											message: "Selecciona el area donde te encuentras",
+										},
+									})}
+								>
+									{deliveries &&
+										deliveries.map((area) => (
+											<option key={area.id} value={area.id}>
+												{area.deliveryDescription}
+											</option>
+										))}
+								</select>
+							</div>
+							{errors.area && <p className="notice">{errors.area.message}</p>}
+
 							<div className="input-group">
 								<input
 									type="date"
@@ -523,7 +560,10 @@ function DashUsers({ dashChange, onAction }) {
 								</div>
 								<div>
 									<span>Dirección</span>
-									<span> {showDeliveryArea(userData.area)} - {userData.address}</span>
+									<span>
+										{" "}
+										{showDeliveryArea(userData.area)} - {userData.address}
+									</span>
 								</div>
 								<div>
 									<span>Estado</span>

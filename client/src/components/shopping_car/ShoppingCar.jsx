@@ -8,7 +8,8 @@ import { useAuth } from "../../context/AuthContext";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { createOrderRequest } from "../../api/payment";
-import { createUserRequest } from "../../api/users";
+import { showDeliveriesRequest } from "../../api/deliveries";
+import { createUserRequest, showUserRequest } from "../../api/users";
 import {
 	createNewOrderRequest,
 	createOrderProductRequest,
@@ -16,7 +17,7 @@ import {
 import { insertDetailflavorsOrder } from "../../api/flavors";
 import ModalTemplate from "../modal/ModalTemplate";
 // * SONNER TOAST
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 // * MATERIAL UI IMPORTS
 import { styled } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -34,6 +35,7 @@ function ShoppingCar({ closeMethod }) {
 	const [modal, setModal] = useState(false);
 	const [formIsActive, setFormIsActive] = useState(false);
 	const [parcialOrder, setParcialOrder] = useState(null);
+	const [deliveries, setDeliveries] = useState(null);
 
 	let finalOrder;
 
@@ -43,6 +45,7 @@ function ShoppingCar({ closeMethod }) {
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm();
 
@@ -111,6 +114,15 @@ function ShoppingCar({ closeMethod }) {
 	});
 
 	useEffect(() => {
+		const showDeliveries = async () => {
+			const result = await showDeliveriesRequest();
+			console.log("result deliveira; ", result);
+			setDeliveries(result.data.body);
+		};
+		showDeliveries();
+	}, []);
+
+	useEffect(() => {
 		// Mantener el local storage actualizado
 		localStorage.setItem("cart", JSON.stringify(cart));
 		localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
@@ -148,6 +160,7 @@ function ShoppingCar({ closeMethod }) {
 		}
 	};
 
+	// In directamente al pago
 	const goToPay = async () => {
 		if (user && user.role === "CLIENTE") {
 			finalOrder = {
@@ -156,8 +169,9 @@ function ShoppingCar({ closeMethod }) {
 				fromLocal: false,
 				totalPriceOrder: totalPrice,
 			};
+
 			try {
-				// localStorage.setItem("cart", JSON.stringify(cart));
+				localStorage.setItem("finalOrder", JSON.stringify(finalOrder));
 
 				const response = await createOrderRequest({
 					userInformation: user,
@@ -170,50 +184,104 @@ function ShoppingCar({ closeMethod }) {
 			} catch (error) {
 				console.log("Error in goToPay: ", error);
 			}
+		} else {
+			try {
+				localStorage.setItem("finalOrder", JSON.stringify(finalOrder));
+
+				const response = await createOrderRequest({
+					userInformation: finalOrder.client,
+					orderInformation: cart,
+				});
+				if (response) {
+					console.log(response);
+					window.location.href = response.data.links[1].href;
+				}
+			} catch (error) {
+				console.log("Error in goToPay in ELSE: ", error);
+			}
 		}
 	};
 
 	const toastErrorCart = () => {
 		toast.error("Ooh ooh", {
 			className: "toast-error-style",
-			description: "No algo salió mal... Por favor intentalo de nuevo",
+			description: "Algo salió mal... Por favor intentalo de nuevo",
 			duration: 5000,
 		});
 	};
 
+	const toastSuccessCart = () => {
+		toast.success("Pedido exitoso", {
+			className: "toast-success-style",
+			description: "Se ha creado el pedido efectivamente",
+			duration: 5000,
+		});
+	};
+
+	// Para tomar pedido en el local (RECEPCIONISTA)
 	const onSubmit = async (values) => {
-		values.id = 0;
-		// finalOrder = {
-		// 	cart: cart,
-		// 	client: values,
-		// 	totalPriceOrder: totalPrice,
-		// };
-		// setFinalOrder(order);
-		// cart.client = values;
-		console.log(values);
-		console.log(cart);
-		const createClient = await createUserRequest(values);
-		console.log("createcliente", createClient);
-		if (createClient.status === 201) {
-			values.id = createClient.data.body.idClient;
+		// Validar si el cliente ya a comprado antes
+		const resultGetClient = await showUserRequest({ id: values.identity });
+
+		if (resultGetClient.data.body.identity == values.identity) {
 			finalOrder = {
 				cart: cart,
-				client: values,
+				client: resultGetClient.data.body,
 				fromLocal: true,
 				totalPriceOrder: totalPrice,
 			};
+		} else {
+			values.id = 0;
+			console.log(values);
+			console.log(cart);
+			const createClient = await createUserRequest(values);
+			console.log("createcliente", createClient);
+			if(createClient.status === 201) {
+			values.id = createClient.data.body.idClient;
+				finalOrder = {
+					cart: cart,
+					client: values,
+					fromLocal: true,
+					totalPriceOrder: totalPrice,
+				};
+			}
+		}
+
+		// values.id = 0;
+		// console.log(values);
+		// console.log(cart);
+		// const createClient = await createUserRequest(values);
+		// console.log("createcliente", createClient);
+		// if (createClient.status === 201) {
+			// values.id = createClient.data.body.idClient;
+			// finalOrder = {
+			// 	cart: cart,
+			// 	client: values,
+			// 	fromLocal: true,
+			// 	totalPriceOrder: totalPrice,
+			// };
 
 			console.log("finalOrder: ", finalOrder);
 			const newOrder = await createNewOrderRequest(finalOrder);
 			console.log("newOrder", newOrder);
-		} else {
-			// Si no se ejecuta la consulta se muestra un mensaje de error
-			toastErrorCart();
-		}
+
+			if (newOrder && newOrder.data.body[0] == "true") {
+				setCart([]);
+				reset();
+				toastSuccessCart();
+			} else {
+				toastErrorCart();
+			}
+		// } else {
+		// 	// Si no se ejecuta la consulta se muestra un mensaje de error
+		// 	toastErrorCart();
+		// }
 	};
 
+	//
+	// Formulario para usuario no registrados
 	const onSubmitUserForm = async (values) => {
-		console.log("user info: ", values);
+		console.log("client info: ", values);
 		// Guardar los datos (unicamente tabla persona)
 		const client = {
 			id: 0,
@@ -224,27 +292,39 @@ function ShoppingCar({ closeMethod }) {
 			email: values.email,
 			address: values.address,
 			birth: values.birth,
+			area: values.area,
 			accionRequestForm: "prevPayForm",
 		};
 		const result = await createUserRequest(client);
-		
-		console.log("result of client with prevForm ",result);
-		// Validar si se actualizó o se inserto y agregar datos del cliente al carrito para efectuar la factura correctamente
+
+		console.log("result of client with prevForm ", result);
+
 		if (result && result.data.body.affectedRows == 1) {
-			finalOrder = {
-				cart: cart,
-				client: l,
-				fromLocal: true,
-				totalPriceOrder: totalPrice,
-			};
-			goToPay();
+			// Cambiar el id del cliente al recibido por la consulta
+
+			const resultGetClient = await showUserRequest({ id: client.identity });
+			console.log("resultGet client : ", resultGetClient);
+			if (resultGetClient) {
+				finalOrder = {
+					cart: cart,
+					client: resultGetClient.data.body,
+					fromLocal: false,
+					totalPriceOrder: totalPrice,
+				};
+				console.log("final order before goTopay: ", finalOrder);
+				goToPay();
+			} else {
+				toastErrorCart();
+			}
 		} else if (result && result.data.body.identity == client.identity) {
 			finalOrder = {
 				cart: cart,
 				client: result.data.body,
+				fromLocal: false,
 				totalPriceOrder: totalPrice,
 			};
-			// cart.client = result.data.body;
+			finalOrder.client.area = values.area;
+
 			goToPay();
 		} else {
 			toastErrorCart();
@@ -473,6 +553,8 @@ function ShoppingCar({ closeMethod }) {
 						{errors.identity && (
 							<p className="notice">{errors.identity.message}</p>
 						)}
+						<br />
+						<br />
 						{cart && cart.length > 0 ? (
 							<button className="btn-shopping-car">Agregar</button>
 						) : (
@@ -646,6 +728,29 @@ function ShoppingCar({ closeMethod }) {
 							</div>
 							{errors.phone && <p className="notice">{errors.phone.message}</p>}
 
+							<span className="font-small-desc">
+								Selecciona el area donde te encuentras
+							</span>
+							<div className="form-group-select">
+								<select
+									className="form-control"
+									{...register("area", {
+										required: {
+											value: true,
+											message: "Selecciona el area donde te encuentras",
+										},
+									})}
+								>
+									{deliveries &&
+										deliveries.map((area) => (
+											<option key={area.id} value={area.id}>
+												{area.deliveryDescription}
+											</option>
+										))}
+								</select>
+							</div>
+							{errors.area && <p className="notice">{errors.area.message}</p>}
+
 							<div className="input-group">
 								<label htmlFor="address">
 									<i className="bi bi-house"></i>
@@ -718,7 +823,7 @@ function ShoppingCar({ closeMethod }) {
 					</div>
 				</ModalTemplate>
 			)}
-			<Toaster position="top-left" />
+			{/* <Toaster position="top-left" /> */}
 		</div>
 	);
 }

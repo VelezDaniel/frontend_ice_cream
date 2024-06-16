@@ -5,6 +5,7 @@ import { IoClose } from "react-icons/io5";
 import { useAuth } from "../../context/AuthContext";
 import logoImg from "../../assets/imgs/helarticologo2.png";
 import { updatePersonRequest } from "../../api/users";
+import { showDeliveriesRequest } from "../../api/deliveries";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
 import { useState, useEffect } from "react";
@@ -14,6 +15,7 @@ import { toast, Toaster } from "sonner";
 function UserSettings({ closeMethod, dashChange, onAction }) {
 	const navigate = useNavigate();
 	const [updateModal, setUpdateModal] = useState(false);
+	const [deliveries, setDeliveries] = useState(null);
 	const { user, errors: registerErrors, logout } = useAuth();
 	const {
 		register,
@@ -41,10 +43,20 @@ function UserSettings({ closeMethod, dashChange, onAction }) {
 			setValue("editEmail", user.email);
 			setValue("editPhone", user.phone);
 			setValue("editAddress", user.address);
+			setValue("editArea", user.area);
 		}
 	}, [user]);
 
 	useEffect(() => {}, [dashChange]);
+
+	useEffect(() => {
+		const showDeliveries = async () => {
+			const result = await showDeliveriesRequest();
+			console.log("result deliveira; ", result);
+			setDeliveries(result.data.body);
+		};
+		showDeliveries();
+	}, []);
 
 	useEffect(() => {
 		const showToast = () => {
@@ -72,6 +84,7 @@ function UserSettings({ closeMethod, dashChange, onAction }) {
 			lastName: values.editLastName,
 			phone: values.editPhone === user.phone ? null : values.editPhone,
 			address: values.editAddress,
+			area: values.editArea,
 			email: values.editEmail === user.email ? null : values.editEmail,
 		};
 
@@ -219,6 +232,30 @@ function UserSettings({ closeMethod, dashChange, onAction }) {
 					{errors.editAddress && (
 						<p className="notice">{errors.editAddress.message}</p>
 					)}
+
+					<span className="font-small-desc">
+						Selecciona el area donde te encuentras
+					</span>
+					<div className="form-group-select">
+						<select
+							defaultValue={user.area}
+							className="form-control"
+							{...register("area", {
+								required: {
+									value: true,
+									message: "Selecciona el area donde te encuentras",
+								},
+							})}
+						>
+							{deliveries &&
+								deliveries.map((area) => (
+									<option key={area.id} value={area.id}>
+										{area.deliveryDescription}
+									</option>
+								))}
+						</select>
+					</div>
+					{errors.area && <p className="notice">{errors.area.message}</p>}
 					<input
 						type="submit"
 						className="btn-enviar"

@@ -1,7 +1,7 @@
 @import url("../../index.css");
 
 .user-container {
-	height: auto;
+	height: 100vh;
 	width: 26%;
 	background-color: var(--bg-cards);
 	display: flex;
