@@ -101,8 +101,10 @@ export const AuthProvider = ({ children }) => {
 
 			console.log("setError: ", errors);
 			if (error.response && error.response.data) {
-				const errorMessage = Array.isArray(error.response.data) ? error.response.data[0] : error.response.data.message || "Error desconocido";
-				setErrors([error]);
+				const errorMessage = Array.isArray(error.response.data) ? error.response.data[0] : error.response.data.body || "Error desconocido";
+				console.log(errorMessage)
+				setErrors([errorMessage]);
+				console.log(errors)
 			} else {
 				setErrors(["Unexpected error ocurred"]);
 			}

@@ -49,6 +49,7 @@ function ShoppingCar({ closeMethod }) {
 		formState: { errors },
 	} = useForm();
 
+	// Cart Functions
 	const quantity = cart.reduce((accumulator, current) => {
 		console.log("CART: ", cart);
 		return accumulator + current.quantity;
@@ -236,8 +237,8 @@ function ShoppingCar({ closeMethod }) {
 			console.log(cart);
 			const createClient = await createUserRequest(values);
 			console.log("createcliente", createClient);
-			if(createClient.status === 201) {
-			values.id = createClient.data.body.idClient;
+			if (createClient.status === 201) {
+				values.id = createClient.data.body.idClient;
 				finalOrder = {
 					cart: cart,
 					client: values,
@@ -253,25 +254,25 @@ function ShoppingCar({ closeMethod }) {
 		// const createClient = await createUserRequest(values);
 		// console.log("createcliente", createClient);
 		// if (createClient.status === 201) {
-			// values.id = createClient.data.body.idClient;
-			// finalOrder = {
-			// 	cart: cart,
-			// 	client: values,
-			// 	fromLocal: true,
-			// 	totalPriceOrder: totalPrice,
-			// };
+		// values.id = createClient.data.body.idClient;
+		// finalOrder = {
+		// 	cart: cart,
+		// 	client: values,
+		// 	fromLocal: true,
+		// 	totalPriceOrder: totalPrice,
+		// };
 
-			console.log("finalOrder: ", finalOrder);
-			const newOrder = await createNewOrderRequest(finalOrder);
-			console.log("newOrder", newOrder);
+		console.log("finalOrder: ", finalOrder);
+		const newOrder = await createNewOrderRequest(finalOrder);
+		console.log("newOrder", newOrder);
 
-			if (newOrder && newOrder.data.body[0] == "true") {
-				setCart([]);
-				reset();
-				toastSuccessCart();
-			} else {
-				toastErrorCart();
-			}
+		if (newOrder && newOrder.data.body[0] == "true") {
+			setCart([]);
+			reset();
+			toastSuccessCart();
+		} else {
+			toastErrorCart();
+		}
 		// } else {
 		// 	// Si no se ejecuta la consulta se muestra un mensaje de error
 		// 	toastErrorCart();
@@ -473,7 +474,7 @@ function ShoppingCar({ closeMethod }) {
 				) : (
 					<div className="container-notice-shop">
 						<h4>No has agregado ningún producto aún</h4>
-						<button className="add-to-cart-shop">
+						<button onClick={() => navigate("/products")} className="add-to-cart-shop">
 							<LiaIceCreamSolid size={38} />
 							Agregar
 							<LiaIceCreamSolid size={38} />

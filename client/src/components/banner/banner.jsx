@@ -23,12 +23,12 @@ function Banner() {
 			</p>
 			<div className="container-btn">
 				{user && user.name ? (
-					<button className="btn btn-portfolio" onClick={() => handleClickProducts}>
+					<button className="btn btn-portfolio" onClick={() => navigate("/products")}>
 						Ver productos
 						<i className="bi bi-arrow-right-short arrow"></i>
 					</button>
 				) : (
-					<button className="btn btn-portfolio" onClick={() => handleClick}>
+					<button className="btn btn-portfolio" onClick={() => handleClick()}>
 						Registrarse
 						<i className="bi bi-arrow-right-short arrow"></i>
 					</button>

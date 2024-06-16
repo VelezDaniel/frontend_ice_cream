@@ -21,6 +21,10 @@ function LoginPage() {
 	});
 
 	useEffect(() => {
+		console.log(signinErrors);
+	}, [signinErrors])
+
+	useEffect(() => {
 		if (isAuthenticated && user && user.role) {
 			if(user.state !== "ACTIVO") {
 				logout();
@@ -99,7 +103,7 @@ function LoginPage() {
 						)}
 						{signinErrors.map((error, i) => (
 							<p className="notice" key={i}>
-								{error.body}
+								{error}
 							</p>
 						))}
 						<input className="btn-Ingresar" type="submit" value="Ingresar" />

@@ -126,6 +126,7 @@ header {
     font-weight: 700;
     background-color: transparent;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .btn-carousel-card-product:hover {
