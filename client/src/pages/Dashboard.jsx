@@ -22,7 +22,6 @@ function Dashboard() {
 	const [dashContentChange, setDashContentChange] = useState(0);
 
 	const { user } = useAuth();
-	console.log("show User: ", user);
 	const navigate = useNavigate();
 
 	//  Seleccionar componente PEDIDOS

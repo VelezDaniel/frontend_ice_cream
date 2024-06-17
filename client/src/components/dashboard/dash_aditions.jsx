@@ -182,7 +182,6 @@ const DashAditions = ({ dashChange, onAction }) => {
 	const onSubmitEdit = (editingInfo) => {
 		return handleSubmit(async (values) => {
 			if (editingInfo === "adition") {
-				console.log("mekams: ", aditionInfo);
 				const editAdition = {
 					id: aditionInfo.id,
 					nameAdition: values.editNameAdition,
