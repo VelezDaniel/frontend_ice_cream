@@ -198,6 +198,7 @@ function ShoppingCar({ closeMethod }) {
 				fromLocal: true,
 				totalPriceOrder: totalPrice,
 			};
+			finalOrder.cart.finished = 0;
 		} else {
 			values.id = 0;
 			const createClient = await createUserRequest(values);
@@ -209,6 +210,7 @@ function ShoppingCar({ closeMethod }) {
 					fromLocal: true,
 					totalPriceOrder: totalPrice,
 				};
+				finalOrder.cart.finished = 0;
 			}
 		}
 
@@ -251,6 +253,7 @@ function ShoppingCar({ closeMethod }) {
 					fromLocal: false,
 					totalPriceOrder: totalPrice,
 				};
+				finalOrder.cart.finished = 0;
 				goToPay();
 			} else {
 				toastErrorCart();
@@ -263,7 +266,7 @@ function ShoppingCar({ closeMethod }) {
 				totalPriceOrder: totalPrice,
 			};
 			finalOrder.client.area = values.area;
-
+			finalOrder.cart.finished = 0;
 			goToPay();
 		} else {
 			toastErrorCart();
@@ -519,7 +522,6 @@ function ShoppingCar({ closeMethod }) {
 					title={"Elige tu forma de pago"}
 				>
 					<div className="box-payment-methods">
-						<h4>Puedes elegir solo una forma de pago</h4>
 						<div>
 							<button
 								onClick={() => handlerPaymentRedirect()}
@@ -527,7 +529,7 @@ function ShoppingCar({ closeMethod }) {
 							>
 								Pagar ahora
 							</button>
-							<button className="btn-shopping-car">Contra entrega</button>
+						
 						</div>
 					</div>
 				</ModalTemplate>
