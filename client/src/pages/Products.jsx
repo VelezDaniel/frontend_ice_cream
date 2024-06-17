@@ -17,7 +17,7 @@ function Products() {
 		const handleShowProducts = async () => {
 			try {
 				const items = await showProductsRequest();
-				console.log(items);
+				console.log("items: ",items);
 				const allItems = items.data.body;
 				const availableItems = allItems.filter(
 					(item) => item.state === "DISPONIBLE"

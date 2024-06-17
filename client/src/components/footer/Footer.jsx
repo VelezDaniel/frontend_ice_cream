@@ -1,7 +1,12 @@
 import "./footer.css";
 import logoImg from "../../assets/imgs/helarticologo2.png";
+import { useNavigate } from "react-router-dom";
 
 function Footer() {
+	const navigate = useNavigate();
+	const goToRegister = () => {
+		navigate("/register");
+	};
 	return (
 		<div className="content">
 			<div className="celda123">
@@ -24,7 +29,7 @@ function Footer() {
 					</div>
 				</div>
 				<div className="celda3 flex_center">
-					<button className="container-btn">
+					<button onClick={() => goToRegister()} className="container-btn">
 						<p>Registrate</p>
 						<i className="bi bi-arrow-right-circle"></i>
 					</button>
@@ -49,7 +54,7 @@ function Footer() {
 				<p>COPYRIGHT 2024</p>
 				<p>Todos los derechos de autor son reservados</p>
 				<p>Politica de privacidad</p>
-				<p id="top">Inicio</p>
+				<a href="#top">Inicio</a>
 			</div>
 		</div>
 	);

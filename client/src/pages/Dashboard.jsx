@@ -15,6 +15,7 @@ import UserSettings from "../components/user_settings/UserSettings";
 
 // ** MATERIAL IMPORTS **
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import Tooltip from "@mui/material/Tooltip";
 
 function Dashboard() {
 	const [activeComponent, setActiveComponent] = useState(null);
@@ -28,32 +29,26 @@ function Dashboard() {
 	//  Seleccionar componente PEDIDOS
 	const handleOrdersComponent = () => {
 		showComponent("DashOrders");
-		// updateDashBoardAction("DashOrders");
 	};
-	// ! Seleccionar componente VENTAS
 
 	// Seleccionar componente RESERVAS
 	const handleBookingsComponent = () => {
 		showComponent("DashBookings");
-		// updateDashBoardLocation("DashBookings");
 	};
 
 	//  Seleccionar componente Usuarios
 	const handleUsersListComponent = () => {
 		showComponent("DashUsers");
-		// updateDashBoardLocation("DashUsers");
 	};
 
 	// Seleccionar componente PORTAFOLIO
 	const handlePortfolioComponent = () => {
 		showComponent("DashPortfolio");
-		// updateDashBoardLocation("DashPortfolio");
 	};
 
 	// Seleccionar componente ADICIONES
 	const handleAditionComponent = () => {
 		showComponent("DashAditions");
-		// updateDashBoardLocation("DashAditions");
 	};
 
 	const redirectHome = () => {
@@ -97,85 +92,81 @@ function Dashboard() {
 				<div className="style-panel">
 					<div className="wrap-sup">
 						<h2 className="rol-text title">Panel de Gestión</h2>
-						{/* <button className="btn-mostrarmenos">
-							<div className="icon-container1">
-								<i className="bi bi-arrow-right"></i>
-							</div>
-							<span className="btn-text">Mostrar Menos</span>
-						</button> */}
-						<button
-							className="btn-lateral-dash top-space"
-							onClick={handleOrdersComponent}
-						>
-							<div className="icon-container">
-								<IoIceCreamOutline size={28} />
-							</div>
-							<span className="btn-text">Pedidos</span>
-						</button>
-
-						{/* seccion permitida solo para el administrador */}
-						{user && (user.role === "ADMIN" || user.role === "TESORERO") && (
-							<button className="btn-lateral-dash">
+						<Tooltip title="Pedidos" placement="right" enterDelay={500}>
+							<button
+								className="btn-lateral-dash top-space"
+								onClick={handleOrdersComponent}
+							>
 								<div className="icon-container">
-									<i className="bi bi-cash-coin"></i>
+									<IoIceCreamOutline size={28} />
 								</div>
-								<span className="btn-text">Ventas</span>
+								<span className="btn-text">Pedidos</span>
 							</button>
-						)}
+						</Tooltip>
 
 						{/* Seccion deshabilitada para clientes y domiciliarios */}
 						{user &&
 							user.role !== "CLIENTE" &&
 							user.role !== "DOMICILIARIO" && (
 								<>
-									<button
-										className="btn-lateral-dash"
-										onClick={handleBookingsComponent}
-									>
-										<div className="icon-container">
-											<i className="bi bi-journal-check"></i>
-										</div>
-										<span className="btn-text">Reservas</span>
-									</button>
-									<button
-										className="btn-lateral-dash"
-										onClick={handleUsersListComponent}
-									>
-										<div className="icon-container">
-											<i className="bi bi-people"></i>
-										</div>
-										<span className="btn-text">Usuarios</span>
-									</button>
-									<button
-										className="btn-lateral-dash"
-										onClick={handlePortfolioComponent}
-									>
-										<div className="icon-container">
-											<i className="bi bi-briefcase"></i>
-										</div>
-										<span className="btn-text">Portafolio</span>
-									</button>
-									<button
-										className="btn-lateral-dash"
-										onClick={handleAditionComponent}
-									>
-										<div className="icon-container">
-											<TbCandy />
-										</div>
-										<span className="btn-text">Adiciones</span>
-									</button>
+									<Tooltip title="Reservas" placement="right" enterDelay={500}>
+										<button
+											className="btn-lateral-dash"
+											onClick={handleBookingsComponent}
+										>
+											<div className="icon-container">
+												<i className="bi bi-journal-check"></i>
+											</div>
+											<span className="btn-text">Reservas</span>
+										</button>
+									</Tooltip>
+									<Tooltip title="Usuarios" placement="right" enterDelay={500}>
+										<button
+											className="btn-lateral-dash"
+											onClick={handleUsersListComponent}
+										>
+											<div className="icon-container">
+												<i className="bi bi-people"></i>
+											</div>
+											<span className="btn-text">Usuarios</span>
+										</button>
+									</Tooltip>
+									<Tooltip title="Portafolio" placement="right" enterDelay={500}>
+										<button
+											className="btn-lateral-dash"
+											onClick={handlePortfolioComponent}
+										>
+											<div className="icon-container">
+												<i className="bi bi-briefcase"></i>
+											</div>
+											<span className="btn-text">Portafolio</span>
+										</button>
+									</Tooltip>
+									<Tooltip title="Adiciones y Sabores" placement="right" enterDelay={500}>
+										<button
+											className="btn-lateral-dash"
+											onClick={handleAditionComponent}
+										>
+											<div className="icon-container">
+												<TbCandy />
+											</div>
+											<span className="btn-text">Adiciones</span>
+										</button>
+									</Tooltip>
 								</>
 							)}
 
-						<button
-							className="btn-lateral-dash center-text"
-							onClick={redirectHome}
-						>
-							<div className="icon-container">
-								<HomeOutlinedIcon sx={{ width: 36, height: 36 }} />
-							</div>
-							<span className="btn-text">Home</span>
-						</button>
+						<Tooltip title="Principal" placement="right" enterDelay={500}>
+							<button
+								className="btn-lateral-dash center-text"
+								onClick={redirectHome}
+							>
+								<div className="icon-container">
+									<HomeOutlinedIcon sx={{ width: 36, height: 36 }} />
+								</div>
+								<span className="btn-text">Home</span>
+							</button>
+						</Tooltip>
 					</div>
 
 					<div className="user-dashboard">
@@ -197,9 +188,11 @@ function Dashboard() {
 						<h1>HELARTICO</h1>
 					</div>
 					<div className="icons h-content">
-						<a className="nav-item nav-icon" onClick={openSettingsUser}>
-							<i className="bi bi-person icon-person"></i>
-						</a>
+						<Tooltip title="Ajustes" placement="left" enterDelay={500}>
+							<a className="nav-item nav-icon" onClick={openSettingsUser}>
+								<i className="bi bi-person icon-person"></i>
+							</a>
+						</Tooltip>
 					</div>
 				</div>
 				<div className="div-specific-content">

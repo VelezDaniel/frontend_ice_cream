@@ -11,6 +11,7 @@ const theme = createTheme({
       bgMediumLight: '#8efbff',
       btnHomeHover: '#dfdfdf67',
       colorBtnsForms: '#0D5D7D',
+      colorDisable: '#4c8bd4',
     },
     secondary: {
       light: '#0c7676',
@@ -21,6 +22,7 @@ const theme = createTheme({
     },
     error: {
       main: '#ff3131',
+      dark: '#703131',
     },
   },
 });

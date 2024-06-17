@@ -133,6 +133,7 @@ function NavBar({ navBarType }) {
 	return (
 		<>
 			<div>
+				<div id="top"></div>
 				<nav className={`nav-navBar ${scroll ? "navbar active" : "navbar"}`}>
 					<button className="open-menu" onClick={openMenu}>
 						<IoMenu size={36} />

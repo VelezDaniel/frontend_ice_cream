@@ -7,7 +7,13 @@ export const showOrdersByUser = async (userId) => axios.get(`/orders/${userId}`)
 
 export const createOrderProductRequest = async (order) => axios.post('/orders', order);
 
+// ? order complete
 export const createNewOrderRequest = async (newOrder) => axios.post('/orders/new-order', newOrder);
+
+export const updateOrderInformationRequest = async (order) => axios.patch('/orders/update-order', order);
+
+// export const showOrderStates = async () => axios.get('orders/orders-states');
+// export const showPayedStates = async () => axios.get('orders/orders-states');
 
 export const deleteOrderRequest = async (order) => {
   try {

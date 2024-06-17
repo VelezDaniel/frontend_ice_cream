@@ -92,7 +92,15 @@
 	padding: 20px 0;
 }
 
-.celda5 > p {
+.celda5 a {
+	transition: all 0.3s ease;
+}
+
+.celda5 a:hover {
+	color: var(--mainColor);
+}
+
+.celda5 > p, .celda5 a {
 	font-weight: 600;
 }
 
@@ -150,7 +158,7 @@
 		padding: 20px 38px;
 	}
 
-	.celda5 p {
+	.celda5 p, .celda5 a {
 		font-size: 14px;
 	}
 }
@@ -217,7 +225,7 @@
 		font-size: 18px;
 	}
 
-	.celda5 p {
+	.celda5 p, .celda5 a {
 		font-size: 10px;
 	}
 
