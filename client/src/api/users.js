@@ -6,7 +6,6 @@ export const showUserRequest = async (client) => {
 
   try {
     const result = await axios.get(`/person/${client.id}`, client);
-    console.log('result showUser: ', result)
     return result;
   } catch (error) {
     console.log('Error in users.js: ', error);
@@ -26,8 +25,7 @@ export const deleteUserRequest = async (user) => {
     const response = await axios.delete(`/person/${user.id}`, user);
     return response;
   } catch (error) {
-    // Manejar cualquier error que ocurra durante la solicitud
-    throw error; // Opcional: lanzar el error para que sea manejado por el código que llama a esta función
+    throw error;
   }
 };
 

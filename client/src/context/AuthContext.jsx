@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { registerRequest, loginRequest, verifyTokenRequest } from "../api/auth";
 import { CartContext } from "./ShoppingCartContext";
 import Cookies from "js-cookie";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 export const AuthContext = createContext();
 
@@ -34,11 +34,6 @@ export const AuthProvider = ({ children }) => {
 		}
 	}, [errors]);
 
-	// Revisar contenido de user (al ser asincrono se debe usar useEffect de esta manera)
-	useEffect(() => {
-		console.log("User global: ", user);
-	}, [user]);
-
 	useEffect(() => {
 		const showToast = () => {
 			if (actionTime === 2 && user === null) {
@@ -62,15 +57,11 @@ export const AuthProvider = ({ children }) => {
 	const signup = async (userData) => {
 		try {
 			const res = await registerRequest(userData);
-			console.log("res_register in authContext: ", res);
 			const userInfo = res.data.body;
-			console.log("UserInfo: ", userInfo);
 			setUser(userInfo);
 			return res.data;
 			// setIsAuthenticated(true);
 		} catch (error) {
-			console.log(error);
-			console.log(error.response.data);
 			setErrors(error.response.data);
 		}
 	};
@@ -79,19 +70,11 @@ export const AuthProvider = ({ children }) => {
 	const signin = async (userCredentials) => {
 		try {
 			const result = await loginRequest(userCredentials);
-			console.log(
-				"respuesta de loguinRequest: ",
-				result,
-				"res.data = ",
-				result.data
-			);
 
 			if (result.status === 200) {
 				const userInfo = result.data.body;
-				console.log(`UserInfo:  ${userInfo}`);
 				setUser(userInfo);
 				setActionTime(1);
-				console.log("user credentials from authcontext: ", userCredentials);
 				setIsAuthenticated(true);
 			} else {
 				setErrors([result.message]);
@@ -101,10 +84,10 @@ export const AuthProvider = ({ children }) => {
 
 			console.log("setError: ", errors);
 			if (error.response && error.response.data) {
-				const errorMessage = Array.isArray(error.response.data) ? error.response.data[0] : error.response.data.body || "Error desconocido";
-				console.log(errorMessage)
+				const errorMessage = Array.isArray(error.response.data)
+					? error.response.data[0]
+					: error.response.data.body || "Error desconocido";
 				setErrors([errorMessage]);
-				console.log(errors)
 			} else {
 				setErrors(["Unexpected error ocurred"]);
 			}
@@ -129,9 +112,6 @@ export const AuthProvider = ({ children }) => {
 
 			try {
 				const result = await verifyTokenRequest(cookies.token);
-				console.log(cookies.token);
-				console.log("res: ", result);
-				console.log("res.data: --> ", result.data.body);
 
 				if (!result.data) return setIsAuthenticated(false);
 				const userInformation = result.data.body;
@@ -139,7 +119,6 @@ export const AuthProvider = ({ children }) => {
 				setUser(userInformation);
 				setLoading(false);
 			} catch (error) {
-				console.log("Error in catch from verifyToken UseEffect", error);
 				setIsAuthenticated(false);
 				setUser(null);
 				setLoading(false);
@@ -170,7 +149,6 @@ export const AuthProvider = ({ children }) => {
 				loading,
 			}}
 		>
-			{/* <Toaster /> */}
 			{children}
 		</AuthContext.Provider>
 	);

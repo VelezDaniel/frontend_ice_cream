@@ -12,9 +12,6 @@ export const createNewOrderRequest = async (newOrder) => axios.post('/orders/new
 
 export const updateOrderInformationRequest = async (order) => axios.patch('/orders/update-order', order);
 
-// export const showOrderStates = async () => axios.get('orders/orders-states');
-// export const showPayedStates = async () => axios.get('orders/orders-states');
-
 export const deleteOrderRequest = async (order) => {
   try {
     const response =  await axios.delete(`/orders/${order.id}`, order);

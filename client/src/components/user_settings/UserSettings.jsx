@@ -1,6 +1,5 @@
 import "./usersettings.css";
 import { LuPencilLine } from "react-icons/lu";
-// import { IoExitOutline } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import { useAuth } from "../../context/AuthContext";
 import logoImg from "../../assets/imgs/helarticologo2.png";
@@ -52,7 +51,6 @@ function UserSettings({ closeMethod, dashChange, onAction }) {
 	useEffect(() => {
 		const showDeliveries = async () => {
 			const result = await showDeliveriesRequest();
-			console.log("result deliveira; ", result);
 			setDeliveries(result.data.body);
 		};
 		showDeliveries();
@@ -90,25 +88,9 @@ function UserSettings({ closeMethod, dashChange, onAction }) {
 
 		try {
 			const result = await updatePersonRequest(personObject);
-			if (!result) {
-				console.log("Actualizacion no realizada");
-			}
-			console.log("result: ", result);
 			setUpdateModal(false);
 			reset();
 			onAction("editCurrentUserInfo");
-			// if (result.data.body[0] === "Data updated succesfully") {
-			// 	setResToast({
-			// 		state: true,
-			// 		message: "Sabor actualizado",
-			// 	});
-			// } else {
-			// 	setResToast({
-			// 		state: false,
-			// 		message: "No se pudo actualizar el sabor. Vuelve a intentarlo.",
-			// 	});
-			// }
-			// window.location.reload();
 		} catch (error) {
 			console.logg(error);
 		}
@@ -119,7 +101,6 @@ function UserSettings({ closeMethod, dashChange, onAction }) {
 			<div className="modal-content-body">
 				<h4>Ingresa los datos del usuario</h4>
 				<form className="dashboard-form" onSubmit={onSubmitEditPersonalInfo}>
-					{/* <input type="hidden" {...register("userId")} value={user.id} /> */}
 					<span className="span-edit-form">Nombres</span>
 					<div className="input-group">
 						<input

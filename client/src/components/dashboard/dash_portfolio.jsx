@@ -4,11 +4,10 @@ import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
-import {toast, Toaster} from "sonner";
+import {toast} from "sonner";
 
 import ProductImgBuilder from "../../utils/ProductImgBuilder";
 
-// import { useAuth } from "../../context/AuthContext";
 import {
 	showProductsRequest,
 	createProductRequest,
@@ -40,7 +39,6 @@ function DashPortfolio({ dashChange, onAction }) {
 			try {
 				const items = await showProductsRequest();
 				// Establecer usuarios en estado
-				console.log(items);
 				setProductsData(items.data.body);
 			} catch (error) {
 				console.log("Error in dash_portfolio: ", error);
@@ -95,10 +93,8 @@ function DashPortfolio({ dashChange, onAction }) {
 
 	// Add new product
 	const onSubmit = handleSubmit(async (values) => {
-		console.log(values);
 		values.id = 0;
 		const result = await createProductRequest(values);
-		console.log("result from dash_portfolio: ", result);
 		setAddModal(false);
 		if (result.data.body[0] === "Data saved succesfully") {
 			setResToast({
@@ -117,8 +113,6 @@ function DashPortfolio({ dashChange, onAction }) {
 	});
 
 	const onSubmitEdit = handleSubmit(async (values) => {
-		console.log("values for edit: ", values);
-		console.log("mekams: ", productInfo);
 		const editProduct = {
 			id: productInfo.id,
 			nameProduct: values.editNameProduct,
@@ -132,7 +126,6 @@ function DashPortfolio({ dashChange, onAction }) {
 
 		try {
 			const editResult = await createProductRequest(editProduct);
-			console.log("editResult in dashportfolio: ", editResult);
 			setEditModal(false);
 			reset();
 
@@ -159,7 +152,6 @@ function DashPortfolio({ dashChange, onAction }) {
 			const result = await deleteProductRequest(productData);
 			if (result) {
 				setDeleteModal(false);
-				console.log("Registro eliminado: ", result);
 				setEditModal(false);
 
 				if (result.data.body === "Information deleted") {
@@ -586,7 +578,6 @@ function DashPortfolio({ dashChange, onAction }) {
 					</div>
 				))}
 			</div>
-			{/* <Toaster position="top-right" /> */}
 		</div>
 	);
 }

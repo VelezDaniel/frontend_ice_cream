@@ -8,7 +8,6 @@ import DashOrders from "../components/dashboard/dash_orders";
 import DashAditions from "../components/dashboard/dash_aditions";
 import { useEffect, useState } from "react";
 import { IoIceCreamOutline } from "react-icons/io5";
-// import { LuPencilLine } from "react-icons/lu";
 import { TbCandy } from "react-icons/tb";
 import { useAuth } from "../context/AuthContext";
 import UserSettings from "../components/user_settings/UserSettings";
@@ -173,13 +172,6 @@ function Dashboard() {
 						<p className="rol-text">HELARTICO</p>
 						<p className="rol-text-name">Ice cream bussines</p>
 					</div>
-
-					{/* <button className="btn-cerrarsesion">
-						<div className="icon-container1">
-							<i className="bi bi-box-arrow-right"></i>
-						</div>
-						Cerrar Sesión
-					</button> */}
 				</div>
 			</div>
 			<div className="contanier-nav-component">

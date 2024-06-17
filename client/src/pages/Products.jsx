@@ -17,7 +17,6 @@ function Products() {
 		const handleShowProducts = async () => {
 			try {
 				const items = await showProductsRequest();
-				console.log("items: ",items);
 				const allItems = items.data.body;
 				const availableItems = allItems.filter(
 					(item) => item.state === "DISPONIBLE"
@@ -37,7 +36,6 @@ function Products() {
 			separatedProducts[product.productType] = [];
 		}
 		separatedProducts[product.productType].push(product);
-		console.log("separate: ", separatedProducts);
 	});
 
 	useEffect(() => {
@@ -50,7 +48,6 @@ function Products() {
 
 	const handleProduct = (product) => {
 		setShowModalProductSelected(true);
-		console.log("product from handle ", product);
 		setProductSelected(product);
 	};
 

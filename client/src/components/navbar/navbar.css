@@ -38,11 +38,6 @@
 	color: var(--lightTitles);
 }
 
-/* .welcome-menu p {
-	color: var(--grayFonts);
-	font-size: 22px;
-} */
-
 /* NAV */
 nav {
 	position: fixed;
@@ -225,12 +220,6 @@ nav {
 	.nav-navBar .open-menu:hover {
 		background-color: var(--btn-home-hover);
 	}
-
-	/* .nav-navBar .main-menu li {
-		display: flex;
-		align-items: center;
-		padding: 6px 16px;
-	} */
 
 	.nav-navBar .main-menu li:hover {
 		color: var(--grayFonts);

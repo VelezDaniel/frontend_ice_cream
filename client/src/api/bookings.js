@@ -7,7 +7,6 @@ export const showBookingsRequest = async () => axios.get(`/bookings`);
 export const showUserBookingsRequest = async (user) => {
   try {
     const result = await axios.get(`/bookings/userbooks/${user.id}`, user);
-    console.log('result bookings user: ', result)
     return result;
   } catch (error) {
     console.log('Error in bookings.js: ', error);
@@ -15,8 +14,6 @@ export const showUserBookingsRequest = async (user) => {
 }
 
 export const createBookingRequest = async (booking) => axios.post('/bookings', booking);
-
-// export const updateBookingRequest = async (booking) => axios.patch('/bookings', booking);
 
 export const deleteBookingRequest = async (booking) => {
   try {

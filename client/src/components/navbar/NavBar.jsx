@@ -15,8 +15,6 @@ import {
 } from "react-icons/io5";
 import { HiOutlineHome } from "react-icons/hi";
 import { HiOutlineBuildingStorefront } from "react-icons/hi2";
-// import { useNavigate } from "react-router-dom";
-// import { Link } from 'react-router-dom';
 //  ** IMPORTS MATERIAL UI
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
@@ -38,17 +36,13 @@ function NavBar({ navBarType }) {
 		},
 	}));
 
-	// const navigate = useNavigate();
 	const [scroll, setScroll] = useState(false);
 	const [menuVisible, setMenuVisible] = useState(false);
 	const [userSetting, setUserSetting] = useState(false);
 	const [noneUserSetting, setNoneUserSetting] = useState(false);
 	const [shoppingCar, setShoppingCar] = useState(false);
 
-	const { isAuthenticated, user } = useAuth();
-
-	// DOM object
-	// const mainDiv = document.getElementById("super-main-container-home");
+	const { user } = useAuth();
 
 	useEffect(() => {
 		if (navBarType === "NoHome") {
@@ -84,10 +78,8 @@ function NavBar({ navBarType }) {
 	const openSettingsUser = () => {
 		console.log(user);
 		if (user === null) {
-			// mainDiv.style.overflowY = "hidden";
 			setNoneUserSetting(true);
 		} else {
-			// mainDiv.style.overflowY = "hidden";
 			setUserSetting(true);
 		}
 	};

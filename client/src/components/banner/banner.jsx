@@ -9,10 +9,6 @@ function Banner() {
 		navigate("/register");
 	};
 
-    const handleClickProducts = () => {
-		navigate("/products");
-	};
-
 	return (
 		<div className="welcome-menu">
 			<h3>Deliciosos helados generan mágicas experiencias</h3>
@@ -23,7 +19,10 @@ function Banner() {
 			</p>
 			<div className="container-btn">
 				{user && user.name ? (
-					<button className="btn btn-portfolio" onClick={() => navigate("/products")}>
+					<button
+						className="btn btn-portfolio"
+						onClick={() => navigate("/products")}
+					>
 						Ver productos
 						<i className="bi bi-arrow-right-short arrow"></i>
 					</button>

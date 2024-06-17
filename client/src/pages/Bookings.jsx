@@ -9,7 +9,7 @@ import {
 } from "../api/bookings";
 import ModalTemplate from "../components/modal/ModalTemplate";
 // Sonner
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 // Material UI
 import Table from "@mui/material/Table";
@@ -85,10 +85,7 @@ function Bookings() {
 				if (user != null) {
 					const items = await showUserBookingsRequest(user);
 					// Establecer usuarios en estado
-					console.log(items);
 					setUserBooks(items.data.body);
-				} else {
-					console.log("user null", user);
 				}
 			} catch (error) {
 				console.log("Error in useEffect books: ", error);
@@ -110,8 +107,6 @@ function Bookings() {
 
 	const onSubmit = async (data) => {
 		let info;
-		console.log(data); // Imprime todos los datos del formulario
-		console.log("user book: ", user);
 		if (!user) {
 			info = {
 				id: 0,
@@ -134,7 +129,6 @@ function Bookings() {
 		}
 
 		const addBook = await createBookingRequest(info);
-		console.log("addBook response: ", addBook);
 		reset();
 		if (addBook.data.body[0] === "Data saved succesfully") {
 			setResToast({
@@ -152,7 +146,6 @@ function Bookings() {
 	};
 
 	const openModalEdit = (index) => {
-		console.log(index);
 		setEditModal(true);
 		setGetIndex(index);
 		setselectedObjectIndex(index);
@@ -167,7 +160,6 @@ function Bookings() {
 	};
 
 	const onSubmitEdit = handleSubmit(async (values) => {
-		console.log("values for edit: ", values);
 		try {
 			const infoBook = {
 				id: values.id,
@@ -178,7 +170,6 @@ function Bookings() {
 				idClient: user.id,
 			};
 			const result = await createBookingRequest(infoBook);
-			console.log(result);
 			if (resultPass.data.body[0] === "Data updated succesfully") {
 				setResToast({
 					title: "¡Muy bien!",
@@ -200,7 +191,6 @@ function Bookings() {
 		try {
 			const result = await deleteBookingRequest(bookData);
 			setDeleteModal(false);
-			console.log("Registro eliminado: ", result);
 			if (result.data.body === "Information deleted") {
 				setResToast({
 					title: "Hasta tu próxima reservación",

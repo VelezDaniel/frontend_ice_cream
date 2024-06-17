@@ -1,9 +1,5 @@
 @import url("../../index.css");
 
-/* .superBody{
-    position: relative;
-    height: 100%;
-} */
 .superBody{
     background-color: var(--lightTitles);
     font-size: 14px;
@@ -61,7 +57,6 @@ header {
     height: 184px;
 }
 
-
 .carousel-card-product-content{
     width: 100%;
     padding: 4px 18px;
@@ -71,10 +66,6 @@ header {
 .carousel-card-p-subcontent {
     width: 100%;
 }
-/* .product-txt{
-    flex-basis: 50%;
-    text-align: left;
-} */
 
 .carousel-p-box {
     width: 100%;
@@ -82,7 +73,6 @@ header {
     height: fit-content;
     align-items: center;
     justify-content: space-between;
-    /* padding-right: 14px; */
 }
 
 .icon-star {

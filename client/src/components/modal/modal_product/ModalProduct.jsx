@@ -8,7 +8,6 @@ import ProductImgBuilder from "../../../utils/ProductImgBuilder";
 import { randomString } from "../../../utils/random.js";
 // CONTEXT
 import { CartContext } from "../../../context/ShoppingCartContext";
-
 // ** MATERIAL UI IMPORTS ** //
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -25,7 +24,6 @@ function ModalProduct({ product, setStateModal }) {
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
-	// const aditionChecked = watch("adition");
 
 	// CONTEXT
 	const [cart, setCart] = useContext(CartContext);
@@ -209,7 +207,6 @@ function ModalProduct({ product, setStateModal }) {
 						totalPrice: totalAditionPrice,
 					};
 				} else {
-					console.log("Adicion no encontrada");
 					return null;
 				}
 			});
@@ -229,7 +226,6 @@ function ModalProduct({ product, setStateModal }) {
 						nameFlavor: flavorObj.nameFlavor,
 					};
 				} else {
-					console.log("sabor no ENCONTRADO!!!!");
 					return null;
 				}
 			});
@@ -241,7 +237,6 @@ function ModalProduct({ product, setStateModal }) {
 			data.description = `Descripción: ${data.description}.  SALSA: ${sauceSelected.sauceName}`;
 		}
 
-		console.log("information of product: ", data);
 		const parcialOrderPrice = priceCartItem + parseInt(product.price);
 		addToCart(data.id, data, parcialOrderPrice);
 		setStateModal(false);
@@ -430,13 +425,6 @@ function ModalProduct({ product, setStateModal }) {
 												</div>
 											</label>
 											{selectedAditions.includes(adition.id) && (
-												// <input
-												// 	className="input-adition-quantity"
-												// 	type="number"
-												// 	value={aditionQuantities[adition.id] || ""}
-												// 	onChange={handlerQuantityChange(adition.id)}
-												// 	placeholder="¿Cuantos?"
-												// />
 												<div className="form-group-select">
 													<select
 														className="form-control"

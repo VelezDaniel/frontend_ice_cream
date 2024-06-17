@@ -9,15 +9,12 @@ import { toast } from "sonner";
 
 const Payed = () => {
 	const [closeModal, setCloseModal] = useState(true);
-	// const [stateSuccesModal, setStateSuccesModal] = useState(false);
 	const [stateRequest, setStateRequest] = useState(false);
 
 	const { user } = useAuth();
 	const navigate = useNavigate();
 
 	const showToast = (orderGenerated) => {
-		// const btn = document.getElementById(idButton);
-		// btn.addEventListener("click", () => {});
 		if (orderGenerated && orderGenerated.data.status == 201) {
 			toast.success("Accion Exitosa", {
 				className: "toast-success-style",
@@ -38,9 +35,7 @@ const Payed = () => {
 	};
 
 	const handleCreateOrder = async (finalOrder) => {
-		console.log("finalOrder: ", finalOrder);
 		const newOrder = await createNewOrderRequest(finalOrder);
-		console.log("newOrder in payment", newOrder);
 		if (newOrder) {
 			setStateRequest(true);
 			showToast(newOrder);
@@ -51,8 +46,6 @@ const Payed = () => {
 			console.log("ERROR EN handleCreateOrder");
 		}
 	};
-
-	// const closePaymentPage = () => {};
 
 	useEffect(() => {
 		if (closeModal === false) {
@@ -67,8 +60,6 @@ const Payed = () => {
 
 			if (existentFinalOrder) {
 				finalOrderData = JSON.parse(existentFinalOrder);
-				console.log("final order: ", finalOrderData);
-
 				handleCreateOrder(finalOrderData);
 			} else if (existentCart && existentTotalPrice) {
 				const arrayExistentCart = JSON.parse(existentCart);

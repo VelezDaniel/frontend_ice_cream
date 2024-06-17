@@ -9,7 +9,6 @@ import Products from "./pages/Products";
 import Bookings from "./pages/Bookings";
 import Payment from "./pages/Payment";
 import CancelPayment from "./pages/CancelPayment";
-// import Banner from "./components/banner/banner";
 import { AuthProvider } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
@@ -28,7 +27,6 @@ function App() {
 						<Routes>
 							<Route path="/" element={<HomePage />} />
 							<Route path="/login" element={<LoginPage />} />
-							{/* <Route path="/banner" element={<Banner />} /> */}
 							<Route path="/register" element={<RegisterPage />} />
 							<Route path="/products" element={<Products />} />
 							<Route path="/book" element={<Bookings />} />

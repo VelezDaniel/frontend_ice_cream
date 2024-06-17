@@ -1,25 +1,17 @@
-// import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "./register.css";
 import logoImg from "../../assets/imgs/helarticologo2.png";
 import { createPassword } from "../../api/auth";
-// import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function CreatePassword({ insertId }) {
 	const navigate = useNavigate();
-
-	// const { updateStateAuthentication, isAuthenticated } = useAuth();
 	const {
 		register,
 		watch,
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
-
-	// const user = userId;
-	console.log("userId in pass: ", insertId);
-	// console.log("user: ", user);
 
 	const handleSubmitPass = handleSubmit(async (values) => {
 
@@ -30,26 +22,13 @@ function CreatePassword({ insertId }) {
 				confirmPassword: values.confirmPassword,
 			};
 
-			console.log("UserInfo:", userInfo);
-
 			const res = await createPassword(userInfo);
-			// updateStateAuthentication(true);
-			console.log("Response of createPassword:", res);
-			console.log("Response data of createPassword:", res.data);
 
 			if(res.data.body.message == "Data save succesfully") {
 				navigate("/login");
 			} else {
 				navigate("/register");
 			}
-			// console.log("Insert Id from createPassword:", res.data.item.insertId);
-
-			// setPassword("");
-
-			console.log(
-				`Insert Id (proviene de password form): ${insertId}, / UserInfo post query = ${userInfo}`
-			);
-
 
 		} catch (error) {
 			console.log("Error from createPassword: ", error);

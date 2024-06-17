@@ -19,7 +19,6 @@ const ComponentCarousel = () => {
 			try {
 				const items = await showProductsRequest();
 				// Establecer productos destacados
-				console.log(items);
 				setProducts(items.data.body);
 			} catch (error) {
 				console.log("Error in Carousel home: ", error);
@@ -30,13 +29,11 @@ const ComponentCarousel = () => {
 
 	const handleProduct = (product) => {
 		setShowModalProductSelected(true);
-		console.log("product from handle ", product);
 		setProductSelected(product);
 	};
 
 	const responsive = {
 		superLargeDesktop: {
-			// the naming can be any, depends on you.
 			breakpoint: { max: 4000, min: 3000 },
 			items: 5,
 		},

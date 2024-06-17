@@ -14,12 +14,11 @@ import { showDeliveriesRequest } from "../../api/deliveries";
 import ModalTemplate from "../modal/ModalTemplate";
 import { useAuth } from "../../context/AuthContext";
 import "./css/dash_users.css";
-// import { IoSearch } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
 import { LuCake } from "react-icons/lu";
 import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 // TOAST from SONNER
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 function DashUsers({ dashChange, onAction }) {
 	const [usersData, setUsersData] = useState([]);
@@ -43,7 +42,6 @@ function DashUsers({ dashChange, onAction }) {
 	const { errors: registerErrors } = useAuth();
 
 	const openModalEdit = (index) => {
-		console.log(index);
 		setEditModal(true);
 		setselectedObjectIndex(index);
 		setUserData(usersData[index]);
@@ -61,7 +59,6 @@ function DashUsers({ dashChange, onAction }) {
 			try {
 				const items = await showUsersRequest();
 				// Establecer usuarios en estado
-				console.log(items);
 				setUsersData(items.data.body);
 			} catch (error) {
 				console.log("Error in dash_users: ", error);
@@ -74,14 +71,12 @@ function DashUsers({ dashChange, onAction }) {
 	useEffect(() => {
 		const showDeliveries = async () => {
 			const result = await showDeliveriesRequest();
-			console.log("result deliveira; ", result);
 			setDeliveries(result.data.body);
 		};
 		showDeliveries();
 	}, []);
 
 	const showDeliveryArea = (areaId) => {
-		console.log("deliveries: ", deliveries);
 		if (deliveries) {
 			const delivery = deliveries.find((item) => item.id == areaId);
 			if (delivery) {
@@ -97,8 +92,6 @@ function DashUsers({ dashChange, onAction }) {
 			try {
 				const roleItems = await getRolesRequest();
 				setRoles(roleItems.data.body);
-				console.log("roleItems: ", roleItems.data.body);
-				console.log("roles: ", roles);
 			} catch (error) {
 				console.log("Error in dash_u", error);
 			}
@@ -109,7 +102,6 @@ function DashUsers({ dashChange, onAction }) {
 	// Valores para editar
 	useEffect(() => {
 		if (userData) {
-			console.log(userData);
 			setValue("editName", userData.name);
 			setValue("editLastName", userData.lastName);
 			setValue("editEmail", userData.email);
@@ -126,7 +118,6 @@ function DashUsers({ dashChange, onAction }) {
 	useEffect(() => {
 		const showDeliveries = async () => {
 			const result = await showDeliveriesRequest();
-			console.log("result deliveira; ", result);
 			setDeliveries(result.data.body);
 		};
 		showDeliveries();
@@ -155,7 +146,6 @@ function DashUsers({ dashChange, onAction }) {
 	}, [resToast]);
 
 	const onSubmit = handleSubmit(async (values) => {
-		console.log(values);
 		const objectValues = {
 			identity: values.addIdentity,
 			name: values.addName,
@@ -168,7 +158,6 @@ function DashUsers({ dashChange, onAction }) {
 			password: values.addPassword,
 		};
 		const result = await createUserRequest(objectValues);
-		console.log("result from dash_users: ", result);
 		const userInserted = result.data.body;
 		if (result && result.data) {
 			const userInfo = {
@@ -176,7 +165,6 @@ function DashUsers({ dashChange, onAction }) {
 				password: objectValues.password,
 			};
 			const resultPass = await createPassword(userInfo);
-			console.log(resultPass);
 			onAction("addUser");
 			if (resultPass.data.body.message === "Data save succesfully") {
 				setResToast({
@@ -195,7 +183,6 @@ function DashUsers({ dashChange, onAction }) {
 	});
 
 	const onSubmitEdit = handleSubmit(async (values) => {
-		console.log("values for edit: ", values);
 		if (
 			values.editName == userData.name &&
 			values.editLastName == userData.lastName &&
@@ -221,7 +208,6 @@ function DashUsers({ dashChange, onAction }) {
 					};
 
 					insertRole = await insertRegisterRoleRequest(role);
-					console.log("insertRole: ", insertRole);
 				}
 
 				const personObject = {
@@ -244,11 +230,6 @@ function DashUsers({ dashChange, onAction }) {
 
 				const resultPerson = await updatePersonRequest(personObject);
 				const resultUser = await updateUserRequest(userObject);
-
-				if (resultPerson && resultUser) {
-					console.log(resultPerson);
-					console.log(resultUser);
-				}
 
 				reset();
 				onAction("editUser");
@@ -276,7 +257,6 @@ function DashUsers({ dashChange, onAction }) {
 			const result = await deleteUserRequest(userData);
 			if (result) {
 				setDeleteModal(false);
-				console.log("Registro eliminado: ", result);
 				onAction("deleteUser");
 				setResToast({
 					state: true,
@@ -797,12 +777,6 @@ function DashUsers({ dashChange, onAction }) {
 										{errors.editBirth && (
 											<p className="notice">{errors.editBirth.message}</p>
 										)}
-										{/* {console.log(
-											"userData and role EDIT: ",
-											userData,
-											roleInEdit
-										)} */}
-										{/* Boton para enviar formulario de actualizacion de usuario */}
 
 										<input
 											type="submit"
@@ -854,7 +828,6 @@ function DashUsers({ dashChange, onAction }) {
 					</div>
 				))}
 			</div>
-			{/* <Toaster /> */}
 		</div>
 	);
 }

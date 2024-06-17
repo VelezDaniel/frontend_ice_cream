@@ -1,5 +1,3 @@
-import { BiBookmarkAltPlus, BiIdCard } from "react-icons/bi";
-import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -80,7 +78,6 @@ const DashOrders = ({ dashChange, onAction }) => {
 
 		const updateResult = await updateOrderInformationRequest(info);
 
-		console.log("updateResult: ", updateResult);
 		if (updateResult) {
 			showToast(1);
 			setModalChangePayed(false);
@@ -93,19 +90,12 @@ const DashOrders = ({ dashChange, onAction }) => {
 	};
 
 	const handleUpdateOrder = handleSubmit(async (values) => {
-		// order.actionType = actionType;
-
 		const info = {
 			idOrder: selectedOrder.idOrder,
 			row: values.row,
 			requiredAction: actionType,
 		};
-
-		console.log("info pre update", info);
-
 		const updateResult = await updateOrderInformationRequest(info);
-
-		console.log("updateResult: ", updateResult);
 		if (updateResult) {
 			showToast(1);
 			setModalChangePayed(false);
@@ -122,7 +112,6 @@ const DashOrders = ({ dashChange, onAction }) => {
 		const handleShowOrders = async () => {
 			try {
 				const items = await showOrdersRequest();
-				console.log("items;", items);
 
 				const openOrders = items.data.body.filter(
 					(order) => order.finished === 0
@@ -203,8 +192,8 @@ const DashOrders = ({ dashChange, onAction }) => {
 								<CardMedia
 									component="img"
 									sx={{
-										maxHeight: 124, // Ajusta esto según tus necesidades
-										maxWidth: 218, // Ajusta esto según tus necesidades
+										maxHeight: 124,
+										maxWidth: 218,
 										objectFit: "contain",
 										margin: "0 auto",
 									}}
@@ -247,7 +236,6 @@ const DashOrders = ({ dashChange, onAction }) => {
 													{adition}
 												</span>
 											))}
-											{/* <p>{detail.aditionsName}</p> */}
 										</>
 									)}
 									{detail.detailDescription && (
@@ -487,7 +475,6 @@ const DashOrders = ({ dashChange, onAction }) => {
 				<h2>Pedidos</h2>
 			</div>
 			{renderOrders(ordersData)}
-			{/* <div className="container-orders-products"></div> */}
 			<div className="p-cont-header">
 				<h2>Pedidos Cerrados</h2>
 			</div>

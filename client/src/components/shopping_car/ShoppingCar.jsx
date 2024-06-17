@@ -10,11 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { createOrderRequest } from "../../api/payment";
 import { showDeliveriesRequest } from "../../api/deliveries";
 import { createUserRequest, showUserRequest } from "../../api/users";
-import {
-	createNewOrderRequest,
-	createOrderProductRequest,
-} from "../../api/orders";
-import { insertDetailflavorsOrder } from "../../api/flavors";
+import { createNewOrderRequest } from "../../api/orders";
 import ModalTemplate from "../modal/ModalTemplate";
 // * SONNER TOAST
 import { toast } from "sonner";
@@ -24,17 +20,14 @@ import TextField from "@mui/material/TextField";
 // * icons
 import { FaArrowRight } from "react-icons/fa";
 import IconButton from "@mui/material/IconButton";
-// import DeleteOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 
 function ShoppingCar({ closeMethod }) {
 	const [cart, setCart] = useContext(CartContext);
-	// const [finalOrder, setFinalOrder] = useState(null);
 	const [modal, setModal] = useState(false);
 	const [formIsActive, setFormIsActive] = useState(false);
-	const [parcialOrder, setParcialOrder] = useState(null);
 	const [deliveries, setDeliveries] = useState(null);
 
 	let finalOrder;
@@ -51,7 +44,6 @@ function ShoppingCar({ closeMethod }) {
 
 	// Cart Functions
 	const quantity = cart.reduce((accumulator, current) => {
-		console.log("CART: ", cart);
 		return accumulator + current.quantity;
 	}, 0);
 
@@ -117,7 +109,6 @@ function ShoppingCar({ closeMethod }) {
 	useEffect(() => {
 		const showDeliveries = async () => {
 			const result = await showDeliveriesRequest();
-			console.log("result deliveira; ", result);
 			setDeliveries(result.data.body);
 		};
 		showDeliveries();
@@ -128,28 +119,6 @@ function ShoppingCar({ closeMethod }) {
 		localStorage.setItem("cart", JSON.stringify(cart));
 		localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
 	}, [cart, totalPrice]);
-
-	// useEffect(() => {
-	// 	if (idOrder) {
-	// 		console.log(idOrder);
-	// 		cart.map((order) => {
-	// 			if (order.id === idOrder) {
-	// 				return order;
-	// 			} else {
-	// 				return null;
-	// 			}
-	// 		});
-	// 	}
-	// 	setValue()
-	// }, [idOrder]);
-
-	// const editProduct = (id) => {
-	// 	setIdOrder(id);
-	// };
-
-	// const redirectTo = (page) => {
-	// 	navigate(`${page}`);
-	// };
 
 	const handlerPaymentRedirect = () => {
 		if (user && user.role === "CLIENTE") {
@@ -179,7 +148,6 @@ function ShoppingCar({ closeMethod }) {
 					orderInformation: cart,
 				});
 				if (response) {
-					console.log(response);
 					window.location.href = response.data.links[1].href;
 				}
 			} catch (error) {
@@ -194,7 +162,6 @@ function ShoppingCar({ closeMethod }) {
 					orderInformation: cart,
 				});
 				if (response) {
-					console.log(response);
 					window.location.href = response.data.links[1].href;
 				}
 			} catch (error) {
@@ -233,10 +200,7 @@ function ShoppingCar({ closeMethod }) {
 			};
 		} else {
 			values.id = 0;
-			console.log(values);
-			console.log(cart);
 			const createClient = await createUserRequest(values);
-			console.log("createcliente", createClient);
 			if (createClient.status === 201) {
 				values.id = createClient.data.body.idClient;
 				finalOrder = {
@@ -248,23 +212,7 @@ function ShoppingCar({ closeMethod }) {
 			}
 		}
 
-		// values.id = 0;
-		// console.log(values);
-		// console.log(cart);
-		// const createClient = await createUserRequest(values);
-		// console.log("createcliente", createClient);
-		// if (createClient.status === 201) {
-		// values.id = createClient.data.body.idClient;
-		// finalOrder = {
-		// 	cart: cart,
-		// 	client: values,
-		// 	fromLocal: true,
-		// 	totalPriceOrder: totalPrice,
-		// };
-
-		console.log("finalOrder: ", finalOrder);
 		const newOrder = await createNewOrderRequest(finalOrder);
-		console.log("newOrder", newOrder);
 
 		if (newOrder && newOrder.data.body[0] == "true") {
 			setCart([]);
@@ -273,16 +221,10 @@ function ShoppingCar({ closeMethod }) {
 		} else {
 			toastErrorCart();
 		}
-		// } else {
-		// 	// Si no se ejecuta la consulta se muestra un mensaje de error
-		// 	toastErrorCart();
-		// }
 	};
 
-	//
 	// Formulario para usuario no registrados
 	const onSubmitUserForm = async (values) => {
-		console.log("client info: ", values);
 		// Guardar los datos (unicamente tabla persona)
 		const client = {
 			id: 0,
@@ -298,13 +240,10 @@ function ShoppingCar({ closeMethod }) {
 		};
 		const result = await createUserRequest(client);
 
-		console.log("result of client with prevForm ", result);
-
 		if (result && result.data.body.affectedRows == 1) {
 			// Cambiar el id del cliente al recibido por la consulta
 
 			const resultGetClient = await showUserRequest({ id: client.identity });
-			console.log("resultGet client : ", resultGetClient);
 			if (resultGetClient) {
 				finalOrder = {
 					cart: cart,
@@ -312,7 +251,6 @@ function ShoppingCar({ closeMethod }) {
 					fromLocal: false,
 					totalPriceOrder: totalPrice,
 				};
-				console.log("final order before goTopay: ", finalOrder);
 				goToPay();
 			} else {
 				toastErrorCart();
@@ -474,7 +412,10 @@ function ShoppingCar({ closeMethod }) {
 				) : (
 					<div className="container-notice-shop">
 						<h4>No has agregado ningún producto aún</h4>
-						<button onClick={() => navigate("/products")} className="add-to-cart-shop">
+						<button
+							onClick={() => navigate("/products")}
+							className="add-to-cart-shop"
+						>
 							<LiaIceCreamSolid size={38} />
 							Agregar
 							<LiaIceCreamSolid size={38} />
@@ -824,7 +765,6 @@ function ShoppingCar({ closeMethod }) {
 					</div>
 				</ModalTemplate>
 			)}
-			{/* <Toaster position="top-left" /> */}
 		</div>
 	);
 }

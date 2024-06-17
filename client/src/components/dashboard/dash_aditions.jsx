@@ -4,8 +4,7 @@ import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ModalTemplate from "../modal/ModalTemplate";
-// import { useAuth } from "../../context/AuthContext";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import {
 	showAditionsRequest,
 	createAditionRequest,
@@ -33,7 +32,6 @@ const DashAditions = ({ dashChange, onAction }) => {
 	const {
 		register,
 		handleSubmit,
-		watch,
 		setValue,
 		reset,
 		formState: { errors },
@@ -46,7 +44,6 @@ const DashAditions = ({ dashChange, onAction }) => {
 			try {
 				const aditions = await showAditionsRequest();
 				// Establecer usuarios en estado
-				console.log(aditions);
 				setAditionsData(aditions.data.body);
 			} catch (error) {
 				console.log("Error in dash_portfolio: ", error);
@@ -58,7 +55,6 @@ const DashAditions = ({ dashChange, onAction }) => {
 			try {
 				const flavors = await showFlavorsRequest();
 				// Establecer usuarios en estado
-				console.log(flavors);
 				setFlavorsData(flavors.data.body);
 			} catch (error) {
 				console.log("Error in dash_portfolio: ", error);
@@ -131,13 +127,10 @@ const DashAditions = ({ dashChange, onAction }) => {
 	// Funcion para agregar informacion (adicion o sabor)
 	const onSubmit = (addingInfo) => {
 		return handleSubmit(async (values) => {
-			console.log(values);
-			console.log(addingInfo);
 			values.id = 0;
 			if (addingInfo === "adition") {
 				try {
 					const result = await createAditionRequest(values);
-					console.log("result from dash_aditions: ", result);
 					setAddAditionModal(false);
 
 					if (result.data.body[0] === "Data saved succesfully") {
@@ -160,7 +153,6 @@ const DashAditions = ({ dashChange, onAction }) => {
 			} else if (addingInfo === "flavor") {
 				try {
 					const result = await createFlavorRequest(values);
-					console.log("result from dash_portfolio: ", result);
 					setAddFlavorModal(false);
 
 					if (result.data.body[0] === "Data saved succesfully") {
@@ -189,7 +181,6 @@ const DashAditions = ({ dashChange, onAction }) => {
 	// Funcion para Editar informacion (adicion o sabor)
 	const onSubmitEdit = (editingInfo) => {
 		return handleSubmit(async (values) => {
-			console.log("values for edit: ", values);
 			if (editingInfo === "adition") {
 				console.log("mekams: ", aditionInfo);
 				const editAdition = {
@@ -201,7 +192,6 @@ const DashAditions = ({ dashChange, onAction }) => {
 
 				try {
 					const editResult = await createAditionRequest(editAdition);
-					console.log("editResult in dashportfolio: ", editResult);
 					setEditModal(false);
 
 					if (editResult.data.body[0] === "Data updated succesfully") {
@@ -222,7 +212,6 @@ const DashAditions = ({ dashChange, onAction }) => {
 					console.log("error in onsubmitEdit ", error);
 				}
 			} else if (editingInfo === "flavor") {
-				console.log("mekams: ", flavorInfo);
 				const editFlavor = {
 					id: flavorInfo.id,
 					nameFlavor: values.editNameFlavor,
@@ -231,7 +220,6 @@ const DashAditions = ({ dashChange, onAction }) => {
 
 				try {
 					const editResult = await createFlavorRequest(editFlavor);
-					console.log("editResult in dashportfolio: ", editResult);
 					setEditModal(false);
 
 					if (editResult.data.body[0] === "Data updated succesfully") {
@@ -251,7 +239,10 @@ const DashAditions = ({ dashChange, onAction }) => {
 					console.log("error in onsubmitEdit ", error);
 				}
 			} else {
-				console.log("NO se ejecuto la funcion !");
+				setResToast({
+					state: false,
+					message: "NO se ejecuto la funcion !",
+				});
 			}
 		});
 	};
@@ -262,7 +253,6 @@ const DashAditions = ({ dashChange, onAction }) => {
 			try {
 				const result = await deleteAditionRequest(deletingInfo);
 				setDeleteModal(false);
-				console.log("Registro eliminado: ", result);
 
 				if (result.data.body === "Information deleted") {
 					setResToast({
@@ -283,10 +273,7 @@ const DashAditions = ({ dashChange, onAction }) => {
 		} else if (infoSelected === "flavor") {
 			try {
 				const result = await deleteFlavorRequest(deletingInfo);
-
 				setDeleteModal(false);
-				console.log("Registro eliminado: ", result);
-
 				if (result.data.body === "Information deleted") {
 					setResToast({
 						state: true,
@@ -304,7 +291,10 @@ const DashAditions = ({ dashChange, onAction }) => {
 				console.log(error);
 			}
 		} else {
-			console.log("NO SE SELECCIONÓ NADA");
+			setResToast({
+				state: false,
+				message: "No se ha seleccionado nada",
+			});
 		}
 	};
 

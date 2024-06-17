@@ -133,14 +133,11 @@ function DashBookings({ dashChange, onAction }) {
 	}, [resToast]);
 
 	const onSubmitAdd = handleSubmitAdd(async (values) => {
-		console.log("values in onSubmitAdd", values);
 		try {
 			const client = {
 				id: values.addIdentity,
 			};
 			const clientExist = await showUserRequest(client);
-			console.log("clientExist: ", clientExist);
-
 			if (
 				clientExist &&
 				clientExist.data.body &&
@@ -157,7 +154,6 @@ function DashBookings({ dashChange, onAction }) {
 				};
 
 				const createResult = await createBookingRequest(addBooking);
-				console.log("add book in dashBookings: ", createResult);
 				setAddModal(false);
 				resetAdd();
 
@@ -185,7 +181,6 @@ function DashBookings({ dashChange, onAction }) {
 				};
 
 				const createResult = await createBookingRequest(addBooking);
-				console.log("editResult in dashBookings: ", createResult);
 				setAddModal(false);
 				resetAdd();
 
@@ -214,8 +209,6 @@ function DashBookings({ dashChange, onAction }) {
 	});
 
 	const onSubmitEdit = handleSubmitEdit(async (values) => {
-		console.log("values for edit: ", values);
-		console.log("mekams: ", bookingInfo);
 		try {
 			if (values.editHiddenDescription != "N/A") {
 				const editBooking = {
@@ -226,10 +219,8 @@ function DashBookings({ dashChange, onAction }) {
 					description: values.editDescription,
 					hiddenDescription: values.hiddenDescription,
 				};
-				console.log("edit with client", editBooking);
 
 				const editResult = await createBookingRequest(editBooking);
-				console.log("editResult in dashBookings: ", editResult);
 				setEditModal(false);
 				if (editResult.data.body[0] === "Data updated succesfully") {
 					setResToast({
@@ -252,9 +243,7 @@ function DashBookings({ dashChange, onAction }) {
 					description: values.editDescription,
 					idClient: bookingInfo.idClient,
 				};
-				console.log("edit with user", editBooking);
 				const editResult = await createBookingRequest(editBooking);
-				console.log("editResult in dashBookings: ", editResult);
 				setEditModal(false);
 				if (editResult.data.body[0] === "Data updated succesfully") {
 					setResToast({
@@ -279,7 +268,6 @@ function DashBookings({ dashChange, onAction }) {
 			const result = await deleteBookingRequest(bookingData);
 			if (result) {
 				setDeleteModal(false);
-				console.log("Registro eliminado: ", result);
 				setEditModal(false);
 				if (result.data.body === "Information deleted") {
 					setResToast({
@@ -723,7 +711,6 @@ function DashBookings({ dashChange, onAction }) {
 					onRowsPerPageChange={handleChangeRowsPerPage}
 				/>
 			</Paper>
-			{/* <Toaster position="top-right" /> */}
 		</div>
 	);
 }

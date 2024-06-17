@@ -17,12 +17,7 @@ function LoginPage() {
 
 	const onSubmit = handleSubmit((data) => {
 		signin(data);
-		console.log(data);
 	});
-
-	useEffect(() => {
-		console.log(signinErrors);
-	}, [signinErrors])
 
 	useEffect(() => {
 		if (isAuthenticated && user && user.role) {
@@ -69,7 +64,6 @@ function LoginPage() {
 							<label htmlFor="nombres">
 								<i className="bi bi-person"></i>
 							</label>
-							{/* <input type="text" name="nombres" id="nombres" placeholder="Nombres" /> */}
 							<input
 								type="number"
 								autoComplete="off"
@@ -85,7 +79,6 @@ function LoginPage() {
 							<label htmlFor="contrasena">
 								<i className="bi bi-lock"></i>
 							</label>
-							{/* <input type="text" name="apellidos" id="apellidos" placeholder="Apellidos"/> */}
 							<input
 								type="password"
 								{...register("password", { required: true })}

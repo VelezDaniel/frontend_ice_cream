@@ -4,7 +4,6 @@ import "./register.css";
 import CreatePassword from "./CreatePassword";
 import { showDeliveriesRequest } from "../../api/deliveries";
 import logoImg from "../../assets/imgs/helarticologo2.png";
-// import { RiContractLine } from "react-icons/ri";
 import { useAuth } from "../../context/AuthContext";
 // Toast from Sonner
 import { Toaster, toast } from "sonner";
@@ -29,29 +28,18 @@ function RegisterPage() {
 	useEffect(() => {
 		const showDeliveries = async () => {
 			const result = await showDeliveriesRequest();
-			console.log("result deliveira; ", result);
 			setDeliveries(result.data.body);
 		};
 		showDeliveries();
 	}, []);
 
 	const onSubmit = handleSubmit(async (values) => {
-		console.log(values);
 		const resultSignup = await signup(values);
 		if (resultSignup && resultSignup.status === 201) {
 			setRegisterForm(false);
 			setPasswordForm(true);
 		}
-		console.log("resultSignup: ", resultSignup);
 	});
-
-	// const onSubmit = handleSubmit(async (values) => {
-	// 	const resultSignup = await signup(values);
-	// 	console.log("resultSignup: ", resultSignup);
-	// 	if (resultSignup) {
-	// 		return await resultSignup;
-	// 	}
-	// });
 
 	return (
 		<div className="contenedor-padre">
@@ -258,9 +246,7 @@ function RegisterPage() {
 			)}
 			<Toaster />
 			{/* Password Form */}
-			{/* <CreatePassword insertId={insertId} /> */}
 			{passwordForm && <CreatePassword insertId={userId} />}
-			{/* {passwordForm && <div></div>} */}
 		</div>
 	);
 }
