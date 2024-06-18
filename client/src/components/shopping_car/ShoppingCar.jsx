@@ -146,6 +146,7 @@ function ShoppingCar({ closeMethod }) {
 				const response = await createOrderRequest({
 					userInformation: user,
 					orderInformation: cart,
+					totalPriceOrder: totalPrice,
 				});
 				if (response) {
 					window.location.href = response.data.links[1].href;
@@ -160,6 +161,7 @@ function ShoppingCar({ closeMethod }) {
 				const response = await createOrderRequest({
 					userInformation: finalOrder.client,
 					orderInformation: cart,
+					totalPriceOrder: totalPrice,
 				});
 				if (response) {
 					window.location.href = response.data.links[1].href;
